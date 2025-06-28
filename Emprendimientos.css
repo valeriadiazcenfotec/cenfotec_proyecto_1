@@ -41,31 +41,51 @@ body {
     width: 500px;
     padding: 8px;
     margin-top: 17px;
-    margin-left: 800px;
+    margin-left: 600px;
     border-radius: 5px;
+    border: none;
 }
 
 .filter {
-    padding: 8px;
+    padding: 10px;
+    justify-content: center;
     width: 100%;
+    align-content: center;
     display: flex;
-    height: 80px;
+    margin-top: 6px;
+
+}
+
+.mini-nav {
+    display: flex;
+    padding: 10px;
+    border-radius: 25px;
+    transition: 1s;
+
+}
+
+.mini-nav:hover {
+    background-color: rgba(73, 73, 73, 0.3);
+    cursor: pointer;
 }
 
 .checkbtnicon {
     padding-top: 5px;
     font-size: 30px;
-    margin-left: 250px;
-    margin-top: 15px;
     display: flex;
+    background-color: transparent;
+    transition: 1s;
 }
 
 .checkbtntext {
     display: flex;
+    background-color: transparent;
     padding-left: 8px;
-    margin-top: 15px;
     padding-top: 6px;
+    transition: 1s;
 }
+
+
 
 #check {
     display: none;
@@ -73,35 +93,99 @@ body {
 
 .bx-phone {
     display: flex;
-    padding: 8px;
-    margin-top: 15px;
-    font-size: 25px;
-    margin-left: 1100px;
+    padding: 5px;
+    font-size: 20px;
+
+}
+
+.number {
+    display: flex;
+    padding: 4px;
 }
 
 .contact_number {
     display: flex;
-    padding: 7px;
+    height: fit-content;
     margin-top: 15px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: underline;
+    margin-left: 800px;
+    align-content: center;
+    justify-content: center;
 }
 
-.bussines_content {
+
+
+.business_content {
     height: 600px;
+    margin-top: 5px;
+    width: 100%;
     display: flex;
-    background-color: aquamarine;
     align-items: center;
     justify-content: center;
 
 }
 
-.bussines_card {
-
-    width: 60%;
+.business_card {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 80%;
     height: 85%;
-    background-color: red;
     border-radius: 20px;
-    display: flex;
+    box-shadow: 0px 0px 16px -5px black;
+    padding: 60px;
+}
+
+.business_tittle {
+    background-color: rgba(167, 167, 167, 0.3);
+    border-radius: 5px;
+    height: 100px;
+    width: 350px;
+    max-height: 100px;
+    max-width: 350px;
+    padding: 10px;
+}
+
+.business_description {
+    grid-column: 1;
+}
+
+.business_description {
+
+    height: 250px;
+    width: 350px;
+    border-radius: 5px;
+    text-align: justify;
+    margin-top: 10px;
+    max-width: 350px;
+    max-height: 250px;
+    overflow-wrap: break-word;
+    padding: 15px;
+    background-color: rgba(167, 167, 167, 0.3);
+
+}
+
+.visualize {
+    padding-left: 18px;
+    text-align: left;
+    height: 40px;
+    width: 160px;
+    border: none;
+    font-weight: bold;
+    font-size: 15px;
+    margin-top: 10px;
+    background-color: #f9c543;
+    border-radius: 2px;
+}
+
+.visualize {
+    grid-column: 1;
+}
+
+.business_img {
+    width: 300px;
+    height: 200px;
+
+}
+
+.business_img {
+    grid-column: 2;
 }

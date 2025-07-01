@@ -72,10 +72,55 @@
             </div>
 
 
-            <img src="golden-retriever.jpg" alt="imagen de un perro" class="business_img">
+            <div class="carrusel">
+
+                <div class="imagenes">
+                    <img src="golden-retriever.jpg" alt="">
+                    <img src="/imagenes login/W4U LOGO.jpeg" alt="">
+                    <img src="/imagenes login/W4U LOGO BASE PNG.png" alt="">
+                </div>
+
+                <button class="anterior">←</button>
+                <button class="siguiente">→</button>
+
+            </div>
+
+            <div class="products">
+                <h3 class="products_tittle">Productos</h3>
+                <img src="golden-retriever.jpg" alt="" class="product_img">
+
+            </div>
 
         </div>
     </div>
+
+    <script>
+        const imagenes = document.querySelector('.imagenes');
+        const total = document.querySelectorAll('.imagenes img').length;
+        const anterior = document.querySelector('.anterior');
+        const siguiente = document.querySelector('.siguiente');
+        let indice = 0;
+
+        function actualizarCarrusel() {
+            imagenes.style.transform = `translateX(-${indice * 500}px)`;
+        }
+
+        siguiente.addEventListener('click', () => {
+            indice = (indice + 1) % total;
+            actualizarCarrusel();
+        });
+
+        anterior.addEventListener('click', () => {
+            indice = (indice - 1 + total) % total;
+            actualizarCarrusel();
+        });
+
+        // Opcional: avance automático cada 5 segundos
+        /*setInterval(() => {
+            indice = (indice + 1) % total;
+            actualizarCarrusel();
+        }, 5000);*/
+    </script>
 
 </body>
 

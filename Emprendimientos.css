@@ -66,8 +66,13 @@ body {
 
 .mini-nav:hover {
     background-color: rgba(73, 73, 73, 0.3);
+}
+
+.checkbtnicon:hover,
+.checkbtntext:hover {
     cursor: pointer;
 }
+
 
 .checkbtnicon {
     padding-top: 5px;
@@ -85,6 +90,53 @@ body {
     transition: 1s;
 }
 
+.carrusel {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    margin-left: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.imagenes {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+.imagenes img {
+    width: 400px;
+    height: 300px;
+}
+
+.anterior,
+.siguiente {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    border: none;
+    padding-left: 8px;
+    padding-right: 8px;
+    cursor: pointer;
+    font-size: 22px;
+    z-index: 2;
+    align-content: center;
+    border-radius: 20px;
+}
+
+.anterior {
+    left: 10px;
+}
+
+.siguiente {
+    right: 10px;
+}
 
 
 #check {
@@ -115,20 +167,18 @@ body {
 
 
 .business_content {
-    height: 600px;
-    margin-top: 5px;
+    height: 100vh;
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-
 }
 
 .business_card {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     width: 80%;
-    height: 85%;
+    height: 500px;
+    margin-top: 30px;
     border-radius: 20px;
     box-shadow: 0px 0px 16px -5px black;
     padding: 60px;
@@ -181,11 +231,37 @@ body {
 }
 
 .business_img {
-    width: 300px;
-    height: 200px;
-
+    width: 360px;
+    height: 250px;
+    margin-top: 30px;
+    margin-left: 30px;
+    border-radius: 5px;
 }
 
 .business_img {
     grid-column: 2;
+}
+
+.products {
+    height: 250px;
+    width: 350px;
+    background-color: rgba(167, 167, 167, 0.3);
+    margin-left: 30px;
+}
+
+.products {
+    grid-column: 3;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+}
+
+
+.product_img {
+    width: 200px;
+    height: 150px;
+    display: flex;
+    margin-left: 25px;
+    border-radius: 15px;
+
 }

@@ -36,77 +36,50 @@
     </svg>
 
     <div class="filter">
-
         <div class="mini-nav">
-
             <input type="checkbox" id="check" />
-
             <label for="check" class="checkbtnicon">
-
                 <i class='bx  bx-menu-filter'></i>
-
             </label>
-
             <label for="check" class="checkbtntext">
-
                 <h3 class="filter_text">Filtrar</h3>
-
             </label>
-
         </div>
         <div class="contact_number">
-
             <i class='bx  bx-phone'></i>
-
             <h4 class="number">123456789</h4>
-
         </div>
-
-
     </div>
 
 
 
     <div class="business_content">
         <div class="business_card">
-
             <div class="column">
                 <h2 class="business_title">Nombre de Negocio</h2>
-
                 <p class="business_description">Lorem ipsum dolor sit amet consectetur adipiscing elit pulvinar, class
                     fringilla nunc habitasse aptent accumsan velit, magnis viverra sociosqu duis phasellus nascetur
                     natoque.
                     Hendrerit habitasse etiam est fringilla pellentesque erat pulvinar, tortor porta felis tellus lacus
                     volutpat egestas eros, eget risus urna nascetur blandit hac. Faucibus sem posuere placerat integer
                     tempus elementum pellentesque odio, tincidunt vel</p>
-
                 <button class="visualize">Visualizar</button>
-
             </div>
-
-
             <div class="carrusel">
-
                 <div class="imagenes">
+                    <img src="perro5.jpg" alt="">
                     <img src="golden-retriever.jpg" alt="">
-                    <img src="/imagenes login/W4U LOGO.jpeg" alt="">
-                    <img src="/imagenes login/W4U LOGO BASE PNG.png" alt="">
+                    <img src="perro4.jpg" alt="">
                 </div>
-
-                <button class="anterior">←</button>
-                <button class="siguiente">→</button>
-
+                <button class="anterior"><i class='bx  bx-arrow-left-stroke'></i></button>
+                <button class="siguiente"><i class='bx  bx-arrow-right'></i></button>
             </div>
-
             <div class="products">
                 <h3 class="products_title">Productos</h3>
                 <img src="golden-retriever.jpg" alt="" class="product_img">
-
             </div>
-
         </div>
     </div>
-
     <script>
         const imagenes = document.querySelector('.imagenes');
         const total = document.querySelectorAll('.imagenes img').length;
@@ -115,7 +88,7 @@
         let indice = 0;
 
         function actualizarCarrusel() {
-            imagenes.style.transform = `translateX(-${indice * 500}px)`;
+            imagenes.style.transform = `translateX(-${indice * 400}px)`;
         }
 
         siguiente.addEventListener('click', () => {

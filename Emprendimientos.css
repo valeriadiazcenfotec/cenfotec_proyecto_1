@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: azure;
+    background-color: rgb(255, 255, 255);
 }
 
 .head_content {
@@ -39,10 +39,12 @@ body {
 .search_input {
     height: 40px;
     display: flex;
+    position: relative;
+    margin-left: auto;
+    margin-right: 30px;
     width: 500px;
     padding: 8px;
     margin-top: 17px;
-    margin-left: 600px;
     border-radius: 5px;
     border: none;
 }
@@ -71,7 +73,7 @@ body {
     left: 0;
     bottom: 0;
     /* pegada al borde inferior del div */
-    width: 110%;
+    width: 60%;
     height: 2px;
     /* grosor de la línea */
     background: #000;
@@ -109,6 +111,7 @@ body {
     padding-left: 8px;
     padding-top: 6px;
     transition: 1s;
+    margin-right: 80px;
 }
 
 
@@ -163,7 +166,7 @@ body {
 .business_title {
     background-color: rgba(167, 167, 167, 0.3);
     margin-left: auto;
-    border-radius: 20px;
+    border-radius: 12px;
     height: 100px;
     width: 350px;
     max-height: 100px;
@@ -175,7 +178,7 @@ body {
 
     height: 250px;
     width: 350px;
-    border-radius: 20px;
+    border-radius: 12px;
     text-align: justify;
     margin-top: 10px;
     max-width: 350px;
@@ -196,8 +199,8 @@ body {
     border: none;
     font-size: 15px;
     margin-top: 50px;
-    background-color: #f9c543;
-    border-radius: 20px;
+    background-color: #8d8d8d;
+    border-radius: 6px;
     transition: .5s;
 }
 
@@ -206,6 +209,8 @@ body {
     border-radius: 8px;
     transform: scale(1.1) translateX(8px);
     font-size: 16px;
+    background-color: #4a4a4a;
+    color: white;
 }
 
 .carrusel {
@@ -275,6 +280,7 @@ body {
     border-radius: 20px;
     padding: 10px;
     justify-content: center;
+    margin-top: 80px;
 }
 
 .products_title {
@@ -315,3 +321,11 @@ body {
     transform: scale(1.1) translateX(1px);
     font-size: 16px;
 }
+
+/*.business-contact {
+    background-color: aquamarine;
+    width: 20%;
+    width: fit-content;
+    height: fit-content;
+    display: ;
+}*/

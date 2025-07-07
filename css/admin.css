@@ -419,6 +419,8 @@ button.rechazar:hover {
     gap: 1rem;
   }
 
+/* === Ocultar datos de tabla en pantall pequeña === */  
+  
   .table-container td:nth-child(1),
   .table-container th:nth-child(1),
   .table-container td:nth-child(2),

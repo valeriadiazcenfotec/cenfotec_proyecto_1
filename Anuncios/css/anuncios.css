@@ -10,6 +10,7 @@ h1{
 .anuncios{
     background-color: #5BC0DE;
     padding-bottom: 5%;
+    cursor:pointer;
 }
 .anuncios_totales{
     display: flex;
@@ -24,6 +25,7 @@ h1{
     background-color: #fff;
     padding: 2.5%;
     border-radius: 10px;
+    max-width: 30%;
 }
 .montserrat-bold {
   font-family: "Montserrat", sans-serif;
@@ -124,6 +126,9 @@ h1{
     align-items: center;
     justify-content: center; 
 }
+.peticiones{
+    margin: 1%;
+}
 .subtitulo{
     color: #4A4A4A;
 }
@@ -191,6 +196,98 @@ h1{
     background-color: transparent;
     border: none;
 }
+#descartar2{
+    top: 1%;
+    right: 2%;
+    position: absolute;
+    border-radius: 10px;
+    padding: 1%;
+    background: #FDD700;
+    box-shadow:  20px 20px 60px #d4d4d4,
+                -20px -20px 60px #ffffff;
+    border: none;
+}
+#carta_muestra{
+    display: none;
+    position: fixed;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    padding: 1.5%;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow:  20px 20px 88px #656565b7,
+            -20px -20px 88px #7b7b7b85;
+}
+
+.img_carta_desplegada{
+    width: 99%;
+    height: 25vh;
+    border-radius: 10px;
+    object-fit: cover; 
+    overflow: hidden;
+    display: block;
+    margin: auto;
+}
+.fecha_lugar_desplegada{
+    margin-top: 3%;
+    display: flex;
+    align-items: center;
+    gap: 5%;
+    text-align: center;
+    justify-content: center;
+}
+.lugar{
+    border: none;
+    padding: 1%;
+    display: flex;
+    border-radius: 10px;
+    align-items: center;
+    width: 15%;
+    gap: 10%;
+        color: #5BC0DE;
+    transition: all 0.5s ease;
+}
+
+.peticiones_todas{
+    margin-top: 1%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 4%;
+    gap: 2%;
+    margin: 2%;
+    flex-wrap: wrap;
+
+}
+.peticion_una{
+    padding: 1%;
+    align-items: center;
+    color: #4A4A4A;
+    position: relative;
+    background-color: #4A4A4A;
+    display: flex;
+    width: 30%;
+    border-radius: 10px;
+    border-radius: 5px;
+    background: #cfcfcf;
+    box-shadow:  20px 20px 60px #b0b0b08c,
+                -20px -20px 60px #eeeeee97;
+                border: thick;
+}
+
+.boton_especifico_peticiones{
+    position: absolute;
+    right: 3%;
+    width: 20%;
+    height:70%;
+    border-radius: 4px;
+    color: #ffffff;
+    background-color: #5BC0DE;
+    border: none;
+}
+
 @media (max-width: 991px) {
     .seccion1_form {
         display: inline-block;

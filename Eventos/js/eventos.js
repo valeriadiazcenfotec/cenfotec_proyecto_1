@@ -20,6 +20,7 @@
     function cerrarFormulario() {
         document.getElementById("carta_muestra").style.display = "none";
     }
+    
     document.querySelectorAll('.carta').forEach(function(carta) {
         const sinLike = carta.querySelector('.sin_like');
         const conLike = carta.querySelector('.con_like');

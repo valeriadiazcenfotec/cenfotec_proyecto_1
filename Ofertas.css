@@ -6,11 +6,7 @@
 }
 
 body {
-    background-color: rgb(255, 255, 255);
-}
-
-.link-to-offers {
-    text-decoration: none;
+    background-color: rgb(91, 192, 222);
 }
 
 .head_content {
@@ -56,7 +52,8 @@ body {
 
 .filter {
     padding: 10px;
-    justify-content: center;
+    justify-content: left;
+    margin-left: 5%;
     width: 100%;
     align-content: center;
     display: flex;
@@ -93,14 +90,6 @@ body {
     transform: scaleX(1);
 }
 
-
-
-.checkbtnicon:hover,
-.checkbtntext:hover {
-    cursor: pointer;
-}
-
-
 .checkbtnicon {
     padding-top: 5px;
     font-size: 30px;
@@ -119,25 +108,11 @@ body {
 }
 
 
-
-
 #check {
     display: none;
 }
 
-.bx-phone {
-    display: flex;
-    padding: 5px;
-    font-size: 20px;
-
-}
-
-.number {
-    display: flex;
-    padding: 4px;
-}
-
-.sales {
+/*.sales {
     display: flex;
     height: fit-content;
     margin-top: 15px;
@@ -168,34 +143,71 @@ body {
     font-size: 15px;
     background-color: #708f01;
     color: white;
-}
+}*/
 
 
 
-.business_content {
+.sales_content {
     height: 100vh;
     width: 100%;
 }
 
-.business_card {
+.sales_card {
     margin: 0 auto;
-    display: flex;
-    justify-content: center;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    row-gap: 30px;
     /*grid-template-columns: repeat(3, 1fr);*/
-    width: 80%;
-    height: 500px;
-    margin-top: 30px;
+    width: 95%;
+    height: 100%;
+    margin-top: 40px;
+    min-height: 90%;
     border-radius: 40px;
     box-shadow: 0px 0px 16px -5px black;
-    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    padding: 30px;
+    overflow: auto;
 }
 
-.business_title {
+.sales_card::-webkit-scrollbar {
+    width: 8px;
+    margin-right: 10px;
+}
+
+.sales_card::-webkit-scrollbar-track {
+    background: #f1f1f100;
+    border-radius: 10px;
+}
+
+.sales_card::-webkit-scrollbar-thumb {
+    background: #88888800;
+    border-radius: 10px;
+}
+
+.item {
+    background: rgba(128, 195, 66, 0);
+    box-shadow: 0px 0px 12px -6px black;
+    padding: 20px;
+    text-align: center;
+    width: 92%;
+    height: 105%;
+    min-width: 92%;
+    max-height: 105%;
+    border-radius: 12px;
+    transition: .7s;
+}
+
+.item:hover {
+    box-shadow: 0px 0px 14px -4px black;
+}
+
+/*.business_title {
     background-color: rgba(167, 167, 167, 0.3);
     margin-left: auto;
     border-radius: 12px;
     height: 100px;
-    width: 100%;
+    width: 350px;
     max-height: 100px;
     max-width: 350px;
     padding: 10px;
@@ -359,6 +371,46 @@ body {
     display: ;
 }*/
 
+.offer-image {
+    width: 100%;
+    height: 50%;
+    margin-top: 10px;
+    border-radius: 12px;
+    min-width: 100%;
+}
+
+.offer-description {
+    margin-top: 5px;
+    padding: 5px;
+    width: 100%;
+    height: 24%;
+    max-height: 24%;
+    border-radius: 12px;
+    overflow-wrap: break-word;
+}
+
+.view-offer {
+    margin-top: 6px;
+    background-color: #8d8d8d;
+    border: none;
+    padding: 5px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: .5s;
+    margin-bottom: 6px;
+}
+
+.view-offer:hover {
+    cursor: pointer;
+    border-radius: 8px;
+    transform: scale(1.1)
+        /*translateX(1px)*/
+    ;
+    font-size: 17px;
+    background-color: #4a4a4a;
+    color: white;
+}
 
 footer {
     background-color: #1d72a7;

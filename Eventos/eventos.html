@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos</title>
+    <link rel="stylesheet" href="css/eventos.css">
+    <link rel="stylesheet" href="css/calendario.css">
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="seccion1">
+        <div class="evento_seccion1">
+            <h1 class="montserrat-bold" id="titulo">Eventos</h1>
+            <p class="montserrat-regular comunidad_mensaje">Se parte de las actividades que mueven tu comunidad</p>
+            <br>
+            <button class="iniciar" onclick="peticionAbierta()"><h3 class="montserrat-semibold">Iniciar</h3></button>
+        </div>
+    </div>
+    <div class="seccion2">
+        <div id="calendar"></div>
+    </div>
+    <div class="eventos">
+        <div class="cartas">
+            <div class="carta">
+                <img src="img/evento.jpg"  onclick="abrirFormulario()"  class="img_carta" alt="">
+                <i class="fa-regular fa-heart fa-2x corazon sin_like" ></i>
+                <i class="fa-solid fa-heart fa-2x corazon con_like"></i>
+                <br>
+                <div class="carta2"  onclick="abrirFormulario()"  >
+                <h3 class="montserrat-bold nombre">Nombre del evento</h3>
+                <p class="montserrat-regular parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus culpa nostrum velit enim incidunt iusto, unde quos</p>
+                <div class="fecha_lugar">
+                    <button class="escribir"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold">Lugar</p></button>
+                    <p class="montserrat-regular fecha">Fecha</p>
+                </div>
+                </div>
+            </div>
+            <div class="carta">
+                <img src="img/priscilla-du-preez-W3SEyZODn8U-unsplash.jpg"  onclick="abrirFormulario()"  class="img_carta" alt="">
+                <i class="fa-regular fa-heart fa-2x corazon sin_like"></i>
+                <i class="fa-solid fa-heart fa-2x corazon con_like"></i>
+                <br>
+                <div class="carta2"  onclick="abrirFormulario()"  >
+                <h3 class="montserrat-bold nombre">Feria</h3>
+                <p class="montserrat-regular parrafo">Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus culpa nostrum velit enim incidunt iusto, unde quos</p>
+                <div class="fecha_lugar">
+                    <button class="escribir"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold lugar1">Lugar</p></button>
+                    <p class="montserrat-regular fecha">Fecha</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <div class="peticiones seccion3">
+            <h1 class="montserrat-bold ">Peticiones de eventos a publicar</h1>
+            <p class="montserrat-regular">Aquí encontrarás el status de los anuncios que quieras publicar</p>
+            <div class="peticiones_todas">
+                <div class="peticion_una">
+                    <h3 class="montserrat-semibold">Feria de empleo</h3>
+                        <button class="boton_especifico_peticiones"><p class="montserrat-regular">Cancelar</p></button>
+                </div>
+                <div class="peticion_una">
+                    <h3  class="montserrat-semibold">Feria de empleo</h3>
+                        <button class="boton_especifico_peticiones"><p class="montserrat-regular">Cancelar</p></button>
+                </div>
+                <div class="peticion_una">
+                    <h3  class="montserrat-semibold">Feria de empleo</h3>
+                        <button class="boton_especifico_peticiones"><p class="montserrat-regular">Cancelar</p></button>
+                </div>
+            </div>
+        </div>
+    <div class="carta_desplegada">
+        <div id="carta_muestra">
+            <button onclick="cerrarFormulario()" id="descartar"><i class="fa-solid fa-xmark fa-2x" style="color: #FFF;"></i></button>
+            <img src="" class="img_carta_desplegada" alt="">
+            <br>
+            <h2  class="montserrat-semibold peticion"></h2>
+            <p  class="montserrat-regular peticion2"></p>
+            <div class="fecha_lugar_desplegada">
+                    <button class="lugar"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold lugar1">Lugar</p></button>
+                    <button class="lugar"><i class="fa-solid fa-feather fa-2x"></i><p class="montserrat-semibold autor">Autor</p></button>
+                    <button class="lugar"><i class="fa-solid fa-calendar fa-2x"></i><p class="montserrat-semibold fecha">Fecha</p></button>
+                </div>
+        </div>
+    </div>
+    <div class="agregar">
+        <form class="forms" id="form">
+            <div class="form">
+                <h2  class="montserrat-semibold subtitulo">Petición</h2>
+                <p  class="montserrat-regular subtitulo">Escribe lo que desees anunciar y un administrador se encargará de revisar tu petición (en la sección de peticiones encontrarás el estado de las peticiones creadas)</p>
+                <button onclick="peticionCerrada()" id="descartar2"><i class="fa-solid fa-xmark fa-4x" style="color: #FDD700;"></i></button>
+                <br>
+                <div class="seccion1_form">
+                <input type="text" id="nombre" class="montserrat-regular"  placeholder="Nombre del anuncio">
+                <input type="text" id="nombre" class="montserrat-regular"  placeholder="Lugar">
+                <input type="datetime-local" class="montserrat-regular"  id="nombre" placeholder="Fecha">
+            </div>
+            <br>
+            </div>
+            <div class="botones_peticiones">
+            <textarea name="anuncio_en_curso" class="montserrat-regular" id="anuncio_en_curso">Descripción</textarea>
+            <div class="botones_juntos">
+                    <button type="submit" id="form_listo"><i class="fa-solid fa-arrow-up-from-bracket fa-2x" style="color: #FFF;"></i><p class="montserrat-regular enviar">Enviar peticion</p></button> 
+                    <label for="file" class="label_imagen"><i class="fa-regular fa-images fa-2x" style="color: #FFF;"></i><p class="montserrat-regular">Añadir una imagen</p></label> <input type="file" id="file">
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</body>
+</html>
+
+<script src="js/eventos.js"></script>
+<script src="js/calendario.js"></script>
+<script src='fullcalendar/lang/es.js'></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.global.min.js"></script>
+

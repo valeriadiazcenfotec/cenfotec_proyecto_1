@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/anuncios.css">
+</head>
+<body>
+    <div class="anuncios">
+        <div class="anuncio_previo">
+            <div class="escrito">
+                <h1 class="montserrat-bold">Anuncios</h1>
+                <p class="montserrat-regular seccion1">Bienvenido a la sección de anuncios. Aquí podrás mantenerte al tanto de las noticias más recientes de tu comunidad y participar activamente en ellas.</p>
+                    <p class="montserrat-regular seccion1">¿Deseas compartir una petición?</p>
+                    <br>
+                    <button onclick="abrirFormulario()" class="escribir montserrat-bold" id="escribir">Haz clic</button>
+                            </div>
+            <div class="buscador"></div>
+        </div>
+        <div class="anuncios_totales">
+            <div class="anuncio">
+                <div class="categoria">
+                    <p class="montserrat-regular">General</p>
+                </div>
+                <h2 class="montserrat-semibold">Nombre del anuncio</h2>
+                <p class="montserrat-regular descripcion">Descripción</p>
+                <button class="estado">Estado</button>
+                <div class="fecha"><p>01/01/2025</p></div>
+            </div>
+            
+            <div class="anuncio">
+                <div class="categoria">
+                    <p class="montserrat-regular">General</p>
+                </div>
+                <h2 class="montserrat-semibold">Nombre del anuncio</h2>
+                <p class="montserrat-regular descripcion">Descripción</p>
+                <button class="estado">Estado</button>
+                <div class="fecha"><p>01/01/2025</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nuevos_anuncios">
+        <div class="agregar">
+            <form class="forms" id="form">
+                <div class="form">
+                    <h2  class="montserrat-semibold subtitulo">Petición</h2>
+                    <p  class="montserrat-regular subtitulo">Escribe lo que desees anunciar y un administrador se encargará de revisar tu petición (en la sección de peticiones encontrarás el estado de las peticiones creadas)</p>
+                    <button onclick="cerrarFormulario()" id="descartar"><i class="fa-solid fa-xmark fa-4x" style="color: #FDD700;"></i></button>
+                    <br>
+                    <div class="seccion1_form">
+                    <input type="text" id="nombre" placeholder="Nombre del anuncio">
+                    <label for="file" class="label_imagen"><i class="fa-regular fa-images fa-2x" style="color: #FFF;"></i><p class="montserrat-regular">Añadir una imagen</p></label> <input type="file" id="file">
+                </div>
+                <br>
+                </div>
+                <div class="botones_peticiones">
+                <textarea name="anuncio_en_curso" class="montserrat-regular" id="anuncio_en_curso">Descripción</textarea>
+                    <button type="submit" id="form_listo"><i class="fa-solid fa-arrow-up-from-bracket fa-3x" style="color: #FFF;"></i></button> <br>
+                </div>
+                
+            </form>
+        </div>
+        <div class="peticiones">
+            <h1 class="montserrat-bold subtitulo">Peticiones de anuncios</h1>
+            <p class="montserrat-regular">Aquí encontrarás el status de los anuncios que quieras publicar</p>
+        </div>
+    </div>
+</body>
+</html>
+<script src="js/anuncios.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   

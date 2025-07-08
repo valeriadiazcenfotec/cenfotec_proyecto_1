@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/calendario2.css">
+
+</head>
+<body>
+<div class="calendar-container">
+    <header>
+    <div style="display: flex; align-items: center; gap: 10px;">
+        <button onclick="changeMonth(-1)" class="fc"><p><</p></button>
+        <h2 id="title"></h2>
+        <button onclick="changeMonth(1)" class="fc">></button>
+    </div>
+    <div class="view-buttons">
+        <button onclick="switchView('month')" id="btnMonth" class="active">Mensual</button>
+        <button onclick="switchView('week')" id="btnWeek">Semanal</button>
+    </div>
+    </header>
+
+    <div class="monthly" id="monthlyView">
+    <div class="days" id="monthNames"></div>
+    <div class="days" id="monthDays"></div>
+    </div>
+
+    <div class="weekly" id="weeklyView">
+    <div class="week-header" id="weekHeader"></div>
+    <div class="week-grid" id="weekGrid"></div>
+    </div>
+</div>
+
+</body>
+</html>
+<script src="js/calendario2.js"></script>

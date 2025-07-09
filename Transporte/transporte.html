@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Rutas de Transporte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="transporte.css">
+</head>
+<body>
+
+  <h1 class="titulo-pagina">Rutas de Transporte</h1>
+
+  <!-- Selector de medio -->
+  <div class="selector-ruta">
+    <label for="medio">Medio de transporte:</label>
+    <select id="medio">
+      <option value="bus">Bus</option>
+      <option value="tren">Tren</option>
+    </select>
+  </div>
+
+  <!-- Tabla de horarios -->
+  <section class="contenedor-tabla">
+    <table class="tabla-horarios">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ruta</th>
+          <th>Tipo</th>
+          <th>Horario</th>
+          <th>Frecuencia</th>
+          <th>Costo</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-cuerpo">
+        <!-- JS insertará filas -->
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Zona de contacto -->
+  <div class="zona-contacto">
+    <span class="telefono">(123) 456 789</span>
+    <button class="boton-compra">COMPRA TICKET</button>
+    <a href="https://www.busejemplo.com" class="link-bus" target="_blank">www.busejemplo.com</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer-principal">
+    <p class="texto-footer">Comunidad Unida | Tel: +506 8888-8888</p>
+  </footer>
+
+  <script src="transporte.js"></script>
+
+</body>
+</html>

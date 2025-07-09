@@ -11,10 +11,8 @@
 body {
   background-color: #F4F6F7; /* Fondo Claro */
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  flex-direction: column; /* Changed to column to stack content and footer */
+  min-height: 100vh; /* Use min-height to ensure it takes full height */
 }
 
 /* Contenedor central */
@@ -26,11 +24,12 @@ body {
   text-align: center;
   width: 100%;
   max-width: 400px;
+  margin: auto; /* This will center the login box vertically and horizontally */
 }
 
 /* Logo */
 .logo {
-  width: 220px;
+  width: 280px;
   margin-bottom: 20px;
 }
 
@@ -98,9 +97,19 @@ body {
   text-decoration: underline;
 }
 
-/* Footer */
-footer {
-  margin-top: 40px;
-  font-size: 13px;
-  color: #888;
+.footer-principal {
+  background-color: #1D72A7; /* Azul Servicios*/
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  margin-top: auto; /* Pushes the footer to the bottom */
+  width: 100%;
 }
+
+.texto-footer {
+  margin: 0;
+  color: white;
+}
+

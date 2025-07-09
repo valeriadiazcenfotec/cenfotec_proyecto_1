@@ -1,0 +1,141 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f7;
+    display: flex; /* Kept from previous correction */
+    flex-direction: column; /* Kept from previous correction */
+    min-height: 100vh; /* Kept from previous correction */
+}
+
+/* Eliminado header porque no lo estás usando */
+
+nav {
+    background-color: #2d539b;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+main {
+    padding: 20px;
+    text-align: center;
+    flex: 1; /* Kept from previous correction */
+}
+
+/* Galería interactiva estilo hover */
+.galeria-inicio {
+    display: flex;
+    height: 600px;
+    width: 100%; /* Changed to 100% to be responsive, remove if you want fixed 1920px */
+    max-width: 1920px; /* Added max-width to maintain original intention without overflow */
+    justify-content: center;
+    margin: auto;
+    overflow: hidden; /* Important to hide content that overflows during hover effect */
+    position: relative; /* Added for proper positioning of absolute children */
+}
+
+/* New styling for each gallery item container */
+.galeria-item {
+    position: relative; /* Allows positioning of text relative to this item */
+    width: 0px; /* Initial width for flex-grow */
+    flex-grow: 1;
+    overflow: hidden; /* Hide overflow of text initially */
+    transition: 0.5s ease; /* Transition for the width change */
+    display: flex; /* To center content inside */
+    justify-content: center; /* To center content inside */
+    align-items: center; /* To center content inside */
+}
+
+.galeria-inicio img {
+    width: 100%; /* Make image fill its parent container */
+    height: 100%; /* Make image fill its parent container */
+    object-fit: cover;
+    opacity: 0.8;
+    transition: 0.5s ease; /* Transition for opacity and filter */
+}
+
+/* Hover effect on the .galeria-item */
+.galeria-item:hover {
+    cursor: crosshair;
+    flex-grow: 3; /* Increased flex-grow to make it wider on hover */
+    /* You can use a fixed width here too, e.g., width: 300px; but flex-grow is better for responsiveness */
+}
+
+.galeria-item:hover img {
+    opacity: 1;
+    filter: contrast(120%);
+}
+
+/* New styling for the text overlay */
+.galeria-texto {
+    position: absolute; /* Position over the image */
+    bottom: 20px; /* Adjust as needed for vertical position */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    color: white; /* Text color */
+    background-color: #1D72A7; /* Semi-transparent background for readability */
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s ease; /* Smooth transition for text visibility */
+    white-space: nowrap; /* Prevents text from wrapping */
+    pointer-events: none; /* Allows clicks to pass through to the image */
+    z-index: 2; /* Ensure text is above the image */
+}
+
+/* Show text on hover of the parent .galeria-item */
+.galeria-item:hover .galeria-texto {
+    opacity: 1;
+}
+
+
+.footer-principal {
+    background-color: #1D72A7; /* Azul Servicios */
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px; /* Texto secundario */
+    font-weight: 400; /* Regular */
+    text-align: center;
+    padding: 15px;
+    margin-top: auto; /* Kept from previous correction */
+}
+
+/* Título de página */
+h2 {
+    color: #1D72A7;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+/* Subtítulo */
+main p {
+    color: #4A4A4A;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600; /* SemiBold */
+    margin-bottom: 30px;
+}
+
+

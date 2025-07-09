@@ -52,12 +52,15 @@ body, html {
 }
 
 /* Icono de imagen */
+
 .filtro-icono img {
   width: 40px;
   height: 40px;
   object-fit: contain;
   transition: transform 0.3s ease;
+  border-radius: 6px; /* ✅ Botones */
 }
+
 
 /* Texto debajo del ícono */
 .filtro-icono span {
@@ -92,3 +95,52 @@ body, html {
   margin: 0;
 }
 
+/* ------------------------ */
+/* RESPONSIVE: MAPA MÓVIL   */
+/* ------------------------ */
+@media (max-width: 768px) {
+  .panel-filtros {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 10px 14px;
+    top: 10px;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .filtro-icono img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .filtro-icono span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .panel-filtros {
+    gap: 10px;
+    justify-content: center;
+    padding: 8px 10px;
+  }
+
+  .filtro-icono {
+    flex: 0 0 60px;
+  }
+
+  .filtro-icono img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .filtro-icono span {
+    font-size: 11px;
+  }
+
+  .footer-principal {
+    font-size: 12px;
+    padding: 10px;
+  }
+}

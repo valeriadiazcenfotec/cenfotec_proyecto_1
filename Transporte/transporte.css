@@ -37,7 +37,7 @@ body {
   height: 45px;
   padding: 0 10px;
   border: 2px solid #1D72A7;
-  border-radius: 6px;
+  border-radius: 12px; /* ✅ contenedor pequeño */
   font-size: 16px;
   background-color: #ffffff;
   color: #4A4A4A;
@@ -49,7 +49,7 @@ body {
   max-width: 1000px;
   margin: 0 auto;
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 40px; /* ✅ contenedor grande */
   overflow-x: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -100,7 +100,7 @@ body {
   font-weight: bold;
   font-size: 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px; /* ✅ botón pequeño */
   padding: 10px 20px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -158,3 +158,63 @@ body {
     width: 95%;
   }
 }
+
+@media (max-width: 480px) {
+  .titulo-pagina {
+    font-size: 22px;
+    margin: 15px 10px;
+  }
+
+  .selector-ruta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    padding: 0 15px;
+  }
+
+  .selector-ruta select {
+    width: 100%;
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .contenedor-tabla {
+    width: 100%;
+    border-radius: 30px; /* ✅ mantiene curva pequeña */
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .tabla-horarios th,
+  .tabla-horarios td {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .zona-contacto {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  .telefono {
+    font-size: 13px;
+  }
+
+  .boton-compra {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .link-bus {
+    font-size: 13px;
+  }
+
+  .footer-principal {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+

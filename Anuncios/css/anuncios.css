@@ -25,8 +25,9 @@ h1{
     background-color: #fff;
     padding: 2.5%;
     border-radius: 10px;
-    max-width: 30%;
+    max-width: 350px;
 }
+
 .montserrat-bold {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
@@ -135,6 +136,8 @@ h1{
 .anuncio_previo{
     padding: 4%;
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
 }
 .escrito{
     width: 40%;
@@ -252,7 +255,6 @@ h1{
 }
 
 .peticiones_todas{
-    margin-top: 1%;
     display: flex;
     justify-content: center;
     margin-bottom: 4%;
@@ -262,13 +264,14 @@ h1{
 
 }
 .peticion_una{
+    margin-top: 3%;
     padding: 1%;
     align-items: center;
     color: #4A4A4A;
     position: relative;
     background-color: #4A4A4A;
     display: flex;
-    width: 30%;
+    width: 350px;
     border-radius: 10px;
     border-radius: 5px;
     background: #cfcfcf;
@@ -287,12 +290,35 @@ h1{
     background-color: #5BC0DE;
     border: none;
 }
+.buscador{
+    margin-left: 1%;
+    display: flex;
+    align-items: center;
+    gap: 1%;
+    width: 50%;
+    padding: 1%;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow:  20px 20px 60px #f0f0f048,
+                -20px -20px 30px #ffffff36;
+}
+#busca{
+    width: 95%;
+    border: none;
+    padding: 1.5%;
+    outline: none;
+}
+#busca:focus{
+    border:transparent;
+}
+#icono_buscar{
+    color: #5BC0DE;
+}
 
 @media (max-width: 991px) {
     .seccion1_form {
         display: inline-block;
         width: 100vw;
-        
     }
     .botones_peticiones{
         display: inline-block;
@@ -303,5 +329,22 @@ h1{
     }
     .label_imagen, .botones_peticiones{
         margin-top: 3%;
+    }
+}
+@media (max-width:481px) {
+    .anuncio_previo{
+        display: inline-block;
+    }
+    .escrito{
+        width: 90%;
+        margin-bottom: 4%;
+    }
+    .anuncios{
+        width: 100%;
+    }
+    .buscador{
+        width: 100%;
+    }
+    .peticion_una{
     }
 }

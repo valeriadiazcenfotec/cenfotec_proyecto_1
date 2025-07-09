@@ -22,3 +22,13 @@
         function peticionCerrada() {
         document.getElementById("carta_muestra").style.display = "none";
     }
+
+    busca = document.getElementById("busca")
+    busca.addEventListener("keyup", e =>{
+        document.querySelectorAll(".anuncio").forEach(anuncio =>{
+            anuncio.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                ?anuncio.style.display = "block"
+                : anuncio.style.display = "none"
+
+        })
+    })

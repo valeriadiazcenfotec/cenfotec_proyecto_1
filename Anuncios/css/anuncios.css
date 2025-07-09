@@ -237,6 +237,7 @@ h1{
 .fecha_lugar_desplegada{
     margin-top: 3%;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 5%;
     text-align: center;
@@ -248,9 +249,9 @@ h1{
     display: flex;
     border-radius: 10px;
     align-items: center;
-    width: 15%;
+    width: 100px;
     gap: 10%;
-        color: #5BC0DE;
+    color: #5BC0DE;
     transition: all 0.5s ease;
 }
 
@@ -315,20 +316,27 @@ h1{
     color: #5BC0DE;
 }
 
-@media (max-width: 991px) {
+@media (max-width: 768px) {
     .seccion1_form {
         display: inline-block;
-        width: 100vw;
+        width: 100%;
     }
     .botones_peticiones{
         display: inline-block;
         width: 100%;
     }
-    .form{
-        width: 100%;
+    #form{
+        width: 95%;
     }
-    .label_imagen, .botones_peticiones{
-        margin-top: 3%;
+    .label_imagen, .botones_peticiones, #form_listo{
+        margin-top: 5%;
+    }
+    .lugar{
+        margin-top: 5%;
+        margin-bottom: 2%;
+    }
+    .label_imagen, #nombre{
+        width: 100%;
     }
 }
 @media (max-width:481px) {

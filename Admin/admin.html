@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de Administración</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css" />
+  <script defer src="admin.js"></script>
+</head>
+<body>
+
+  <input type="checkbox" id="sidebar-toggle">
+  <label for="sidebar-toggle" class="hamburger">
+    <i class='bx bx-menu'></i>
+  </label>
+  <div class="admin-page">
+    <aside class="sidebar" id="responsive-sidebar">
+      <ul>
+        <li><a href="#resumen" >Resumen</a></li>
+        <li><a href="#reportes">Reportes</a></li>
+        <li><a href="#emprendimientos">Emprendimientos</a></li>
+        <li><a href="#quejas">Quejas</a></li>
+        <li><a href="#ofertas">Ofertas</a></li>
+        <li><a href="#usuarios">Usuarios</a></li>
+      </ul>
+    </aside>
+
+    <main class="admin-content">
+      <section id="resumen">
+        <h1>Resumen administrativo</h1>
+        <div class="summary-container">
+          <div class="summary-card">
+            <p class="summary-title">Usuarios</p>
+            <p class="summary-value">23</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Emprendimientos activos</p>
+            <p class="summary-value">14</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Emprendimientos por revisar</p>
+            <p class="summary-value">6</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Quejas publicadas</p>
+            <p class="summary-value">3</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Quejas por revisar</p>
+            <p class="summary-value">3</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Reportes publicados</p>
+            <p class="summary-value">8</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Reportes por revisar</p>
+            <p class="summary-value">8</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Ofertas publicadas</p>
+            <p class="summary-value">5</p>
+          </div>
+          <div class="summary-card">
+            <p class="summary-title">Ofertas por revisar</p>
+            <p class="summary-value">5</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="emprendimientos">
+        <h2>Gestión de Emprendimientos</h2>
+        <h3 class="subsection">Emprendimientos a revisar</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Passiflory</h4>
+            <p>Propietario: Jose</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection">Emprendimientos publicados</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Luani</h4>
+            <p>Propietaria: Ana Mora</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quejas">
+        <h2>Gestión de Quejas</h2>
+        <h3 class="subsection">Quejas por revisar</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Ruido a las 3am frente al Fresh Market</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Ruido a las 3am frente al Fresh Market</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Ruido a las 3am frente al Fresh Market</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Ruido a las 3am frente al Fresh Market</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Ruido a las 3am frente al Fresh Market</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection">Quejas publicadas</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Asaltos en calle la Morgue</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Asaltos en calle la Morgue</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Asaltos en calle la Morgue</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Asaltos en calle la Morgue</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Asaltos en calle la Morgue</h4>
+            <p>Reporte Anonimo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="reportes">
+        <h2>Gestión de Reportes</h2>
+        <h3 class="subsection">Reportes por revisar</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Choque frente al Mas x Menos, calle inhabilitada</h4>
+            <p>Reportado por: Jose Elizondo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Choque frente al Mas x Menos, calle inhabilitada</h4>
+            <p>Reportado por: Jose Elizondo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Choque frente al Mas x Menos, calle inhabilitada</h4>
+            <p>Reportado por: Jose Elizondo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Choque frente al Mas x Menos, calle inhabilitada</h4>
+            <p>Reportado por: Jose Elizondo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+          <div class="card">
+            <h4>Choque frente al Mas x Menos, calle inhabilitada</h4>
+            <p>Reportado por: Jose Elizondo</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="subsection">Quejas publicadas</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>Calle Barrantes sin agua</h4>
+            <p>Reportado por: Lil Vargas</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="ofertas">
+        <h2>Gestión de Ofertas</h2>
+        <h3 class="subsection">Ofertas por revisar</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>2x1 Waffles</h4>
+            <p>Luani</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="aprobar">Aprobar</button>
+              <button class="rechazar">Rechazar</button>
+            </div>
+          </div>
+        </div>
+        <h3 class="subsection">Ofertas publicadas</h3>
+        <div class="card-grid">
+          <div class="card">
+            <h4>15% de descuento en sandwiches</h4>
+            <p>Luani</p>
+            <div class="button-group">
+              <button class="detalles" data-modal-target="modal-detalles">Ver Detalles</button>
+              <button class="rechazar">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="usuarios">
+        <h2>Gestión de Usuarios</h2>
+        <div class="table-container">
+          <table class="user-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Usuario</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Valeria</td>
+                <td>Diaz</td>
+                <td>valeria123</td>
+                <td>8888-9999</td>
+                <td>valeria@ucenfotec.com</td>
+                <td>Ciudadana</td>
+                <td class="actions">
+                  <button class="aprobar">Resetear Contraseña</button>
+                  <button class="rechazar">Eliminar</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Emanuel</td>
+                <td>Chaves</td>
+                <td>emanuel123</td>
+                <td>8999-5555</td>
+                <td>emanuel@ucenfotec.com</td>
+                <td>Administrador</td>
+                <td class="actions">
+                  <button class="aprobar">Resetear Contraseña</button>
+                  <button class="rechazar">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <div id="modal-detalles" class="modal">
+        <div class="modal-content">
+          <span class="close-button" data-close-button>&times;</span>
+          <h2>Detalles</h2>
+          <p><strong>Título:</strong> Passiflory</p>
+          <p><strong>Usuario:</strong> Joserbs123</p>
+          <p><strong>Nombre completo:</strong> Jose Barrantes</p>
+          <p><strong>Descripción:</strong> Panaderia de pan de masa madre y reposteria</p>
+          <p><strong>Ubicacion: </strong> Frente al Colegio San Joaquin</p>
+            <p><strong>Adjunto:</strong></p>
+            <button class="detalles" id="show-image" style="margin-top: 1rem;">Ver imagen</button>
+            <img id="modal-image" src="img/image-emprendimiento.jpg" alt="Archivo adjunto" style="max-width:100%; height:auto; display:none; margin-top:10px;">
+        </div>
+      </div>
+    <div id="overlay"></div>
+    </main>
+  </div>
+</body>
+</html>

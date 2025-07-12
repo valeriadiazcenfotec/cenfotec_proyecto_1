@@ -34,11 +34,13 @@ nav ul li a {
 }
 
 main {
-    padding: 20px;
+    /* Eliminamos todo el padding del main para que las secciones internas controlen su propio espacio */
+    padding: 0;
     text-align: center;
     flex: 1;
 }
 
+/* Galería interactiva estilo hover */
 /* Galería interactiva estilo hover */
 .galeria-inicio {
     display: flex;
@@ -46,22 +48,39 @@ main {
     width: 100%;
     max-width: 1920px;
     justify-content: center;
-    margin: auto;
+    margin: 20px auto 40px auto; /* Agregamos un margin-top de 20px y mantenemos el margin-bottom de 40px */
     overflow: hidden;
     position: relative;
-    border-radius: 40px; /* ✅ agregado */
+    border-radius: 0px; /* Bordes redondeados del carrusel */
 }
 
-/* Cada item individual */
+/* Este es el estilo para el nuevo <a> que envuelve cada item */
+.galeria-item-link {
+    display: flex; /* Haz que el enlace sea un elemento flex para que se expanda */
+    flex-grow: 1; /* Permite que el enlace ocupe el espacio */
+    flex-basis: 0; /* Es clave para que flex-grow funcione correctamente desde una base cero */
+    transition: 0.5s ease; /* Mueve la transición de expansión al enlace */
+    text-decoration: none; /* Elimina el subrayado por defecto de los enlaces */
+    color: inherit; /* Hereda el color del texto */
+    position: relative; /* Necesario para que galeria-texto se posicione correctamente */
+}
+
+/* El efecto de hover ahora se aplica al enlace */
+.galeria-item-link:hover {
+    cursor: crosshair;
+    flex-grow: 3; /* Expande el enlace al hacer hover */
+}
+
+/* El div original ahora simplemente ocupa el 100% del espacio de su padre (el enlace) */
 .galeria-item {
     position: relative;
-    width: 0px;
-    flex-grow: 1;
+    width: 100%; /* Ocupa todo el ancho del enlace padre */
+    height: 100%; /* Ocupa toda la altura del enlace padre */
     overflow: hidden;
-    transition: 0.5s ease;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* Las propiedades flex-grow, width: 0px y transition ya no van aquí, las maneja .galeria-item-link */
 }
 
 .galeria-inicio img {
@@ -72,17 +91,12 @@ main {
     transition: 0.5s ease;
 }
 
-.galeria-item:hover {
-    cursor: crosshair;
-    flex-grow: 3;
-}
-
-.galeria-item:hover img {
+/* El hover de la imagen ahora se activa cuando el enlace padre tiene hover */
+.galeria-item-link:hover img {
     opacity: 1;
     filter: contrast(120%);
 }
 
-/* Texto superpuesto */
 .galeria-texto {
     position: absolute;
     bottom: 20px;
@@ -91,7 +105,7 @@ main {
     color: white;
     background-color: #1D72A7;
     padding: 8px 15px;
-    border-radius: 12px; /* ✅ actualizado de 5px a 12px */
+    /*border-radius: 25px; /* Sin bordes redondeados porque se ve medio raro preguntar al grupo, ahora se cambia con el de arriba*/
     font-family: 'Montserrat', sans-serif;
     font-size: 32px;
     font-weight: 600;
@@ -100,6 +114,39 @@ main {
     white-space: nowrap;
     pointer-events: none;
     z-index: 2;
+}
+
+/* El hover del texto ahora se activa cuando el enlace padre tiene hover */
+.galeria-item-link:hover .galeria-texto {
+    opacity: 1;
+}
+
+/* Responsive adjustments for the new .galeria-item-link */
+@media (max-width: 768px) {
+    .galeria-inicio {
+        flex-direction: column;
+        height: auto;
+        margin: 20px auto;
+    }
+
+    /* El enlace ahora controla el tamaño en móvil */
+    .galeria-item-link {
+        width: 100% !important; /* Asegura el ancho completo */
+        flex-grow: unset !important; /* Deshabilita el crecimiento lateral en vertical */
+        flex-basis: auto; /* Permite que el contenido dicte el tamaño inicial */
+        height: 200px; /* Altura fija para cada item en móvil */
+    }
+
+    .galeria-item-link:hover {
+        flex-grow: unset; /* Mantiene la deshabilitación del crecimiento en hover para móvil */
+    }
+
+    .galeria-texto {
+        font-size: 20px;
+        bottom: 10px;
+        padding: 6px 10px;
+    }
+    /* ... el resto de tu CSS responsive ... */
 }
 
 .galeria-item:hover .galeria-texto {
@@ -114,7 +161,7 @@ main {
     font-weight: 400;
     text-align: center;
     padding: 15px;
-    margin-top: auto;
+    margin-top: 0; /* Aseguramos que no haya margen superior en el footer */
 }
 
 h2 {
@@ -133,11 +180,75 @@ main p {
     margin-bottom: 30px;
 }
 
+/* ----------------------------- */
+/* SECCIÓN VALORES */
+.valores-seccion {
+    background-color: #5BC0DE;
+    /* Ajustamos el padding para que no haya espacio extra */
+    padding: 60px 0; /* Mantenemos el padding vertical, horizontal a 0 */
+    margin-top: 0;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0; /* Aseguramos que no haya margen inferior */
+}
+
+.valores-titulo {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.valores-contenedor {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 20px; /* Agregamos el padding horizontal aquí para que las tarjetas no toquen los bordes */
+}
+
+.valor-tarjeta {
+    background-color: white;
+    padding: 30px 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 200px;
+}
+
+.valor-tarjeta h4 {
+    color: #1D72A7;
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.valor-tarjeta p {
+    color: #4A4A4A;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+/* Efecto hover */
+.valor-tarjeta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+
 /* Responsive */
 @media (max-width: 768px) {
     .galeria-inicio {
         flex-direction: column;
         height: auto;
+        margin: 20px auto; /* Ajustamos el margin para móviles también */
     }
 
     .galeria-item {
@@ -173,6 +284,7 @@ main p {
     main p {
         font-size: 16px;
         text-align: justify;
+        /* Padding en móviles para el texto */
         padding: 0 15px;
     }
 
@@ -180,6 +292,29 @@ main p {
         font-size: 13px;
         padding: 10px;
     }
+
+    .valores-titulo {
+        font-size: 24px;
+    }
+
+    .valor-tarjeta {
+        font-size: 16px;
+        padding: 16px 20px;
+        min-width: 130px;
+    }
+
+    .valores-contenedor {
+        padding: 0 15px; /* Ajuste del padding para el contenedor de valores en móviles */
+    }
 }
 
+@media (max-width: 480px) {
+    .valores-contenedor {
+        flex-direction: column;
+        align-items: center;
+    }
 
+    .valor-tarjeta {
+        width: 80%; /* Ajuste el ancho de las tarjetas en pantallas muy pequeñas */
+    }
+}

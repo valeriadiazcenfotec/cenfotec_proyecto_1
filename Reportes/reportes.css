@@ -295,3 +295,34 @@ textarea {
   color: #4A4A4A;
 }
 
+.mensaje-error,
+.mensaje-exito {
+  font-size: 1rem;
+  margin-top: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  text-align: center;
+  justify-content: center;
+}
+
+.mensaje-error {
+  color: #D9534F;
+  background-color: #fce3e3;
+  border: 1px solid #D9534F;
+}
+
+.mensaje-exito {
+  color: #28a745;
+  background-color: #e2f7e8;
+  border: 1px solid #28a745;
+}
+
+.checkbox-invalido {
+  outline: 2px solid #D9534F;
+  box-shadow: 0 0 5px #D9534F;
+  border-radius: 4px;
+}

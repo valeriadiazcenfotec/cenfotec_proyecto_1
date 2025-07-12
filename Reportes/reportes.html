@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="reportes.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+  <script defer src="reportes.js"></script>
 </head>
 <body>
 
@@ -87,7 +88,7 @@
           </div>
 
           <div class="grupo-formulario grupo-checkbox">
-            <input type="checkbox" id="lineamientos" required />
+            <input type="checkbox" id="lineamientos" />
             <label for="lineamientos">He leído y acepto los lineamientos de participación.</label>
           </div>
 
@@ -162,20 +163,6 @@
       </div>
     </div>
   </section>
-
-  <script>
-    document.querySelectorAll('.btn-pestana').forEach(boton => {
-      boton.addEventListener('click', () => {
-        const destino = boton.dataset.tab;
-
-        document.querySelectorAll('.btn-pestana').forEach(b => b.classList.remove('activa'));
-        document.querySelectorAll('.contenido-pestana').forEach(p => p.classList.remove('activa'));
-
-        boton.classList.add('activa');
-        document.getElementById(destino).classList.add('activa');
-      });
-    });
-  </script>
 
 </body>
 </html>

@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    padding: 0;
+    margin: 0;
+}
+.titulo{
+    align-items: center;
+    padding: 2%;
+    display: flex;
+    background: #1398E8;
+    background: linear-gradient(2deg, rgba(19, 152, 232, 1) 0%, rgba(36, 158, 231, 1) 19%, rgba(217, 218, 221, 1) 100%);
+}
+h1{ 
+    color: #1D72A7;
+}
+button{
+    margin-top: 2%;
+    border-radius: 2em;
+    background-color: transparent;
+    padding: 2%;
+    width: 25%;
+    color: #0b324a;
+    border-color: #06284b;
+    transition: all 1s ease;
+}
+button:hover{
+    border: none;
+    color: #eaf7ff;
+    background: #1183C9;
+    background: linear-gradient(90deg, rgba(17, 131, 201, 1) 12%, rgba(15, 94, 149, 1) 72%, rgba(13, 66, 110, 1) 100%);
+}
+.poppins-medium {
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+.poppins-light {
+  font-family: "Poppins", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+.poppins-semibold {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+.celular{
+    width: 50%;
+    transition: all 1s ease-in-out;
+}
+.celular:hover{
+    width: 52%;
+    transform: rotate3d(2, 6, -2, 45deg);
+}
+
+.w4u{
+    color: #06284b;
+}
+.seccion1{
+    display: inline;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 50%;
+}
+#titulo{
+    font-size: 3.5em;
+}
+#titulo2{
+    color: #06284b;
+    font-size: 2.5em;
+    margin-top: -10%;
+    text-align: center;
+}
+#titulo3{
+    color: #ffffff;
+    font-size: 2.5em;
+    text-align: center;
+}
+#titulo5{
+    color: #06284b;
+    font-size: 2.5em;
+
+    text-align: center;}
+.cartas{
+    display: flex;
+}
+.equipo{
+    width: 250px;
+    height: 200px;
+    border-radius: 5%;
+}
+.carta{
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.5s ease;
+}
+.carta:hover{
+    transform: scale(1.1);
+}
+.mision_vision_valores{
+    margin-top: -5%;
+    background-color: #06284b;
+    padding-top: 5%;
+}
+
+#mision{
+    color: #eaf7ff;
+}
+.parrafo{
+    margin-top: 1%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+.mision_vision{
+    padding: 5%;
+    text-align: center;
+}
+.mision_vision i{
+    transition: text-shadow 0.5s ease;
+    transition: font-size 0.5s ease;
+}
+.mision_vision:hover i{
+    font-size: 100px;
+    text-shadow: 4px 7px 46px rgba(255, 243, 68, 0.815);
+
+}
+.mision_vision_cartas{
+    display: flex;
+}
+.cartas_valores{
+    padding: 3%;
+    gap: 5%;
+    display: grid;
+    grid-template-columns: 30% 30% 30%; 
+    margin-bottom: 10%;
+}
+.valor{
+    transition: box-shadow 0.5s ease;
+    transition: background-color 5s ease;
+    transition: color 0.1s ease;
+    padding: 10%;
+    margin-top: 8%;
+    border-radius: 10%;
+    background: #ffffff;
+    box-shadow:  20px 20px 42px #f2f2f2,
+                -20px -20px 42px #ffffff;
+}
+.valor:hover{
+    color: #eaf7ff;
+    border-radius: 10%;
+    background: #1183C9;
+    
+    box-shadow:  21px 21px 42px #128fdc96,
+                -1px -2px 42px #149ef4a4;
+}
+#valor_icono{
+    transition: color 0.8s ease;
+    color: #1398E8;
+}
+.valor:hover #valor_icono{
+    color: #eaf7ff;
+}
+.titulo4{
+    margin-top: 2%;
+    margin-bottom: 4%;
+}

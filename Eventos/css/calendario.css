@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+.fc {
+    font-family: "Montserrat", sans-serif;
+    width: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -5%);
+    color: #fff;
+}
+.fc .fc-view-harness{
+    background-color: #ffffff30;
+}
+.fc .fc-daygrid-day.fc-day-today {
+    background-color: #5bc0ded2;
+}
+.fc .fc-button-primary:not(:disabled).fc-button-active, .fc .fc-button-primary:not(:disabled):active{
+    background-color: #5bc0ded2;
+    border-color: #5bc0dee1;
+    
+}
+.fc .fc-button-primary {
+    background-color: #00a5d7d2;
+    border-color: #00a5d7d2;
+    transition: all 0.5s ease;
+}
+.fc .fc-button-primary:hover{
+    background-color: #5bc0ded2;
+    border-color: #5bc0dee1;
+}
+.fc-h-event {
+    background-color: #FDD700;
+    border-color: #FDD700;
+}

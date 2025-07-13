@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="Ofertas.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../menu/menu.css">
     <title>Ofertas</title>
 
     <!--<div class="head_content">
@@ -21,7 +22,83 @@
 </head>
 
 <body>
+<header class="header montserrat-semibold">
+        <nav class="nav container">
+        <div class="nav__data">
+            <a href="#" class="nav__logo">
+                Comunidad Flores de Heredia 
+            </a>
+            
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars nav__burger"></i>
+                <i class="fa-solid fa-xmark  nav__close"></i>
+            </div>
+        </div>
 
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li><a href="../Inicio/inicio.html" class="nav__link">Inicio</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Anuncios/anuncios.html" class="dropdown__link">
+                            <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Transporte/transporte.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../Reportes/reportes.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Mapa/mapa.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i>Mapa
+
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                
+                <li><a href="../Eventos/eventos.html" class="nav__link">Eventos</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Emprendimientos/Ofertas.html" class="dropdown__link">
+                            <i class="ri-user-line"></i> Ofertas y descuentos
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Emprendimientos/Emprendimientos.html" class="dropdown__link">
+                            <i class="ri-lock-line"></i> Negocios
+                        </a>
+                    </li>
+                </li>
+
+            </ul>
+        </div>
+        </nav>
+    </header>
     <div class="head_content">
 
         <img src="imagenes login/W4U LOGO.jpeg" alt="Logo W4U" class="logo" />
@@ -166,5 +243,6 @@
     </script>
 
 </body>
-
+  <script src="../menu/menu.js"></script>
+  <script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   
 </html>

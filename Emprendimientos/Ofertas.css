@@ -10,10 +10,11 @@ body {
 }
 
 .head_content {
+    position: relative;
+    top: 75px;
     background-color: #1398E8;
     height: 200px;
     width: 100%;
-    position: sticky;
     display: flex;
     background: linear-gradient(to bottom,
             #1396e89d 50%,
@@ -23,7 +24,9 @@ body {
             rgb(91, 192, 222) 100%);
 
 }
-
+svg{
+    margin-top: 5%;
+}
 .community_name {
 
     padding: 20px;

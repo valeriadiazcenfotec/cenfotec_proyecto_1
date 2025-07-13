@@ -8,9 +8,11 @@ h1{
     color: #1D72A7;
 }
 .anuncios{
-    background-color: #5BC0DE;
+    background-color: rgb(84, 179, 208);
     padding-bottom: 5%;
     cursor:pointer;
+    position: relative;
+    top: 50px;
 }
 .anuncios_totales{
     display: flex;

@@ -10,30 +10,12 @@ body {
 
 /* Eliminado header porque no lo estás usando */
 
-nav {
-    background-color: #2d539b;
-}
 
-nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-}
 
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-}
 
 main {
+    position: relative;
+    top: 75px;
     /* Eliminamos todo el padding del main para que las secciones internas controlen su propio espacio */
     padding: 0;
     text-align: center;
@@ -156,6 +138,8 @@ main {
 .footer-principal {
   background-color: #1D72A7;
   color: white;
+  position: relative;
+   top: 75px;
   font-size: 13.5px;
   padding: 6px 10px;
   width: 100%;

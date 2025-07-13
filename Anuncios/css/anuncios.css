@@ -316,6 +316,44 @@ h1{
     color: #5BC0DE;
 }
 
+.footer-principal {
+  background-color: #1D72A7;
+  color: white;
+  font-size: 13.5px;
+  padding: 6px 10px;
+  width: 100%;
+}
+
+.footer-contenido {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.footer-info p,
+.footer-creditos p {
+  margin: 0;
+}
+
+.footer-titulo {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.footer-principal a {
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+}
+
+.footer-creditos a img.logo-creador {
+  max-width: 90px;
+  height: auto;
+  margin-top: 2px;
+}
+
 @media (max-width: 768px) {
     .seccion1_form {
         display: inline-block;

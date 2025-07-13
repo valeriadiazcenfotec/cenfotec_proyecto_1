@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (valido) {
       console.log("Login válido. Enviando...");
-      // Aquí podrías hacer fetch(), redireccionar o mostrar mensaje
     }
   });
 });

@@ -166,3 +166,20 @@ button:hover{
     margin-top: 2%;
     margin-bottom: 4%;
 }
+.producto{
+    color: #06284b;
+    height: 35vh;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+
+
+
+}
+.flores{
+    font-size: larger;
+}

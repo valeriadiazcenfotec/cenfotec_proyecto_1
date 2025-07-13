@@ -13,7 +13,11 @@ body, html {
   display: flex;
   flex-direction: column;
 }
-
+main{
+  position: relative;
+  top: 75px;
+  bottom: 50px;
+}
 /* Contenedor principal del mapa y filtros */
 .mapa-principal {
   flex: 1;
@@ -83,6 +87,8 @@ body, html {
 
 /* Footer */
 .footer-principal {
+  position: relative;
+  top: 75px;
   background-color: #1D72A7;
   color: white;
   font-size: 13.5px;

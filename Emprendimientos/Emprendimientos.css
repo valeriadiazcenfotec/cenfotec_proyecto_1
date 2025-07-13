@@ -17,13 +17,17 @@ body {
     background-color: #1398E8;
     height: 80px;
     width: 100%;
-    position: sticky;
+    position: relative;
+    top: 75px;
+
     display: flex;
 
 }
+svg{
+    margin-top: 5%;
+}
 
 .community_name {
-
     padding: 20px;
     font-size: 25px;
     font-weight: bold;

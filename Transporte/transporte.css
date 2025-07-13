@@ -12,6 +12,7 @@ body {
 
 /* Título principal */
 .titulo-pagina {
+
   text-align: center;
   color: #1D72A7;
   font-size: 32px;
@@ -21,6 +22,8 @@ body {
 
 .contenido-principal {
   flex: 1;
+    position: relative;
+  top: 75px;
 }
 
 /* Selector */
@@ -131,6 +134,8 @@ body {
   font-size: 13.5px;
   padding: 6px 10px;
   width: 100%;
+  position: relative;
+  top: 100px;
 }
 
 .footer-contenido {

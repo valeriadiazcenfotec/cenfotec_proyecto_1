@@ -10,14 +10,17 @@ body {
 }
 
 .head_content {
+    position: relative;
+    top: 75px;
     background-color: #1398E8;
     height: 80px;
     width: 100%;
-    position: sticky;
     display: flex;
 
 }
-
+svg{
+    margin-top: 5%;
+}
 .community_name {
 
     padding: 20px;

@@ -334,10 +334,12 @@ h1{
   font-size: 15px;
   font-weight: 700;
   margin-bottom: 2px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .footer-principal a {
   text-decoration: none;
+  font-family: "Montserrat", sans-serif;
 }
 
 .footer-creditos a img.logo-creador {

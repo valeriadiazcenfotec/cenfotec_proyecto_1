@@ -19,6 +19,10 @@ body {
   margin-top: 20px;
 }
 
+.contenido-principal {
+  flex: 1;
+}
+
 /* Selector */
 .selector-ruta {
   display: flex;

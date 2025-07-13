@@ -362,3 +362,14 @@ textarea {
   height: auto;
   margin-top: 2px;
 }
+
+.footer-creditos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-creditos a {
+  margin-top: 4px;
+}

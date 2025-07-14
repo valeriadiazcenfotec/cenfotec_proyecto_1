@@ -83,6 +83,7 @@ button:hover{
     text-align: center;}
 .cartas{
     display: flex;
+    flex-wrap: wrap;
 }
 .equipo{
     width: 250px;
@@ -116,6 +117,7 @@ button:hover{
 .mision_vision{
     padding: 5%;
     text-align: center;
+    width: 500px;
 }
 .mision_vision i{
     transition: text-shadow 0.5s ease;
@@ -128,6 +130,7 @@ button:hover{
 }
 .mision_vision_cartas{
     display: flex;
+    flex-wrap: wrap;
 }
 .cartas_valores{
     padding: 3%;
@@ -182,4 +185,33 @@ button:hover{
 }
 .flores{
     font-size: larger;
+}
+@media (max-width:1030px) {
+    .mision_vision{
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -0%);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+}
+
+@media (max-width:692px) {
+    .mision_vision{
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -0%);
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+    .cartas_valores{
+        grid-template-columns: 30% 30%; 
+        margin-left: 15%;
+        width: 500px;
+    }
 }

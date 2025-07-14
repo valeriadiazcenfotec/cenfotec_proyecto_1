@@ -402,7 +402,6 @@ svg {
 }
 
 .footer-creditos a img.logo-creador {
-<<<<<<< HEAD
   max-width: 90px;
   height: auto;
   margin-top: 2px;
@@ -504,9 +503,5 @@ svg {
     .visualize{
         margin-left: -15%;
     }
-=======
-    max-width: 90px;
-    height: auto;
-    margin-top: 2px;
->>>>>>> d6cbbc32d1343d6ea098814015165637440450cd
+
 }

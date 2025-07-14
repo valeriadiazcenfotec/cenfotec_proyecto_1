@@ -377,3 +377,39 @@ textarea {
 .footer-creditos a {
   margin-top: 4px;
 }
+
+@media (max-width: 768px) {
+  .pestanas {
+    flex-direction: column;
+  }
+
+  .btn-pestana {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #DDDDDD;
+  }
+
+  .seccion-tarjetas {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tarjeta {
+    max-width: 90%;
+  }
+
+  .contenedor-formulario {
+    padding: 1rem;
+  }
+
+  .tabla-reportes {
+    min-width: 100%;
+    overflow-x: auto;
+    display: block;
+  }
+
+  .footer-principal {
+    font-size: 12px;
+    padding: 10px;
+  }
+}

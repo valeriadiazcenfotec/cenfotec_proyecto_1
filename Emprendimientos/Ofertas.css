@@ -13,14 +13,22 @@ body {
     position: relative;
     top: 75px;
     background-color: #1398E8;
-    height: 80px;
+    height: 200px;
     width: 100%;
     display: flex;
+    background: linear-gradient(to bottom,
+            #1396e89d 50%,
+            /* color sólido hasta el 70% de la altura */
+            rgba(91, 192, 222, 0.664) 80%,
+            /* transición suave */
+            rgb(91, 192, 222) 100%);
 
 }
-svg{
+
+svg {
     margin-top: 5%;
 }
+
 .community_name {
 
     padding: 20px;
@@ -52,15 +60,54 @@ svg{
     border: none;
 }
 
+.business {
+    display: flex;
+    height: fit-content;
+    margin-top: 15px;
+    margin-left: 60%;
+    align-content: center;
+    justify-content: center;
+
+}
+
+.back-to-business {
+    display: flex;
+    background-color: #80C342;
+    border-radius: 6px;
+    border: none;
+    padding: 10px;
+    font-weight: bold;
+    justify-content: center;
+    transition: .5s;
+    font-size: 14px;
+    transition: .5s;
+    width: fit-content;
+    box-shadow: 0px 0px 14px -3px black;
+}
+
+.link-to-business {
+    text-decoration: none;
+}
+
+.back-to-business:hover {
+    cursor: pointer;
+    border-radius: 8px;
+    transform: scale(1.1) translateX(1px);
+    font-size: 15px;
+    background-color: #708f01;
+    color: white;
+    box-shadow: 0px 0px 18px -1px black;
+}
 
 .filter {
     padding: 10px;
     justify-content: left;
-    margin-left: 5%;
+    margin-left: 10%;
     width: 100%;
     align-content: center;
     display: flex;
     background-color: transparent;
+    margin-top: 8%;
 
 }
 
@@ -165,6 +212,7 @@ svg{
     width: 95%;
     height: 100%;
     margin-top: 40px;
+    margin-bottom: 40px;
     min-height: 90%;
     border-radius: 40px;
     box-shadow: 0px 0px 16px -5px black;
@@ -416,37 +464,37 @@ svg{
 }
 
 .footer-principal {
-  background-color: #1D72A7;
-  color: white;
-  font-size: 13.5px;
-  padding: 6px 10px;
-  width: 100%;
+    background-color: #1D72A7;
+    color: white;
+    font-size: 13.5px;
+    padding: 6px 10px;
+    width: 100%;
 }
 
 .footer-contenido {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 1.3;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 1.3;
 }
 
 .footer-info p,
 .footer-creditos p {
-  margin: 0;
+    margin: 0;
 }
 
 .footer-titulo {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 2px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 2px;
 }
 
 .footer-principal a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .footer-creditos a img.logo-creador {
-  max-width: 90px;
-  height: auto;
-  margin-top: 2px;
+    max-width: 90px;
+    height: auto;
+    margin-top: 2px;
 }

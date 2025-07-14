@@ -183,7 +183,6 @@ svg {
 
 
 .business_content {
-    height: 100vh;
     width: 100%;
 }
 
@@ -191,6 +190,7 @@ svg {
     margin: 0 auto;
     display: flex;
     justify-content: center;
+    gap: 2rem;
     /*grid-template-columns: repeat(3, 1fr);*/
     width: 80%;
     height: 500px;
@@ -199,6 +199,7 @@ svg {
     border-radius: 40px;
     box-shadow: 0px 0px 16px -5px black;
     padding: 20px;
+    flex-wrap: wrap;
 }
 
 .business_title {
@@ -406,8 +407,9 @@ svg {
   height: auto;
   margin-top: 2px;
 }
-.second{
+.second {
     display: flex;
+    gap: 2rem;
 }
 @media (max-width: 1030px){
     .column, .business_card{

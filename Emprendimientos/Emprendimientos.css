@@ -248,7 +248,7 @@ svg{
     margin: 0 auto;
     position: relative;
     top: 70px;
-    width: 400px;
+    width: 300px;
     height: 300px;
     overflow: hidden;
     border-radius: 12px;
@@ -306,7 +306,7 @@ svg{
 
 .products {
     height: 280px;
-    width: 380px;
+    width: 350px;
     background-color: rgba(167, 167, 167, 0.3);
     border-radius: 12px;
     padding: 10px;
@@ -398,4 +398,102 @@ svg{
   max-width: 90px;
   height: auto;
   margin-top: 2px;
+}
+.second{
+    display: flex;
+}
+@media (max-width: 1030px){
+    .column, .business_card{
+        justify-content: center;
+        align-content: center;
+        display: block;
+        position: relative;
+    }
+    .business_card, .column{
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        height: max-content;
+    }
+    
+    .business_title{
+        margin-left: 0%;
+    }
+    .column{
+        margin-left: 15%;
+                width: 660px;
+
+    }
+    .sales {
+        margin-left: 45%;
+    }
+    .business_description{
+        width: 660px;
+    }
+    .product_img, .view-products{
+        margin-left: 0;
+    }
+    .products{
+        margin-left: 15%;
+    }
+    .visualize{
+        margin-left: -15%;
+    }   
+}
+@media (max-width:768px) {
+    .column, .business_card{
+        justify-content: center;
+        align-content: center;
+        display: block;
+        position: relative;
+    }
+    .second{
+        display: block;
+    }
+    .business_card, .column{
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        height: max-content;
+    }
+    
+    .business_title{
+        margin-left: 0%;
+    }
+    .column{
+        margin-left: 15%;
+    }
+    .sales {
+        margin-left: 45%;
+    }
+    .business_description{
+        width: 360px;
+    }
+    .product_img, .view-products{
+        margin-left: 0;
+    }
+    .products{
+        margin-left: 15%;
+    }
+    .visualize{
+        margin-left: -15%;
+    }   
+}
+@media (max-width:600px) {
+    .business_title,.business_description{
+    margin-left: -5%;
+    width: 280px;
+    height: max-content;
+        max-height:none;
+    }
+    .products{
+        justify-content: center;
+        margin-left: 5%;
+    }
+    .product_img, .view-products{
+        margin-left: 0;
+    }
+    .visualize{
+        margin-left: -15%;
+    }
 }

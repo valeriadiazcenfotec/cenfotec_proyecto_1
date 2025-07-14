@@ -59,7 +59,7 @@ h1{
     margin-left: 5%;
     margin-bottom: 5%;
     padding: 2%;
-    width: 25%;
+    width: 315px;
     cursor: pointer;
     height: max-content;
     border-radius: 50px;
@@ -75,7 +75,7 @@ h1{
 .fecha_lugar{
     display: flex;
     margin: 2%;
-    gap: 50%;
+    gap: 25%;
 }
 .escribir{
     display: flex;
@@ -349,4 +349,11 @@ h1{
   max-width: 90px;
   height: auto;
   margin-top: 2px;
+}
+@media (max-width:768px) {
+    .cartas{
+        justify-content: center;
+        align-content: center;
+  
+    }
 }

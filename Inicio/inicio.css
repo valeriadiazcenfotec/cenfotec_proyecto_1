@@ -8,15 +8,11 @@ body {
     min-height: 100vh;
 }
 
-/* Eliminado header porque no lo estás usando */
-
-
 
 
 main {
     position: relative;
     top: 75px;
-    /* Eliminamos todo el padding del main para que las secciones internas controlen su propio espacio */
     padding: 0;
     text-align: center;
     flex: 1;
@@ -30,7 +26,7 @@ main {
     width: 100%;
     max-width: 1920px;
     justify-content: center;
-    margin: 20px auto 40px auto; /* Agregamos un margin-top de 20px y mantenemos el margin-bottom de 40px */
+    margin: 20px auto 40px auto; 
     overflow: hidden;
     position: relative;
     border-radius: 0px; /* Bordes redondeados del carrusel */
@@ -38,9 +34,9 @@ main {
 
 /* Este es el estilo para el nuevo <a> que envuelve cada item */
 .galeria-item-link {
-    display: flex; /* Haz que el enlace sea un elemento flex para que se expanda */
+    display: flex; 
     flex-grow: 1; /* Permite que el enlace ocupe el espacio */
-    flex-basis: 0; /* Es clave para que flex-grow funcione correctamente desde una base cero */
+    flex-basis: 0; 
     transition: 0.5s ease; /* Mueve la transición de expansión al enlace */
     text-decoration: none; /* Elimina el subrayado por defecto de los enlaces */
     color: inherit; /* Hereda el color del texto */
@@ -49,7 +45,7 @@ main {
 
 /* El efecto de hover ahora se aplica al enlace */
 .galeria-item-link:hover {
-    cursor: crosshair;
+    cursor: pointer;
     flex-grow: 3; /* Expande el enlace al hacer hover */
 }
 

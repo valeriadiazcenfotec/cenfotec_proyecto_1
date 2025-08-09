@@ -361,6 +361,54 @@ button.rechazar:hover {
   margin-top: 2px;
 }
 
+.card {
+  position: relative;
+}
+
+.card .button-group .aprobar,
+.card .button-group .rechazar {
+  display: none;
+}
+
+.card.show-actions .button-group .aprobar,
+.card.show-actions .button-group .rechazar {
+  display: inline-block;
+}
+
+.toggle-actions {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #ffffff;
+  border: 1px solid #DDDDDD;
+  border-radius: 10px;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.toggle-actions i {
+  font-size: 1.2rem;
+  color: #1D72A7;
+}
+
+.toggle-actions:focus {
+  outline: 2px solid #5BC0DE;
+  outline-offset: 2px;
+}
+
+.modal .button-group.modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+
 /* === Vista responsive === */
 
 .hamburger {

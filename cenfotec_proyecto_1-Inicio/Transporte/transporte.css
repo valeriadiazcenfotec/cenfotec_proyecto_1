@@ -1,0 +1,253 @@
+/* Fuente base */
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #F4F6F7;
+  color: #4A4A4A;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Título principal */
+.titulo-pagina {
+
+  text-align: center;
+  color: #1D72A7;
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 20px;
+}
+
+.contenido-principal {
+  flex: 1;
+    position: relative;
+  top: 75px;
+}
+
+/* Selector */
+.selector-ruta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  gap: 10px;
+}
+
+.selector-ruta label {
+  font-weight: 600;
+  color: #333;
+}
+
+.selector-ruta select {
+  height: 45px;
+  padding: 0 10px;
+  border: 2px solid #1D72A7;
+  border-radius: 12px; /* ✅ contenedor pequeño */
+  font-size: 16px;
+  background-color: #ffffff;
+  color: #4A4A4A;
+}
+
+/* Tabla */
+.contenedor-tabla {
+  width: 95%;
+  max-width: 1000px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  border-radius: 40px; /* ✅ contenedor grande */
+  overflow-x: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla-horarios {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 16px;
+}
+
+.tabla-horarios thead {
+  background-color: #5BC0DE;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.tabla-horarios th,
+.tabla-horarios td {
+  padding: 15px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.tabla-horarios tbody tr:nth-child(even) {
+  background-color: #F4F6F7;
+}
+
+/* Zona de contacto */
+.zona-contacto {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 30px auto;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.telefono {
+  font-size: 14px;
+  color: #4A4A4A;
+}
+
+.boton-compra {
+  background-color: #F9C543;
+  color: #4A4A4A;
+  font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px; /* ✅ botón pequeño */
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.boton-compra:hover {
+  background-color: #FFD567;
+}
+
+.link-bus {
+  font-size: 14px;
+  color: #1D72A7;
+  text-decoration: none;
+}
+
+.link-bus:hover {
+  text-decoration: underline;
+}
+
+/* Footer */
+.footer-principal {
+  background-color: #1D72A7;
+  color: white;
+  font-size: 13.5px;
+  padding: 6px 10px;
+  width: 100%;
+  position: relative;
+  top: 100px;
+}
+
+.footer-contenido {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.footer-info p,
+.footer-creditos p {
+  margin: 0;
+}
+
+.footer-titulo {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.footer-principal a {
+  text-decoration: none;
+}
+
+.footer-creditos a img.logo-creador {
+  max-width: 90px;
+  height: auto;
+  margin-top: 2px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tabla-horarios th,
+  .tabla-horarios td {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .titulo-pagina {
+    font-size: 26px;
+  }
+
+  .zona-contacto {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .selector-ruta {
+    flex-direction: column;
+  }
+
+  .contenedor-tabla {
+    width: 95%;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo-pagina {
+    font-size: 22px;
+    margin: 15px 10px;
+  }
+
+  .selector-ruta {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 5px;
+    padding: 0 15px;
+  }
+
+  .selector-ruta select {
+    width: 100%;
+    font-size: 14px;
+    height: 40px;
+  }
+
+  .contenedor-tabla {
+    width: 100%;
+    border-radius: 30px; /* ✅ mantiene curva pequeña */
+    margin: 0;
+    box-shadow: none;
+  }
+
+  .tabla-horarios th,
+  .tabla-horarios td {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .zona-contacto {
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 10px;
+    margin-top: 20px;
+  }
+
+  .telefono {
+    font-size: 13px;
+  }
+
+  .boton-compra {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .link-bus {
+    font-size: 13px;
+  }
+
+  .footer-principal {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
+

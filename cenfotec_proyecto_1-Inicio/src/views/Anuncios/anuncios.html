@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/anuncios.css">
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+<body>
+    <header class="header montserrat-semibold">
+        <nav class="nav container">
+        <div class="nav__data">
+            <a href="#" class="nav__logo">
+                 Comunidad Flores de Heredia 
+            </a>
+            
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars nav__burger"></i>
+                <i class="fa-solid fa-xmark  nav__close"></i>
+            </div>
+        </div>
+
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li><a href="../Inicio/inicio.html" class="nav__link">Inicio</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Anuncios/anuncios.html" class="dropdown__link">
+                            <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Transporte/transporte.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../Reportes/reportes.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Mapa/mapa.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i>Mapa
+
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                
+                <li><a href="../Eventos/eventos.html" class="nav__link">Eventos</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Emprendimientos/Ofertas.html" class="dropdown__link">
+                            <i class="ri-user-line"></i> Ofertas y descuentos
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Emprendimientos/Emprendimientos.html" class="dropdown__link">
+                            <i class="ri-lock-line"></i> Negocios
+                        </a>
+                    </li>
+                </li>
+
+            </ul>
+        </div>
+        </nav>
+    </header>
+    <div class="anuncios">
+        <div class="anuncio_previo">
+            <div class="escrito">
+                <h1 class="montserrat-bold subtitulo">Anuncios</h1>
+                <p class="montserrat-medium seccion1">Bienvenido a la sección de anuncios. Aquí podrás mantenerte al tanto de las noticias más recientes de tu comunidad y participar activamente en ellas.</p>
+                    <p class="montserrat-medium seccion1">¿Deseas compartir una petición?</p>
+                    <br>
+                    <button onclick="abrirFormulario()" class="escribir montserrat-bold" id="escribir">Haz clic</button>
+            </div>
+            <div class="buscador"><i class="fa-solid fa-magnifying-glass fa-lg" id="icono_buscar"></i><input type="text" id="busca" class="montserrat-medium" placeholder="Describe lo que quieres encontrar..."></div>
+        </div>
+        <div class="anuncios_totales">
+            <div class="anuncio">
+                <div class="categoria">
+                    <p class="montserrat-medium" >General</p>
+                </div>
+                <h2 class="montserrat-semibold nombre">Corte de agua</h2>
+                <p class="montserrat-medium descripcion parrafo">Se va a dar un corte de agua en la comunidad</p>
+                <button class="estado montserrat-semibold ">Estado</button>
+                <div class="fecha"><p  class="montserrat-medium">01/01/2025</p></div>
+            </div>
+            
+            <div class="anuncio">
+                <div class="categoria">
+                    <p class="montserrat-medium">General</p>
+                </div>
+                <h2 class="montserrat-semibold nombre">Nuevo restaurante</h2>
+                <p class="montserrat-medium descripcion parrafo">Bienvenidos al restaurante Restaurante Tierra Mar</p>
+                <button class="estado montserrat-semibold ">Estado</button>
+                <div class="fecha"><p  class="montserrat-medium">01/01/2025</p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nuevos_anuncios">
+        
+        <div class="peticiones">
+            <div class="peticiones_titulos">
+                <h1 class="montserrat-bold subtitulo">Peticiones de anuncios</h1>
+            <p class="montserrat-medium subtitulo">Aquí encontrarás el status de los anuncios que quieras publicar</p>
+
+            </div>
+            <div class="peticiones_todas" id="peticiones_todas"></div>
+        </div>
+        <div class="carta_desplegada">
+            <div id="carta_muestra" id="carta_muestra">
+                <button onclick="peticionCerrada()" id="descartar2" ><i class="fa-solid fa-xmark fa-2x" style="color: #FFF;"></i></button>
+                <img src="img/anuncio.jpg" alt="" class="img_carta_desplegada">
+                <br>
+                <h2 class="montserrat-semibold peticion"></h2>
+                <p class="montserrat-medium peticion2"></p>
+                <div class="fecha_lugar_desplegada">
+                        <button class="lugar"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold lugar1">Lugar</p></button>
+                        <button class="lugar"><i class="fa-solid fa-face-smile fa-2x"></i><p class="montserrat-semibold autor">Estado</p></button>
+                        <button class="lugar"><i class="fa-solid fa-calendar fa-2x"></i><p class="montserrat-semibold fecha1">Fecha</p></button>
+                </div>
+            </div>
+        </div>
+        <div class="agregar">
+            <form class="forms" id="form">
+                <div class="form">
+                    <h2  class="montserrat-semibold subtitulo_a">Petición</h2>
+                    <p  class="montserrat-medium subtitulo_a">Escribe lo que desees anunciar y un administrador se encargará de revisar tu petición (en la sección de peticiones encontrarás el estado de las peticiones creadas)</p>
+                    <button onclick="cerrarFormulario()" id="descartar"><i class="fa-solid fa-xmark fa-4x" style="color: #FDD700;"></i></button>
+                    <br>
+                    <div class="seccion1_form">
+                    <input type="text"  name="name" id="nombre" class="montserrat-medium" placeholder="Nombre del anuncio">
+                    <label for="file"  class="label_imagen"><i class="fa-solid fa-images fa-2x" style="color: #FFF;"></i><p class="montserrat-medium">Añadir una imagen</p></label> <input type="file" id="file"  name="image" >
+                </div>
+                <br>
+                </div>
+                <div class="botones_peticiones">
+                <textarea name="description" class="montserrat-medium" id="anuncio_en_curso">Descripción</textarea>
+                    <button type="submit" id="form_listo"><i class="fa-solid fa-arrow-up-from-bracket fa-3x" style="color: #FFF;"></i></button> <br>
+                </div><datalist><embed src="" type=""></datalist>
+                
+            </form>
+        </div>
+    </div>
+<footer class="footer-principal">
+  <div class="footer-contenido">
+    <div class="footer-info">
+      <p><strong>Comunidad Unida</strong></p>
+      <p>Flores, Heredia</p>
+      <p>Tel: +506 8888-8888</p>
+    </div>
+    <div class="footer-creditos">
+      <p>Diseñado por <strong>W4U</strong></p>
+      <a href="../Landing/landing_page.html" target="_blank">
+        <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+      </a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
+<script src="js/anuncios.js"></script>
+<script src="js/menu.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   

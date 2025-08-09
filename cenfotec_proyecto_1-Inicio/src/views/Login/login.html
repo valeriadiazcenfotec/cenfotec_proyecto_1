@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iniciar sesión - Comunidad Unida</title>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+
+<body>
+
+  <div class="login-container">
+    <img src="img/W4U LOGO CELESTE PNG.png" alt="Logo W4U" class="logo" />
+
+    <h1>Iniciar sesión a Comunidad Unida</h1>
+
+    <form class="login-form" method="POST" action="/login">
+      <label for="usuario">Teléfono o usuario</label>
+      <input type="text" id="usuario" name="user" placeholder="Ej. 88888888 o usuario123" required />
+
+      <label for="contrasena">Contraseña</label>
+      <input type="password" id="contrasena" name="password" placeholder="Ingresa tu contraseña" required />
+
+      <button type="submit">Continuar</button>
+    </form>
+
+    <p class="registro-link">¿No tienes cuenta? <a href="/Registro">Crea una</a></p>
+    <p class="registro-link">Volver a inicio <a href="../Inicio/inicio.html">Haz clic aquí</a></p>
+  </div>
+
+  <!-- Footer -->
+<footer class="footer-principal">
+  <div class="footer-contenido">
+    <div class="footer-info">
+      <p><strong>Comunidad Unida</strong></p>
+      <p>Flores, Heredia</p>
+      <p>Tel: +506 8888-8888</p>
+    </div>
+    <div class="footer-creditos">
+      <p>Diseñado por <strong>W4U</strong></p>
+      <a href="Landing/landing_page.html" target="_blank">
+        <img src="img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+      </a>
+    </div>
+  </div>
+</footer>
+
+  <script src="js/login.js"></script>
+
+</body>
+
+</html>

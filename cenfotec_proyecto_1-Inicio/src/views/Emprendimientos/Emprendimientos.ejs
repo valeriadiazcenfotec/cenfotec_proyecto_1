@@ -192,10 +192,11 @@
             const total = carrusel.querySelectorAll('.imagenes img').length;
             const anterior = carrusel.querySelector('.anterior');
             const siguiente = carrusel.querySelector('.siguiente');
+            let tamanoImagen = carrusel.querySelector('img').width;
             let indice = 0;
             // Función para actualizar el carrusel
             function actualizarCarrusel() {
-                imagenes.style.transform = `translateX(-${indice * 400}px)`;
+                imagenes.style.transform = `translateX(-${indice * tamanoImagen}px)`;
             }
             // Botón siguiente
             siguiente.addEventListener('click', () => {

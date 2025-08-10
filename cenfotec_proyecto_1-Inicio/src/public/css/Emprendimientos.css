@@ -446,7 +446,6 @@ body {
     justify-content: center;
     text-align: center;
     border-radius: 40px;
-    color: white;
     font-size: 30px;
     position: fixed;
     z-index: 1;
@@ -455,24 +454,23 @@ body {
     transition: .5s;
 }
 
+.add_button a {
+    color: black;
+    transition: .5s;
+}
+
 .add_button:hover {
-    background-color: #80C342;
-    width: 40px;
-    height: 40px;
+    a {
+        color: white;
+    }
+
+}
+
+.add_button:hover {
     cursor: pointer;
     transform: scale(1.1) translateX(-3px);
-    justify-content: center;
-    text-align: center;
-    border-radius: 40px;
-    color: white;
-    font-size: 30px;
-    position: fixed;
-    z-index: 1;
-    bottom: 20px;
-    right: 20px;
-    font-size: 32px;
-    background-color: #708f01;
-    box-shadow: 0px 0px 18px -1px black;
+    background-color: #8bb101;
+    box-shadow: 0px 0px 8px -2px black;
 }
 
 /*.second {

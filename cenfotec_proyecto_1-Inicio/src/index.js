@@ -60,6 +60,30 @@ app.get('/emprendimientos', async (req, res) => {
     res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria });
 });
 
+app.get("/nuevo%20emprendimiento", (req, res) => {
+    res.render("Emprendimientos/VistaGenerica.html")
+})
+
+app.get('/emprendedor', async (req, res) => {
+    const categoria = req.query.categoria || 'all';
+
+    let emprendimientos;
+
+    if (categoria === 'all') {
+        emprendimientos = await newbusiness.find();
+    } else {
+        emprendimientos = await newbusiness.find({
+            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
+        });
+    }
+
+    res.render('Emprendimientos/emprendedor', { emprendimientos, categoria });
+});
+
+app.get("/nuevo%20emprendimiento", (req, res) => {
+    res.render("Emprendimientos/VistaGenerica.html")
+})
+
 app.get('/eventos', (req, res) => {
     res.render("Eventos/eventos.html");
 });

@@ -5,8 +5,54 @@
   <title>Rutas de Transporte</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="transporte.css">
+  <link rel="stylesheet" href="../menu/menu.css">
 </head>
 <body>
+<header class="header montserrat-semibold">
+  <nav class="nav container">
+    <div class="nav__data">
+      <a href="#" class="nav__logo">
+        Comunidad Flores de Heredia 
+      </a>
+      <div class="nav__toggle" id="nav-toggle">
+        <i class="fa-solid fa-bars nav__burger"></i>
+        <i class="fa-solid fa-xmark nav__close"></i>
+      </div>
+    </div>
+
+    <div class="nav__menu" id="nav-menu">
+      <ul class="nav__list">
+        <li><a href="../Inicio/inicio.html" class="nav__link">Inicio</a></li>
+
+        <li class="dropdown__item">
+          <div class="nav__link">
+            Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+          </div>
+          <ul class="dropdown__menu">
+            <li><a href="../Anuncios/anuncios.html" class="dropdown__link">Anuncios comunitarios</a></li>
+            <li><a href="../Transporte/transporte.html" class="dropdown__link">Transporte público</a></li>
+            <li><a href="../Reportes/reportes.html" class="dropdown__link">Reportes quejas</a></li>
+            <li><a href="../Mapa/mapa.html" class="dropdown__link">Mapa</a></li>
+          </ul>
+        </li>
+
+        <li><a href="../Eventos/eventos.html" class="nav__link">Eventos</a></li>
+
+        <li class="dropdown__item">
+          <div class="nav__link">
+            Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+          </div>
+          <ul class="dropdown__menu">
+            <li><a href="../Emprendimientos/Ofertas.html" class="dropdown__link">Ofertas y descuentos</a></li>
+            <li><a href="../Emprendimientos/Emprendimientos.html" class="dropdown__link">Negocios</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+<div class="contenido-principal">
 
   <h1 class="titulo-pagina">Rutas de Transporte</h1>
 
@@ -19,17 +65,19 @@
     </select>
   </div>
 
-  <!-- Tabla de horarios -->
+  <!-- Tabla de horarios con nuevas columnas -->
   <section class="contenedor-tabla">
     <table class="tabla-horarios">
       <thead>
         <tr>
           <th>#</th>
           <th>Ruta</th>
-          <th>Tipo</th>
           <th>Horario</th>
           <th>Frecuencia</th>
           <th>Costo</th>
+          <th>Teléfono</th>
+          <th>Sitio web</th>
+          <th>Ticket</th>
         </tr>
       </thead>
       <tbody id="tabla-cuerpo">
@@ -38,19 +86,32 @@
     </table>
   </section>
 
-  <!-- Zona de contacto -->
-  <div class="zona-contacto">
-    <span class="telefono">(123) 456 789</span>
-    <button class="boton-compra">COMPRA TICKET</button>
-    <a href="https://www.busejemplo.com" class="link-bus" target="_blank">www.busejemplo.com</a>
+  <!-- Sección extra -->
+  <div class="info-extra">
+    <p>¿No encontrás tu ruta? Visitá el <a href="../Mapa/mapa.html">Mapa Interactivo</a> para más información.</p>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer-principal">
-    <p class="texto-footer">Comunidad Unida | Tel: +506 8888-8888</p>
-  </footer>
+</div>
 
-  <script src="transporte.js"></script>
+<!-- Footer -->
+<footer class="footer-principal">
+  <div class="footer-contenido">
+    <div class="footer-info">
+      <p><strong>Comunidad Unida</strong></p>
+      <p>Flores, Heredia</p>
+      <p>Tel: +506 8888-8888</p>
+    </div>
+    <div class="footer-creditos">
+      <p>Diseñado por <strong>W4U</strong></p>
+      <a href="../Landing/landing_page.html" target="_blank">
+        <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+      </a>
+    </div>
+  </div>
+</footer>
 
+<script src="transporte.js"></script>
+<script src="../menu/menu.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
 </body>
 </html>

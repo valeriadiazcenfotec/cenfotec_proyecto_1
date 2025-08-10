@@ -1,11 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Inicio - Comunidad Unida</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="inicio.css">
+    <link rel="stylesheet" href="../menu/menu.css">
 </head>
+ <header class="header montserrat-semibold">
+        <nav class="nav container">
+        <div class="nav__data">
+            <a href="../Admin/admin.html" class="nav__logo">
+                Comunidad Flores de Heredia 
+            </a>
+            
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars nav__burger"></i>
+                <i class="fa-solid fa-xmark  nav__close"></i>
+            </div>
+        </div>
+
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li><a href="../Inicio/inicio.html" class="nav__link">Inicio</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Anuncios/anuncios.html" class="dropdown__link">
+                            <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Transporte/transporte.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../Reportes/reportes.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../Mapa/mapa.html" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i>Mapa
+
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                
+                <li><a href="../Eventos/eventos.html" class="nav__link">Eventos</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="../Emprendimientos/Ofertas.html" class="dropdown__link">
+                            <i class="ri-user-line"></i> Ofertas y descuentos
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="../Emprendimientos/Emprendimientos.html" class="dropdown__link">
+                            <i class="ri-lock-line"></i> Negocios
+                        </a>
+                    </li>
+                </li>
+
+            </ul>
+        </div>
+        </nav>
+    </header>
 <body>
 
     <main>
@@ -19,19 +98,13 @@
                     <span class="galeria-texto">Iniciar Sesión</span>
                 </div>
             </a>
-            <a href="../Anuncios/Anuncios.html" class="galeria-item-link">
+            <a href="../Anuncios/anuncios.html" class="galeria-item-link">
                 <div class="galeria-item">
                     <img src="Imagenes inicio/Anuncios.png" alt="Anuncios">
                     <span class="galeria-texto">Anuncios</span>
                 </div>
             </a>
-            <a href="../Calendario/Calendario.html" class="galeria-item-link">
-                <div class="galeria-item">
-                    <img src="Imagenes inicio/Calendario.png" alt="Calendario">
-                    <span class="galeria-texto">Calendario</span>
-                </div>
-            </a>
-            <a href="../Descuentos/Descuentos.html" class="galeria-item-link">
+            <a href="../Emprendimientos/Ofertas.html" class="galeria-item-link">
                 <div class="galeria-item">
                     <img src="Imagenes inicio/Descuentos.png" alt="Descuentos">
                     <span class="galeria-texto">Ofertas</span>
@@ -43,26 +116,26 @@
                     <span class="galeria-texto">Emprendimientos</span>
                 </div>
             </a>
-            <a href="../Eventos/Eventos.html" class="galeria-item-link">
+            <a href="../Eventos/eventos.html" class="galeria-item-link">
                 <div class="galeria-item">
                     <img src="Imagenes inicio/Eventos.png" alt="Eventos">
                     <span class="galeria-texto">Eventos</span>
                 </div>
             </a>
-            <a href="../Mapa/Mapa.html" class="galeria-item-link">
+            <a href="../Mapa/mapa.html" class="galeria-item-link">
                 <div class="galeria-item">
                     <img src="Imagenes inicio/Mapa.png" alt="Mapa">
                     <span class="galeria-texto">Mapa</span>
                 </div>
             </a>
-            <a href="../Reportes/Reportes.html" class="galeria-item-link">
+            <a href="../Reportes/reportes.html" class="galeria-item-link">
                 <div class="galeria-item">
                     <img src="Imagenes inicio/Reportes.png" alt="Reportes">
                     <span class="galeria-texto">Reportes</span>
                 </div>
             </a>
-            <a href="../Transporte/Transporte.html" class="galeria-item-link">
-                <div class="galia-item">
+            <a href="../Transporte/transporte.html" class="galeria-item-link">
+                <div class="galeria-item">
                     <img src="Imagenes inicio/Transporte.png" alt="Transporte">
                     <span class="galeria-texto">Transporte</span>
                 </div>
@@ -84,7 +157,6 @@
                     <h4>Transparencia</h4>
                     <p>Actuamos con honestidad y claridad en todo lo que hacemos.</p>
                 </div>
-
                 <div class="valor-tarjeta">
                     <h4>Innovación</h4>
                     <p>Buscamos soluciones creativas para mejorar nuestra comunidad.</p>
@@ -101,9 +173,23 @@
         </section>
     </main>
 
-    <footer class="footer-principal">
-        <p class="texto-footer">Comunidad Unida | Tel: +506 8888-8888</p>
-    </footer>
+<footer class="footer-principal">
+  <div class="footer-contenido">
+    <div class="footer-info">
+      <p><strong>Comunidad Unida</strong></p>
+      <p>Flores, Heredia</p>
+      <p>Tel: +506 8888-8888</p>
+    </div>
+    <div class="footer-creditos">
+      <p>Diseñado por <strong>W4U</strong></p>
+      <a href="../Landing/landing_page.html" target="_blank">
+        <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+      </a>
+    </div>
+  </div>
+</footer>
 
 </body>
+<script src="../menu/menu.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   
 </html>

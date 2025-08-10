@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes y Quejas</title>
+
+  <!-- Estilos y menú -->
+  <link rel="stylesheet" href="/css/menu.css">
+  <script defer src="/js/menu.js"></script>
+  <script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/reportes.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+  <script defer src="/js/reportes.js"></script>
+</head>
+<body>
+  <header class="header montserrat-semibold">
+    <nav class="nav container">
+      <div class="nav__data">
+        <a href="/" class="nav__logo">Comunidad Flores de Heredia</a>
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars nav__burger"></i>
+          <i class="fa-solid fa-xmark nav__close"></i>
+        </div>
+      </div>
+
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="/inicio" class="nav__link">Inicio</a></li>
+
+          <li class="dropdown__item">
+            <div class="nav__link">
+              Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+
+            <ul class="dropdown__menu">
+              <li>
+                <a href="/anuncios" class="dropdown__link">
+                  <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+                </a>
+              </li>
+
+              <li>
+                <a href="/transporte" class="dropdown__link">
+                  <i class="ri-arrow-up-down-line"></i> Transporte público
+                </a>
+              </li>
+
+              <li>
+                <a href="/reportes" class="dropdown__link">
+                  <i class="ri-arrow-up-down-line"></i> Reportes y quejas
+                </a>
+              </li>
+
+              <li>
+                <a href="/mapa" class="dropdown__link">
+                  <i class="ri-arrow-up-down-line"></i> Mapa
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li><a href="/eventos" class="nav__link">Eventos</a></li>
+
+          <li class="dropdown__item">
+            <div class="nav__link">
+              Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+            <ul class="dropdown__menu">
+              <li>
+                <a href="/emprendimientos/Ofertas" class="dropdown__link">
+                  <i class="ri-user-line"></i> Ofertas y descuentos
+                </a>
+              </li>
+              <li>
+                <a href="/emprendimientos" class="dropdown__link">
+                  <i class="ri-lock-line"></i> Negocios
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <section class="contenedor-seccion">
+    <h2 class="titulo-seccion">Reportes y Quejas</h2>
+    <p class="texto-intro">
+      <b>Tu voz importa.</b>
+      Esta plataforma existe para visibilizar las situaciones que impactan nuestro entorno, desde problemas en la infraestructura hasta eventos que alteran la convivencia.
+      Al compartir lo que observás, como una calle sin paso, no solo informás a la administración, sino que contribuís a que toda la comunidad esté al tanto de lo que sucede.
+      Cada reporte recibido permite a la administración evaluar y canalizar los recursos necesarios hacia las instancias correspondientes.
+    </p>
+
+    <div class="pestanas">
+      <button class="btn-pestana activa" data-tab="reportes">Reportes</button>
+      <button class="btn-pestana" data-tab="quejas">Quejas</button>
+      <button class="btn-pestana" data-tab="formulario">Generar reporte o queja</button>
+      <button class="btn-pestana" data-tab="mis_reportes">Mis reportes</button>
+    </div>
+
+    <!-- TAB: Reportes (aprobados) -->
+    <div class="contenido-pestana activa" id="reportes">
+      <div class="seccion-tarjetas"></div>
+    </div>
+
+    <!-- TAB: Quejas (aprobadas) -->
+    <div class="contenido-pestana" id="quejas">
+      <div class="seccion-tarjetas"></div>
+    </div>
+
+    <!-- TAB: Formulario (envío) -->
+    <div class="contenido-pestana" id="formulario">
+      <div class="contenedor-formulario">
+        <form method="POST" action="/reportes" enctype="multipart/form-data">
+          <div class="grupo-formulario">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo" required>
+              <option value="reporte">Reporte</option>
+              <option value="queja">Queja</option>
+            </select>
+          </div>
+
+          <div class="grupo-formulario">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" name="titulo" placeholder="Ej. Calle Bariloche cerrada" required />
+          </div>
+
+          <div class="grupo-formulario">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" name="descripcion" rows="5" placeholder="Escribe tu reporte o queja aquí..." required></textarea>
+          </div>
+
+          <div class="grupo-formulario">
+            <label for="foto">Subir Imagen (opcional)</label>
+            <input type="file" id="foto" name="foto" accept="image/*" />
+          </div>
+
+          <div class="grupo-formulario grupo-checkbox">
+            <input type="checkbox" id="lineamientos" />
+            <label for="lineamientos">He leído y acepto los lineamientos de participación.</label>
+          </div>
+
+          <button type="submit" class="boton-enviar">Enviar</button>
+        </form>
+      </div>
+
+      <div class="contenedor-lineamientos">
+        <h3>Lineamientos a seguir</h3>
+        <div class="seccion-tarjetas">
+          <div class="tarjeta-lineamiento">
+            <strong>1. Descripción clara y precisa</strong>
+            <p>Indique qué sucede, dónde y desde cuándo.</p>
+          </div>
+          <div class="tarjeta-lineamiento">
+            <strong>2. Ubicación exacta</strong>
+            <p>Agregue dirección o referencia que facilite localizar el incidente.</p>
+          </div>
+          <div class="tarjeta-lineamiento">
+            <strong>3. Lenguaje respetuoso</strong>
+            <p>Evite palabras ofensivas o contenido inapropiado en su mensaje.</p>
+          </div>
+          <div class="tarjeta-lineamiento">
+            <strong>4. Evite duplicidad</strong>
+            <p>Verifique si ya hay un reporte similar antes de registrar uno nuevo.</p>
+          </div>
+          <div class="tarjeta-lineamiento">
+            <strong>5. Imágenes relevantes</strong>
+            <p>Adjunte contenido visual solo si es útil para entender la situación.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Mis Reportes (usuario logueado) -->
+    <div class="contenido-pestana" id="mis_reportes">
+      <div class="tabla-contenedor">
+        <table class="tabla-reportes">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Tipo</th>
+              <th>Título</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <p><strong>Comunidad Unida</strong></p>
+        <p>Flores, Heredia</p>
+        <p>Tel: +506 8888-8888</p>
+      </div>
+      <div class="footer-creditos">
+        <p>Diseñado por <strong>W4U</strong></p>
+        <a href="/landing" target="_blank">
+          <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+        </a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

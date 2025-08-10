@@ -1,24 +1,33 @@
 const mongoose = require('mongoose');
 
-const DB_URI = 'mongodb://localhost:27017/db'
+const emprendimientoSchema = new mongoose.Schema({
+  nombreN: { type: String, required: true, trim: true },
+  descripcion: { type: String, required: true, trim: true },
+  categoria: {
+    type: String,
+    required: true,
+    enum: ['alimentos', 'ropa', 'tecnologia', 'servicios'],
+    lowercase: true,
+    trim: true
+  },
 
-mongoose.connect(DB_URI, {})
+  // Imágenes
+  imagenNegocio: { type: String, default: '' },
+  imagenesProductos: { type: [String], default: [] },
 
-    .then(console.log("DB CONECTADA"))
-    .catch(err => console.log(err))
+  // Estado
+  status: {
+    type: String,
+    enum: ['pendiente', 'aprobado', 'rechazado'],
+    default: 'pendiente',
+    index: true
+  },
+  rejectionReason: { type: String, default: null },
 
-let emprendimientoSchema = new mongoose.Schema({
-    nombreN: { type: String, required: true },
-    descripcion: { type: String, required: true },
-    categoria: {
-        type: String,
-        required: true,
-        enum: ['alimentos', 'ropa', 'tecnologia', 'servicios'] // Validación estricta
-    },
-    imagenNegocio: { type: String, required: true }, // Ruta o nombre de archivo
-    imagenesProductos: { type: [String], required: true } // Array de rutas o nombres de archivos
+  // quien
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Registro', required: false },
+
+  createdAt: { type: Date, default: Date.now }
 }, { versionKey: false });
 
-let Emprendimiento = new mongoose.model('emprendimientos', emprendimientoSchema);
-
-module.exports = Emprendimiento;
+module.exports = mongoose.model('Emprendimiento', emprendimientoSchema, 'emprendimientos');

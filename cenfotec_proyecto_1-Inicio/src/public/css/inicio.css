@@ -8,8 +8,6 @@ body {
     min-height: 100vh;
 }
 
-
-
 main {
     position: relative;
     top: 75px;
@@ -18,8 +16,71 @@ main {
     flex: 1;
 }
 
-/* Galería interactiva estilo hover */
-/* Galería interactiva estilo hover */
+/* Greeting (keeps your original h2 look) */
+#inicio-greeting {
+    display: block;
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+
+/* -------- Username + Salir (top-right) -------- */
+/* Make nav a positioning context without altering its layout from menu.css */
+.nav { position: relative; }
+
+.nav__user {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Username badge */
+.nav__user-name {
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  white-space: nowrap;
+}
+
+/* Salir button */
+.nav__logout {
+  text-decoration: none;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #fff;
+  transition: background-color .3s, border-color .3s;
+  white-space: nowrap;
+}
+.nav__logout:hover {
+  background-color: #3f7c8f;
+  border-color: transparent;
+}
+
+/* Mobile: keep it visible on right side of the bar */
+@media (max-width: 1118px) {
+  .nav__user {
+    top: .8rem;
+    transform: none;
+    right: 1rem;
+    z-index: 101; /* above the slide-down panel */
+  }
+}
+
+/* (Optional safety) ensure dropdowns sit above anything */
+.dropdown__menu,
+.dropdown__submenu { z-index: 200; }
+
+/* -------- Galería interactiva -------- */
 .galeria-inicio {
     display: flex;
     height: 600px;
@@ -29,36 +90,29 @@ main {
     margin: 20px auto 40px auto; 
     overflow: hidden;
     position: relative;
-    border-radius: 0px; /* Bordes redondeados del carrusel */
+    border-radius: 0px;
 }
 
-/* Este es el estilo para el nuevo <a> que envuelve cada item */
 .galeria-item-link {
     display: flex; 
-    flex-grow: 1; /* Permite que el enlace ocupe el espacio */
+    flex-grow: 1;
     flex-basis: 0; 
-    transition: 0.5s ease; /* Mueve la transición de expansión al enlace */
-    text-decoration: none; /* Elimina el subrayado por defecto de los enlaces */
-    color: inherit; /* Hereda el color del texto */
-    position: relative; /* Necesario para que galeria-texto se posicione correctamente */
+    transition: 0.5s ease;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
 }
 
-/* El efecto de hover ahora se aplica al enlace */
-.galeria-item-link:hover {
-    cursor: pointer;
-    flex-grow: 3; /* Expande el enlace al hacer hover */
-}
+.galeria-item-link:hover { cursor: pointer; flex-grow: 3; }
 
-/* El div original ahora simplemente ocupa el 100% del espacio de su padre (el enlace) */
 .galeria-item {
     position: relative;
-    width: 100%; /* Ocupa todo el ancho del enlace padre */
-    height: 100%; /* Ocupa toda la altura del enlace padre */
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Las propiedades flex-grow, width: 0px y transition ya no van aquí, las maneja .galeria-item-link */
 }
 
 .galeria-inicio img {
@@ -68,12 +122,7 @@ main {
     opacity: 0.8;
     transition: 0.5s ease;
 }
-
-/* El hover de la imagen ahora se activa cuando el enlace padre tiene hover */
-.galeria-item-link:hover img {
-    opacity: 1;
-    filter: contrast(120%);
-}
+.galeria-item-link:hover img { opacity: 1; filter: contrast(120%); }
 
 .galeria-texto {
     position: absolute;
@@ -83,7 +132,6 @@ main {
     color: white;
     background-color: #1D72A7;
     padding: 8px 15px;
-    /*border-radius: 25px; /* Sin bordes redondeados porque se ve medio raro preguntar al grupo, ahora se cambia con el de arriba*/
     font-family: 'Montserrat', sans-serif;
     font-size: 32px;
     font-weight: 600;
@@ -93,81 +141,24 @@ main {
     pointer-events: none;
     z-index: 2;
 }
+.galeria-item-link:hover .galeria-texto { opacity: 1; }
+.galeria-item:hover .galeria-texto { opacity: 1; }
 
-/* El hover del texto ahora se activa cuando el enlace padre tiene hover */
-.galeria-item-link:hover .galeria-texto {
-    opacity: 1;
-}
-
-/* Responsive adjustments for the new .galeria-item-link */
-@media (max-width: 768px) {
-    .galeria-inicio {
-        flex-direction: column;
-        height: auto;
-        margin: 20px auto;
-    }
-
-    /* El enlace ahora controla el tamaño en móvil */
-    .galeria-item-link {
-        width: 100% !important; /* Asegura el ancho completo */
-        flex-grow: unset !important; /* Deshabilita el crecimiento lateral en vertical */
-        flex-basis: auto; /* Permite que el contenido dicte el tamaño inicial */
-        height: 200px; /* Altura fija para cada item en móvil */
-    }
-
-    .galeria-item-link:hover {
-        flex-grow: unset; /* Mantiene la deshabilitación del crecimiento en hover para móvil */
-    }
-
-    .galeria-texto {
-        font-size: 20px;
-        bottom: 10px;
-        padding: 6px 10px;
-    }
-    /* ... el resto de tu CSS responsive ... */
-}
-
-.galeria-item:hover .galeria-texto {
-    opacity: 1;
-}
-
+/* Footer */
 .footer-principal {
   background-color: #1D72A7;
   color: white;
   position: relative;
-   top: 75px;
+  top: 75px;
   font-size: 13.5px;
   padding: 6px 10px;
   width: 100%;
 }
-
-.footer-contenido {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 1.3;
-}
-
-.footer-info p,
-.footer-creditos p {
-  margin: 0;
-}
-
-.footer-titulo {
-  font-size: 15px;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-.footer-principal a {
-  text-decoration: none;
-}
-
-.footer-creditos a img.logo-creador {
-  max-width: 90px;
-  height: auto;
-  margin-top: 2px;
-}
+.footer-contenido { max-width: 1000px; margin: 0 auto; text-align: center; line-height: 1.3; }
+.footer-info p, .footer-creditos p { margin: 0; }
+.footer-titulo { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+.footer-principal a { text-decoration: none; }
+.footer-creditos a img.logo-creador { max-width: 90px; height: auto; margin-top: 2px; }
 
 h2 {
     color: #1D72A7;
@@ -176,7 +167,6 @@ h2 {
     font-weight: bold;
     margin-top: 20px;
 }
-
 main p {
     color: #4A4A4A;
     font-family: 'Montserrat', sans-serif;
@@ -185,18 +175,15 @@ main p {
     margin-bottom: 30px;
 }
 
-/* ----------------------------- */
-/* SECCIÓN VALORES */
+/* Valores */
 .valores-seccion {
     background-color: #5BC0DE;
-    /* Ajustamos el padding para que no haya espacio extra */
-    padding: 60px 0; /* Mantenemos el padding vertical, horizontal a 0 */
+    padding: 60px 0;
     margin-top: 0;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 0; /* Aseguramos que no haya margen inferior */
+    margin-bottom: 0;
 }
-
 .valores-titulo {
     color: white;
     font-size: 28px;
@@ -205,16 +192,14 @@ main p {
     text-align: center;
     margin-bottom: 40px;
 }
-
 .valores-contenedor {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 30px;
     max-width: 1100px;
     margin: auto;
-    padding: 0 20px; /* Agregamos el padding horizontal aquí para que las tarjetas no toquen los bordes */
+    padding: 0 20px;
 }
-
 .valor-tarjeta {
     background-color: white;
     padding: 30px 20px;
@@ -227,99 +212,47 @@ main p {
     justify-content: center;
     height: 200px;
 }
-
-.valor-tarjeta h4 {
-    color: #1D72A7;
-    font-size: 20px;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.valor-tarjeta p {
-    color: #4A4A4A;
-    font-size: 15px;
-    font-weight: 500;
-}
-
-/* Efecto hover */
-.valor-tarjeta:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
+.valor-tarjeta h4 { color: #1D72A7; font-size: 20px; margin-bottom: 10px; font-weight: 700; }
+.valor-tarjeta p { color: #4A4A4A; font-size: 15px; font-weight: 500; }
+.valor-tarjeta:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .galeria-inicio {
-        flex-direction: column;
-        height: auto;
-        margin: 20px auto; /* Ajustamos el margin para móviles también */
-    }
+    .galeria-inicio { flex-direction: column; height: auto; margin: 20px auto; }
+    .galeria-item-link { width: 100%; flex-grow: unset; flex-basis: auto; height: 200px; }
+    .galeria-item-link:hover { flex-grow: unset; }
+    .galeria-texto { font-size: 20px; bottom: 10px; padding: 6px 10px; }
 
-    .galeria-item {
-        width: 100% !important;
-        flex-grow: unset !important;
-        height: 200px;
-    }
+    nav ul { flex-direction: column; align-items: center; gap: 10px; }
+    nav ul li { margin: 8px 0; }
 
-    .galeria-item:hover {
-        flex-grow: unset;
-    }
+    h2 { font-size: 24px; }
+    main p { font-size: 16px; text-align: justify; padding: 0 15px; }
 
-    .galeria-texto {
-        font-size: 20px;
-        bottom: 10px;
-        padding: 6px 10px;
-    }
-
-    nav ul {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    nav ul li {
-        margin: 8px 0;
-    }
-
-    h2 {
-        font-size: 24px;
-    }
-
-    main p {
-        font-size: 16px;
-        text-align: justify;
-        /* Padding en móviles para el texto */
-        padding: 0 15px;
-    }
-
-    .footer-principal {
-        font-size: 13px;
-        padding: 10px;
-    }
-
-    .valores-titulo {
-        font-size: 24px;
-    }
-
-    .valor-tarjeta {
-        font-size: 16px;
-        padding: 16px 20px;
-        min-width: 130px;
-    }
-
-    .valores-contenedor {
-        padding: 0 15px; /* Ajuste del padding para el contenedor de valores en móviles */
-    }
+    .footer-principal { font-size: 13px; padding: 10px; }
+    .valores-titulo { font-size: 24px; }
+    .valor-tarjeta { font-size: 16px; padding: 16px 20px; min-width: 130px; }
+    .valores-contenedor { padding: 0 15px; }
 }
 
 @media (max-width: 480px) {
-    .valores-contenedor {
-        flex-direction: column;
-        align-items: center;
-    }
+    .valores-contenedor { flex-direction: column; align-items: center; }
+    .valor-tarjeta { width: 80%; }
+}
+@media (min-width: 1118px) {
+  .nav {
+    padding-right: 210px;
+  }
+  .nav__user {
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
 
-    .valor-tarjeta {
-        width: 80%; /* Ajuste el ancho de las tarjetas en pantallas muy pequeñas */
-    }
+@media (max-width: 1118px) {
+  .nav__user {
+    font-size: 14px;
+    gap: 8px;
+  }
 }

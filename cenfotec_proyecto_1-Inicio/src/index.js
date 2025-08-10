@@ -1,279 +1,450 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
+const fs = require('fs');
 const bodyParser = require('body-parser');
-const anuncio = require('../models/anuncios');
-const register = require('../models/registro');
-const evento = require('../models/eventos');
 const multer = require('multer');
-const newbusiness = require('../models/emprendimientos.js');
+const session = require('express-session');
+const bcrypt = require('bcrypt');
 
+// Modelos para DB
+const anuncio = require('../models/anuncios');
+const register = require('../models/registro');              // usuarios
+const evento = require('../models/eventos');
+const Emprendimiento = require('../models/emprendimientos'); // por la pagina de admin
+const Reporte = require('../models/reportes');
 
-require('../db');
+require('../db'); // conexión a Mongo
+
 const app = express();
 
-// View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
 
-// Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-// Start server
-app.listen(3000, () => {
-    console.log("El server se conecto");
+/* ============================== Sesiones ============================ */
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'cambiar',
+  resave: false,
+  saveUninitialized: false,
+  cookie: { httpOnly: true }
+}));
+
+/* ======================== Carpetas de uploads ======================= */
+const dirImg = path.join(__dirname, 'public', 'img');
+const dirReportes = path.join(dirImg, 'reportes');
+fs.mkdirSync(dirImg, { recursive: true });
+fs.mkdirSync(dirReportes, { recursive: true });
+
+/* ========================= Autorización ================== */
+function requireAuth(req, res, next) {
+  if (!req.session?.user) return res.status(401).send('No autenticado');
+  next();
+}
+function requireRole(...roles) {
+  return (req, res, next) => {
+    const role = req.session?.user?.role;
+    if (!role) return res.status(401).send('No autenticado');
+    if (!roles.includes(role)) return res.status(403).send('No autorizado');
+    next();
+  };
+}
+
+// Exponer usuario a vistas
+app.use((req, res, next) => {
+  res.locals.currentUser = req.session?.user || null;
+  res.locals.isLoggedIn  = !!res.locals.currentUser;
+  res.locals.isAdmin     = res.locals.currentUser?.role === 'admin';
+  next();
 });
 
-// Routes
-app.get('/anuncios', (req, res) => {
-    res.render("Anuncios/anuncios.html");
-});
-// Login --------------------------------------------------------------------------------------- 
+/* ============================ Info de sesión ============================ */
 
-app.get('/login', (req, res) => {
-    res.render("Login/login.html");
-});
-app.get('/inicio', (req, res) => {
-    res.render("Inicio/inicio.html");
-});
+app.get('/sesion', async (req, res) => {
+  try {
+    const s = req.session?.user;
+    if (!s) return res.json({ loggedIn: false });
 
-app.get('/register', (req, res) => {
-    res.render("Registro/Registro.html");
-});
+    // Trae nombre/username de la BD
+    const u = await register
+      .findById(s.id)
+      .select('name user role')
+      .lean();
 
-app.get('/emprendimientos', async (req, res) => {
-    const categoria = req.query.categoria || 'all';
-
-    let emprendimientos;
-
-    if (categoria === 'all') {
-        emprendimientos = await newbusiness.find();
-    } else {
-        emprendimientos = await newbusiness.find({
-            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
-        });
-    }
-
-    res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria });
-});
-
-app.get("/nuevo%20emprendimiento", (req, res) => {
-    res.render("Emprendimientos/VistaGenerica.html")
-})
-
-app.get('/emprendedor', async (req, res) => {
-    const categoria = req.query.categoria || 'all';
-
-    let emprendimientos;
-
-    if (categoria === 'all') {
-        emprendimientos = await newbusiness.find();
-    } else {
-        emprendimientos = await newbusiness.find({
-            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
-        });
-    }
-
-    res.render('Emprendimientos/emprendedor', { emprendimientos, categoria });
-});
-
-app.get("/nuevo%20emprendimiento", (req, res) => {
-    res.render("Emprendimientos/VistaGenerica.html")
-})
-
-app.get('/eventos', (req, res) => {
-    res.render("Eventos/eventos.html");
-});
-
-app.get('/admin', (req, res) => {
-    res.render("Admin/admin.html");
-});
-
-app.post('/login', (req, res) => {
-    let data = {
-        user: req.body.user,
-        password: req.body.password
-    }
-    const existUser = async () => {
-        const usuario = await register.findOne({
-            $or: [
-                { user: data.user },
-                { cellphone: data.cellphone }
-            ]
-        });
-        if (usuario != null) {
-            if (data.password == usuario.password) {
-                console.log('Login exitoso');
-                res.redirect('./inicio');
-
-            } else {
-                console.log('Login fallido');
-
-            }
-        } else {
-            console.log('Login fallido');
-            res.redirect('./login');
-        }
-    }
-    existUser();
-})
-
-
-app.post('/registrar_usuario', (req, res) => {
-    console.log("Datos recibidos:", req.body);
-    let data = new register({
-        name: req.body.name,
-        cellphone: req.body.cellphone,
-        user: req.body.user,
-        email: req.body.email,
-        password: req.body.password
-    })
-
-    data.save()
-        .then(() => {
-            console.log("Usario registrado")
-        })
-        .catch((err) => {
-            console.log("Usuario no guardado", err)
-        })
-
-});
-
-
-// Anuncios----------------------------------------------------------------------------------------------------
-
-app.post('/peticion_anuncio', (req, res) => {
-    const { name, description, image } = req.body;
-
-    const data = new anuncio({
-        name,
-        description,
-        image
+    return res.json({
+      loggedIn: true,
+      id: s.id,
+      username: u?.user || s.user || null,
+      name: u?.name || null,
+      role: u?.role || s.role || null,
+      isAdmin: (u?.role || s.role) === 'admin'
     });
-
-    data.save()
-        .then(() => {
-            console.log("Anuncio registrado");
-            res.status(200).json({ message: "Anuncio guardado" });
-        })
-        .catch((err) => {
-            console.error("Usuario no guardado", err);
-            res.status(500).json({ error: "Error al guardar anuncio" });
-        });
+  } catch (e) {
+    console.error('Error en /sesion:', e);
+    res.status(500).json({ loggedIn: false });
+  }
 });
 
-app.get('/anuncios', async (req, res) => {
-    try {
-        const anuncios = await anuncio.find();
-        res.json(anuncios);
-    } catch (err) {
-        console.error('Error al obtener los anuncios:', err);
-        res.status(500).json({ error: 'Error al obtener los anuncios' });
-    }
+/* =================================================================== */
+/* ============================  INICIO  ============================== */
+/* =================================================================== */
+app.get('/', (req, res) => res.redirect('/inicio'));
+app.get('/inicio', (req, res) => {
+  res.render('Inicio/inicio.html');
+});
+
+app.get('/Inicio', (req, res) => res.redirect(301, '/inicio'));
+
+/* =================================================================== */
+/* =============================  LOGIN  ============================== */
+/* =================================================================== */
+app.get('/login', (req, res) => {
+  res.render('Login/login.html');
+});
+app.get('/Login', (req, res) => res.redirect(301, '/login'));
+
+app.post('/login', async (req, res) => {
+  try {
+    const { user, password } = req.body;
+    const usuario = await register.findOne({
+      $or: [{ user }, { cellphone: user }]
+    }).select('+password');
+
+    if (!usuario) return res.redirect('/login');
+
+    const ok = usuario.comparePassword
+      ? await usuario.comparePassword(password)
+      : await bcrypt.compare(password, usuario.password);
+
+    if (!ok) return res.redirect('/login');
+
+    // Guarda username + nombre real + rol en sesión
+    req.session.user = {
+      id: usuario._id.toString(),
+      user: usuario.user,
+      name: usuario.name,
+      role: usuario.role
+    };
+
+    res.redirect('/inicio');
+  } catch (e) {
+    console.error(e);
+    res.redirect('/login');
+  }
+});
+
+/* =================================================================== */
+/* ============================  REGISTRO  ============================ */
+/* =================================================================== */
+app.get('/registro', (req, res) => {
+  res.render('Registro/registro.html');
+});
+
+app.post('/registrar_usuario', async (req, res) => {
+  try {
+    const role = (req.body.role === 'emprendedor') ? 'emprendedor' : 'ciudadano';
+    await new register({
+      name: req.body.name,
+      cellphone: req.body.cellphone,
+      user: req.body.user,
+      email: req.body.email,
+      password: req.body.password,
+      role
+    }).save();
+    res.redirect('/login');
+  } catch (e) {
+    console.error(e);
+    res.status(500).send('Error al registrar usuario');
+  }
+});
+
+/* =================================================================== */
+/* ============================  LOGOUT  ============================== */
+/* =================================================================== */
+app.get('/logout', (req, res) => {
+  req.session.destroy(() => {
+    res.clearCookie('connect.sid');
+    res.redirect('/login?msg=Sesion%20cerrada');
+  });
+});
+
+/* =================================================================== */
+/* ============================  ANUNCIOS  ============================ */
+/* =================================================================== */
+app.get('/anuncios', (req, res) => {
+  res.render('Anuncios/anuncios.html');
+});
+app.get('/Anuncios', (req, res) => res.redirect(301, '/anuncios'));
+
+app.post('/peticion_anuncio', async (req, res) => {
+  const { name, description, image } = req.body;
+  try {
+    await new anuncio({ name, description, image }).save();
+    res.status(200).json({ message: 'Anuncio guardado' });
+  } catch {
+    res.status(500).json({ error: 'Error al guardar anuncio' });
+  }
+});
+
+app.get('/anuncios_todos', async (req, res) => {
+  try { res.json(await anuncio.find()); }
+  catch { res.status(500).json({ error: 'Error al obtener los anuncios' }); }
+});
+
+app.get('/anuncios_publicos', async (req, res) => {
+  try { res.json(await anuncio.find({ status: 'aprobado' })); }
+  catch { res.status(500).json({ error: 'Error al obtener los anuncios' }); }
 });
 
 app.delete('/peticion_anuncio_cancelar', async (req, res) => {
-    try {
-        await anuncio.deleteOne({ _id: req.body._id });
-        res.json({ message: 'Anuncio eliminado correctamente' });
-    } catch (err) {
-        res.status(500).json({ error: 'Error al eliminar anuncio' });
-    }
+  try { await anuncio.deleteOne({ _id: req.body._id }); res.json({ message: 'Anuncio eliminado correctamente' }); }
+  catch { res.status(500).json({ error: 'Error al eliminar anuncio' }); }
 });
 
-//Eventos--------------------------------------------------------------------------------------------------
+app.post('/anuncios/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null }); res.json({ message: 'Anuncio aprobado' }); }
+  catch { res.status(500).json({ error: 'Error al aprobar anuncio' }); }
+});
+app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Anuncio rechazado' }); }
+  catch { res.status(500).json({ error: 'Error al rechazar anuncio' }); }
+});
 
-app.post('/peticion_evento', (req, res) => {
-    const { name, place, date, description, image } = req.body;
+/* =================================================================== */
+/* =============================  Transporte  ========================= */
+/* =================================================================== */
+app.get('/transporte', (req, res) => {
+  res.render('Transporte/transporte.html');
+});
+app.get('/Transporte', (req, res) => res.redirect(301, '/transporte'));
 
-    const data = new evento({
-        name,
-        place,
-        date,
-        description,
-        image
-    });
+/* =================================================================== */
+/* =============================  EVENTOS  ============================ */
+/* =================================================================== */
+app.get('/eventos', (req, res) => {
+  res.render('Eventos/eventos.html');
+});
+app.get('/Eventos', (req, res) => res.redirect(301, '/eventos'));
 
-    data.save()
-        .then(() => {
-            console.log("Evento registrado");
-            res.status(200).json({ message: "Evento guardado" });
-        })
-        .catch((err) => {
-            console.error("Evento no guardado", err);
-            res.status(500).json({ error: "Error al guardar evento" });
-        });
+app.post('/peticion_evento', async (req, res) => {
+  const { name, place, date, description, image } = req.body;
+  try {
+    await new evento({ name, place, date, description, image }).save();
+    res.status(200).json({ message: 'Evento guardado' });
+  } catch {
+    res.status(500).json({ error: 'Error al guardar evento' });
+  }
 });
 
 app.get('/eventos_todos', async (req, res) => {
-    try {
-        const eventos = await evento.find();
-        res.json(eventos);
-    } catch (err) {
-        console.error('Error al obtener los evento:', err);
-        res.status(500).json({ error: 'Error al obtener los eventos' });
-    }
+  try { res.json(await evento.find()); }
+  catch { res.status(500).json({ error: 'Error al obtener los eventos' }); }
+});
+
+app.get('/eventos_publicos', async (req, res) => {
+  try { res.json(await evento.find({ status: 'aprobado' })); }
+  catch { res.status(500).json({ error: 'Error al obtener los eventos' }); }
 });
 
 app.delete('/peticion_evento_cancelar', async (req, res) => {
-    try {
-        await evento.deleteOne({ _id: req.body._id });
-        res.json({ message: 'Evento eliminado correctamente' });
-    } catch (err) {
-        res.status(500).json({ error: 'Error al eliminar anuncio' });
-    }
+  try { await evento.deleteOne({ _id: req.body._id }); res.json({ message: 'Evento eliminado correctamente' }); }
+  catch { res.status(500).json({ error: 'Error al eliminar evento' }); }
 });
 
-// Admin----------------------------------------------------------------------------------------------------------
-
-app.get('/admin_anuncios', async (req, res) => {
-    try {
-        const anuncios = await anuncio.find();
-        res.json(anuncios);
-    } catch (err) {
-        console.error('Error al obtener los anuncios:', err);
-        res.status(500).json({ error: 'Error al obtener los anuncios' });
-    }
+app.post('/eventos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await evento.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null }); res.json({ message: 'Evento aprobado' }); }
+  catch { res.status(500).json({ error: 'Error al aprobar evento' }); }
+});
+app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await evento.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
+  catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
 });
 
-// Emprendimientos------------------------------------------------------------------------------------------------
+/* =================================================================== */
+/* ============================== REPORTES ============================ */
+/* =================================================================== */
+// imágenes de reportes en: src/public/img/reportes
+const storageReportes = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, dirReportes),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname || '');
+    cb(null, `${unique}${ext}`);
+  }
+});
+const uploadReportes = multer({ storage: storageReportes });
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../src/public/img'));
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + '-' + file.originalname);
-    }
+app.get('/reportes', (req, res) => {
+  res.render('Reportes/reportes.html');
+});
+app.get('/Reportes', (req, res) => res.redirect(301, '/reportes'));
+
+app.post('/reportes', requireAuth, uploadReportes.single('foto'), async (req, res) => {
+  try {
+    const { tipo, titulo, descripcion } = req.body;
+    await Reporte.create({
+      tipo, titulo, descripcion,
+      imagen: req.file ? req.file.filename : null,
+      userId: req.session.user.id,
+      estado: 'pendiente'
+    });
+    res.redirect('/reportes');
+  } catch (e) {
+    console.error(e);
+    res.status(500).send('Error al registrar el reporte');
+  }
 });
 
-const upload = multer({ storage: storage });
+// Listas en formato JSON que se saca del DB
+app.get('/reportes_todos', async (req, res) => {
+  try { res.json(await Reporte.find().sort({ fecha: -1 })); }
+  catch { res.status(500).json({ error: 'Error al obtener los reportes' }); }
+});
+app.get('/reportes_publicos', async (req, res) => {
+  try { res.json(await Reporte.find({ estado: 'aprobado' }).sort({ fecha: -1 })); }
+  catch { res.status(500).json({ error: 'Error al obtener los reportes públicos' }); }
+});
+app.get('/reportes_mios', requireAuth, async (req, res) => {
+  try { res.json(await Reporte.find({ userId: req.session.user.id }).sort({ fecha: -1 })); }
+  catch { res.status(500).json({ error: 'Error al obtener tus reportes' }); }
+});
+app.delete('/peticion_reporte_cancelar', requireAuth, async (req, res) => {
+  try { await Reporte.deleteOne({ _id: req.body._id, userId: req.session.user.id }); res.json({ message: 'Reporte eliminado correctamente' }); }
+  catch { res.status(500).json({ error: 'Error al eliminar el reporte' }); }
+});
+app.post('/reportes/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await Reporte.findByIdAndUpdate(req.params.id, { estado: 'aprobado', rejectionReason: null }); res.json({ message: 'Reporte aprobado' }); }
+  catch { res.status(500).json({ error: 'Error al aprobar reporte' }); }
+});
+app.post('/reportes/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+  try { await Reporte.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Reporte rechazado' }); }
+  catch { res.status(500).json({ error: 'Error al rechazar reporte' }); }
+});
 
-app.post('/addbusiness', upload.fields([
+/* =================================================================== */
+/* =========================  EMPRENDIMIENTOS  ======================= */
+/* =================================================================== */
+app.get('/emprendimientos', async (req, res) => {
+  const categoria = req.query.categoria || 'all';
+  let emprendimientos;
+  if (categoria === 'all') {
+    emprendimientos = await Emprendimiento.find();
+  } else {
+    emprendimientos = await Emprendimiento.find({
+      categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
+    });
+  }
+  res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria });
+});
+app.get('/Emprendimientos', (req, res) => res.redirect(301, '/emprendimientos'));
+
+const storageEmpr = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, dirImg),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, `${unique}-${file.originalname}`);
+  }
+});
+const uploadEmpr = multer({ storage: storageEmpr });
+
+app.post('/addbusiness',
+  requireAuth, requireRole('emprendedor', 'admin'),
+  uploadEmpr.fields([
     { name: 'imagenNegocio', maxCount: 1 },
     { name: 'imagenesProductos[]', maxCount: 10 }
-]), (req, res) => {
-    const files = req.files;
-
-    let data = new newbusiness({
+  ]),
+  async (req, res) => {
+    try {
+      const files = req.files;
+      await new Emprendimiento({
         nombreN: req.body.nombre,
         descripcion: req.body.descripcion,
         categoria: req.body.categoria,
-        imagenNegocio: files.imagenNegocio ? files.imagenNegocio[0].filename : '',
-        imagenesProductos: files['imagenesProductos[]'] ? files['imagenesProductos[]'].map(img => img.filename) : []
-    });
+        imagenNegocio: files?.imagenNegocio ? files.imagenNegocio[0].filename : '',
+        imagenesProductos: files?.['imagenesProductos[]'] ? files['imagenesProductos[]'].map(f => f.filename) : []
+      }).save();
+      res.redirect('/nuevo%20emprendimiento');
+    } catch (e) {
+      console.error(e);
+      res.status(500).send('Error al registrar el emprendimiento');
+    }
+  }
+);
 
-    data.save()
-        .then(() => {
-            console.log("Emprendiempmiento se registró");
-            res.redirect('/nuevo%20emprendimiento');
-        })
-        .catch((err) => {
-            console.log("ERROR", err);
-            res.status(500).send("Error al registrar el emprendimiento");
-        });
+// Admin: aprobar / rechazar Emprendimientos
+app.post('/emprendimientos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    await Emprendimiento.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null });
+    res.json({ message: 'Emprendimiento aprobado' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al aprobar emprendimiento' });
+  }
+});
+app.post('/emprendimientos/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    await Emprendimiento.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' });
+    res.json({ message: 'Emprendimiento rechazado' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al rechazar emprendimiento' });
+  }
+});
+
+/* =================================================================== */
+/* ==============================  MAPA  ============================= */
+/* =================================================================== */
+app.get('/mapa', (req, res) => {
+  res.render('Mapa/mapa.html');
+});
+
+app.get('/Mapa', (req, res) => res.redirect(301, '/mapa'));
+
+/* =================================================================== */
+/* ==============================  ADMIN  ============================= */
+/* =================================================================== */
+app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const [
+      anunciosList,
+      eventosList,
+      reportesList,
+      emprendimientosList,
+      usuariosList
+      // ofertasList Quitar el comment cuando exista ofertas
+    ] = await Promise.all([
+      anuncio.find().sort({ _id: -1 }).lean(),
+      evento.find().sort({ _id: -1 }).lean(),
+      Reporte.find().sort({ fecha: -1 }).lean(),
+      Emprendimiento.find().sort({ _id: -1 }).lean(),
+      register.find().sort({ _id: -1 }).lean()
+      // Oferta.find().sort({ _id: -1 }).lean() Quitar el comment cuando exista ofertas
+    ]);
+
+    res.render('Admin/admin', {
+      anuncios: anunciosList,
+      eventos: eventosList,
+      reportes: reportesList,
+      quejas: reportesList.filter(r => r.tipo === 'queja'),
+      emprendimientos: emprendimientosList,
+      usuarios: usuariosList,
+      ofertas: [] // placeholder Quitar cuando exista ofertas
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).send('Error cargando admin');
+  }
+});
+
+/* =================================================================== */
+/* ==============================  SERVER  ============================ */
+/* =================================================================== */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Servidor conectado en puerto ${PORT}`);
 });

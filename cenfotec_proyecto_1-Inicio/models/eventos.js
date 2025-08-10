@@ -1,28 +1,19 @@
 const mongoose = require('mongoose');
 
-const peticionEventoScheme = mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    place:{
-        type:String,
-        required:true
-    },
-    date:{
-        type:String,
-        required:true
-    },
-    description:{
-        type:String,
-        required:true,
-    },
-    image:{
-        type:String,
-    }
+const EventoSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  place: { type: String, required: true },
+  date:  { type: String, required: true },
+  description: { type: String, required: true },
+  image: { type: String },
 
-},{versionKey:false})   
+  // Campos para moderación:
+  status: {
+    type: String,
+    enum: ['pendiente', 'aprobado', 'rechazado'],
+    default: 'pendiente'
+  },
+  rejectionReason: { type: String, default: '' }
+}, { versionKey: false, timestamps: true });
 
-const evento = mongoose.model('Evento', peticionEventoScheme)
-
-module.exports = evento
+module.exports = mongoose.model('Evento', EventoSchema);

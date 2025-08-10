@@ -1,12 +1,14 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-const anuncio = require('../../models/anuncios');
-const register = require('../../models/registro');
-const evento = require('../../models/eventos');
+const anuncio = require('../models/anuncios');
+const register = require('../models/registro');
+const evento = require('../models/eventos');
+const multer = require('multer');
+const newbusiness = require('../models/emprendimientos.js');
 
 
-require('./db');
+require('../db');
 const app = express();
 
 // View engine setup
@@ -42,8 +44,20 @@ app.get('/register', (req, res) => {
     res.render("Registro/Registro.html");
 });
 
-app.get('/emprendimientos', (req, res) => {
-    res.render("Emprendimientos/Emprendimientos.html");
+app.get('/emprendimientos', async (req, res) => {
+    const categoria = req.query.categoria || 'all';
+
+    let emprendimientos;
+
+    if (categoria === 'all') {
+        emprendimientos = await newbusiness.find();
+    } else {
+        emprendimientos = await newbusiness.find({
+            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
+        });
+    }
+
+    res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria });
 });
 
 app.get('/eventos', (req, res) => {
@@ -54,28 +68,28 @@ app.get('/admin', (req, res) => {
     res.render("Admin/admin.html");
 });
 
-app.post('/login',(req,res) =>{
+app.post('/login', (req, res) => {
     let data = {
         user: req.body.user,
         password: req.body.password
     }
-    const existUser = async() =>{
+    const existUser = async () => {
         const usuario = await register.findOne({
-        $or: [
-            { user: data.user },
-            { cellphone: data.cellphone }
-        ]
+            $or: [
+                { user: data.user },
+                { cellphone: data.cellphone }
+            ]
         });
-        if(usuario != null){
-            if(data.password == usuario.password){
+        if (usuario != null) {
+            if (data.password == usuario.password) {
                 console.log('Login exitoso');
                 res.redirect('./inicio');
 
-            } else{
+            } else {
                 console.log('Login fallido');
 
             }
-        } else{
+        } else {
             console.log('Login fallido');
             res.redirect('./login');
         }
@@ -84,7 +98,7 @@ app.post('/login',(req,res) =>{
 })
 
 
-app.post('/registrar_usuario',(req,res)=>{
+app.post('/registrar_usuario', (req, res) => {
     console.log("Datos recibidos:", req.body);
     let data = new register({
         name: req.body.name,
@@ -93,15 +107,15 @@ app.post('/registrar_usuario',(req,res)=>{
         email: req.body.email,
         password: req.body.password
     })
-    
+
     data.save()
-        .then(()=>{
+        .then(() => {
             console.log("Usario registrado")
         })
-        .catch((err)=>{
+        .catch((err) => {
             console.log("Usuario no guardado", err)
         })
-    
+
 });
 
 
@@ -129,8 +143,8 @@ app.post('/peticion_anuncio', (req, res) => {
 
 app.get('/anuncios', async (req, res) => {
     try {
-        const anuncios = await anuncio.find(); 
-        res.json(anuncios); 
+        const anuncios = await anuncio.find();
+        res.json(anuncios);
     } catch (err) {
         console.error('Error al obtener los anuncios:', err);
         res.status(500).json({ error: 'Error al obtener los anuncios' });
@@ -138,12 +152,12 @@ app.get('/anuncios', async (req, res) => {
 });
 
 app.delete('/peticion_anuncio_cancelar', async (req, res) => {
-try {
-    await anuncio.deleteOne({ _id: req.body._id });
-    res.json({ message: 'Anuncio eliminado correctamente' });
-} catch (err) {
-    res.status(500).json({ error: 'Error al eliminar anuncio' });
-}
+    try {
+        await anuncio.deleteOne({ _id: req.body._id });
+        res.json({ message: 'Anuncio eliminado correctamente' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar anuncio' });
+    }
 });
 
 //Eventos--------------------------------------------------------------------------------------------------
@@ -172,8 +186,8 @@ app.post('/peticion_evento', (req, res) => {
 
 app.get('/eventos_todos', async (req, res) => {
     try {
-        const eventos = await evento.find(); 
-        res.json(eventos); 
+        const eventos = await evento.find();
+        res.json(eventos);
     } catch (err) {
         console.error('Error al obtener los evento:', err);
         res.status(500).json({ error: 'Error al obtener los eventos' });
@@ -181,22 +195,61 @@ app.get('/eventos_todos', async (req, res) => {
 });
 
 app.delete('/peticion_evento_cancelar', async (req, res) => {
-try {
-    await evento.deleteOne({ _id: req.body._id });
-    res.json({ message: 'Evento eliminado correctamente' });
-} catch (err) {
-    res.status(500).json({ error: 'Error al eliminar anuncio' });
-}
+    try {
+        await evento.deleteOne({ _id: req.body._id });
+        res.json({ message: 'Evento eliminado correctamente' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error al eliminar anuncio' });
+    }
 });
 
 // Admin----------------------------------------------------------------------------------------------------------
 
 app.get('/admin_anuncios', async (req, res) => {
     try {
-        const anuncios = await anuncio.find(); 
-        res.json(anuncios); 
+        const anuncios = await anuncio.find();
+        res.json(anuncios);
     } catch (err) {
         console.error('Error al obtener los anuncios:', err);
         res.status(500).json({ error: 'Error al obtener los anuncios' });
     }
+});
+
+// Emprendimientos------------------------------------------------------------------------------------------------
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, '../src/public/img'));
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.post('/addbusiness', upload.fields([
+    { name: 'imagenNegocio', maxCount: 1 },
+    { name: 'imagenesProductos[]', maxCount: 10 }
+]), (req, res) => {
+    const files = req.files;
+
+    let data = new newbusiness({
+        nombreN: req.body.nombre,
+        descripcion: req.body.descripcion,
+        categoria: req.body.categoria,
+        imagenNegocio: files.imagenNegocio ? files.imagenNegocio[0].filename : '',
+        imagenesProductos: files['imagenesProductos[]'] ? files['imagenesProductos[]'].map(img => img.filename) : []
+    });
+
+    data.save()
+        .then(() => {
+            console.log("Emprendiempmiento se registró");
+            res.redirect('/nuevo%20emprendimiento');
+        })
+        .catch((err) => {
+            console.log("ERROR", err);
+            res.status(500).send("Error al registrar el emprendimiento");
+        });
 });

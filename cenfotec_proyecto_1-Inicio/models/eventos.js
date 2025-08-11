@@ -7,7 +7,7 @@ const EventoSchema = new mongoose.Schema({
   description: { type: String, required: true },
   image: { type: String },
 
-  // Campos para moderación:
+  // Campos para admin:
   status: {
     type: String,
     enum: ['pendiente', 'aprobado', 'rechazado'],

@@ -9,9 +9,9 @@ const bcrypt = require('bcrypt');
 
 // Modelos para DB
 const anuncio = require('../models/anuncios');
-const register = require('../models/registro');              // usuarios
+const register = require('../models/registro');
 const evento = require('../models/eventos');
-const Emprendimiento = require('../models/emprendimientos'); // por la pagina de admin
+const Emprendimiento = require('../models/emprendimientos');
 const Reporte = require('../models/reportes');
 
 require('../db'); // conexión a Mongo
@@ -21,13 +21,11 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'ejs');
-
 app.use(express.static(path.join(__dirname, 'public')));
-
 app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 
-/* ============================== Sesiones ============================ */
+/*  Sesiones  */
 app.use(session({
   secret: process.env.SESSION_SECRET || 'cambiar',
   resave: false,
@@ -35,13 +33,13 @@ app.use(session({
   cookie: { httpOnly: true }
 }));
 
-/* ======================== Carpetas de uploads ======================= */
+/*  Carpetas de uploads  */
 const dirImg = path.join(__dirname, 'public', 'img');
 const dirReportes = path.join(dirImg, 'reportes');
 fs.mkdirSync(dirImg, { recursive: true });
 fs.mkdirSync(dirReportes, { recursive: true });
 
-/* ========================= Autorización ================== */
+/*  Autorización  */
 function requireAuth(req, res, next) {
   if (!req.session?.user) return res.status(401).send('No autenticado');
   next();
@@ -63,7 +61,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ============================ Info de sesión ============================ */
+/*  Info de sesión  */
 
 app.get('/sesion', async (req, res) => {
   try {
@@ -90,9 +88,7 @@ app.get('/sesion', async (req, res) => {
   }
 });
 
-/* =================================================================== */
-/* ============================  INICIO  ============================== */
-/* =================================================================== */
+/*   INICIO   */
 app.get('/', (req, res) => res.redirect('/inicio'));
 app.get('/inicio', (req, res) => {
   res.render('Inicio/inicio.html');
@@ -100,9 +96,8 @@ app.get('/inicio', (req, res) => {
 
 app.get('/Inicio', (req, res) => res.redirect(301, '/inicio'));
 
-/* =================================================================== */
-/* =============================  LOGIN  ============================== */
-/* =================================================================== */
+
+/*   LOGIN   */
 app.get('/login', (req, res) => {
   res.render('Login/login.html');
 });
@@ -138,9 +133,8 @@ app.post('/login', async (req, res) => {
   }
 });
 
-/* =================================================================== */
-/* ============================  REGISTRO  ============================ */
-/* =================================================================== */
+/*   REGISTRO   */
+
 app.get('/registro', (req, res) => {
   res.render('Registro/registro.html');
 });
@@ -163,9 +157,7 @@ app.post('/registrar_usuario', async (req, res) => {
   }
 });
 
-/* =================================================================== */
-/* ============================  LOGOUT  ============================== */
-/* =================================================================== */
+/*   LOGOUT   */
 app.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('connect.sid');
@@ -173,9 +165,7 @@ app.get('/logout', (req, res) => {
   });
 });
 
-/* =================================================================== */
-/* ============================  ANUNCIOS  ============================ */
-/* =================================================================== */
+/*   ANUNCIOS   */
 app.get('/anuncios', (req, res) => {
   res.render('Anuncios/anuncios.html');
 });
@@ -215,17 +205,13 @@ app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req
   catch { res.status(500).json({ error: 'Error al rechazar anuncio' }); }
 });
 
-/* =================================================================== */
-/* =============================  Transporte  ========================= */
-/* =================================================================== */
+/*   Transporte   */
 app.get('/transporte', (req, res) => {
   res.render('Transporte/transporte.html');
 });
 app.get('/Transporte', (req, res) => res.redirect(301, '/transporte'));
 
-/* =================================================================== */
-/* =============================  EVENTOS  ============================ */
-/* =================================================================== */
+/*   EVENTOS   */
 app.get('/eventos', (req, res) => {
   res.render('Eventos/eventos.html');
 });
@@ -265,10 +251,7 @@ app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req,
   catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
 });
 
-/* =================================================================== */
-/* ============================== REPORTES ============================ */
-/* =================================================================== */
-// imágenes de reportes en: src/public/img/reportes
+/*   REPORTES   */
 const storageReportes = multer.diskStorage({
   destination: (req, file, cb) => cb(null, dirReportes),
   filename: (req, file, cb) => {
@@ -326,9 +309,7 @@ app.post('/reportes/:id/rechazar', requireAuth, requireRole('admin'), async (req
   catch { res.status(500).json({ error: 'Error al rechazar reporte' }); }
 });
 
-/* =================================================================== */
-/* =========================  EMPRENDIMIENTOS  ======================= */
-/* =================================================================== */
+/*   EMPRENDIMIENTOS   */
 app.get('/emprendimientos', async (req, res) => {
   const categoria = req.query.categoria || 'all';
   let emprendimientos;
@@ -396,18 +377,14 @@ app.post('/emprendimientos/:id/rechazar', requireAuth, requireRole('admin'), asy
   }
 });
 
-/* =================================================================== */
-/* ==============================  MAPA  ============================= */
-/* =================================================================== */
+/*   MAPA   */
 app.get('/mapa', (req, res) => {
   res.render('Mapa/mapa.html');
 });
 
 app.get('/Mapa', (req, res) => res.redirect(301, '/mapa'));
 
-/* =================================================================== */
-/* ==============================  ADMIN  ============================= */
-/* =================================================================== */
+/*   ADMIN   */
 app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const [
@@ -441,9 +418,8 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
   }
 });
 
-/* =================================================================== */
-/* ==============================  SERVER  ============================ */
-/* =================================================================== */
+//   Levantar el servidor 
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor conectado en puerto ${PORT}`);

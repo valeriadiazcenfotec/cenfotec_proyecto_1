@@ -320,57 +320,67 @@ app.post('/quejas/:id/rechazar', requireAuth, requireRole('admin'), async (req, 
 });
 
 /*   EMPRENDIMIENTOS   */
-app.get('/emprendimientos', async (req, res) => {
-    const categoria = req.query.categoria || 'all';
-    const role = req.session?.user?.role;
-    let emprendimientos;
-    if (categoria === 'all') {
-        emprendimientos = await Emprendimiento.find();
-    } else {
-        emprendimientos = await Emprendimiento.find({
-            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
-        });
-    }
-    (role !== 'emprendedor') ? res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria }) : res.render('Emprendimientos/emprendedor', { emprendimientos, categoria })
-
+app.get('/emprendimientos', (req, res) => {
+  res.render('Emprendimientos/emprendimientos.ejs');
 });
 app.get('/Emprendimientos', (req, res) => res.redirect(301, '/emprendimientos'));
 
-app.get("/nuevo%20emprendimiento", requireAuth, (req, res) => {
-    res.render("Emprendimientos/VistaGenerica.html")
-})
+app.get('/emprendimientos_publicos', async (req, res) => {
+  try {
+    const categoria = (req.query.categoria || 'all').trim();
+    const base = { status: 'aprobado' };
+    const query = (categoria === 'all')
+      ? base
+      : { ...base, categoria: { $regex: `^${categoria}$`, $options: 'i' } };
+
+    const docs = await Emprendimiento.find(query).sort({ _id: -1 }).lean();
+    res.json(docs);
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al obtener los emprendimientos públicos' });
+  }
+});
+
+app.get('/nuevo%20emprendimiento', requireAuth, (req, res) => {
+  res.render('Emprendimientos/VistaGenerica.html');
+});
 
 const storageEmpr = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, dirImg),
-    filename: (req, file, cb) => {
-        const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
-        cb(null, `${unique}-${file.originalname}`);
-    }
+  destination: (req, file, cb) => cb(null, dirImg),
+  filename: (req, file, cb) => {
+    const unique = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, `${unique}-${file.originalname}`);
+  }
 });
 const uploadEmpr = multer({ storage: storageEmpr });
 
-app.post('/addbusiness',
-    requireAuth, requireRole('emprendedor', 'admin'),
-    uploadEmpr.fields([
-        { name: 'imagenNegocio', maxCount: 1 },
-        { name: 'imagenesProductos[]', maxCount: 10 }
-    ]),
-    async (req, res) => {
-        try {
-            const files = req.files;
-            await new Emprendimiento({
-                nombreN: req.body.nombre,
-                descripcion: req.body.descripcion,
-                categoria: req.body.categoria,
-                imagenNegocio: files?.imagenNegocio ? files.imagenNegocio[0].filename : '',
-                imagenesProductos: files?.['imagenesProductos[]'] ? files['imagenesProductos[]'].map(f => f.filename) : []
-            }).save();
-            res.redirect('/nuevo%20emprendimiento');
-        } catch (e) {
-            console.error(e);
-            res.status(500).send('Error al registrar el emprendimiento');
-        }
+app.post(
+  '/addbusiness',
+  requireAuth,
+  uploadEmpr.fields([
+    { name: 'imagenNegocio', maxCount: 1 },
+    { name: 'imagenesProductos[]', maxCount: 10 }
+  ]),
+  async (req, res) => {
+    try {
+      const files = req.files;
+      await new Emprendimiento({
+        nombreN: req.body.nombre,
+        descripcion: req.body.descripcion,
+        categoria: req.body.categoria,
+        imagenNegocio: files?.imagenNegocio ? files.imagenNegocio[0].filename : '',
+        imagenesProductos: files?.['imagenesProductos[]']
+          ? files['imagenesProductos[]'].map(f => f.filename)
+          : [],
+        userId: req.session.user.id, // dueño
+        status: 'pendiente'          // queda pendiente hasta aprobación
+      }).save();
+      res.redirect('/nuevo%20emprendimiento');
+    } catch (e) {
+      console.error(e);
+      res.status(500).send('Error al registrar el emprendimiento');
     }
+  }
 );
 
 /*  OFERTAS */
@@ -418,13 +428,25 @@ app.post('/addoffer',
 
 // Admin: aprobar / rechazar Emprendimientos
 app.post('/emprendimientos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
-    try {
-        await Emprendimiento.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null });
-        res.json({ message: 'Emprendimiento aprobado' });
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: 'Error al aprobar emprendimiento' });
+  try {
+    const emp = await Emprendimiento.findByIdAndUpdate(
+      req.params.id,
+      { status: 'aprobado', rejectionReason: null },
+      { new: true }
+    ).lean();
+
+    if (!emp) return res.status(404).json({ error: 'No encontrado' });
+
+    // Promueve al dueño a emprendedor
+    if (emp.userId) {
+      await register.findByIdAndUpdate(emp.userId, { role: 'emprendedor' });
     }
+
+    res.json({ message: 'Emprendimiento aprobado' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al aprobar emprendimiento' });
+  }
 });
 app.post('/emprendimientos/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
     try {

@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!valido) {
             e.preventDefault(); // Detener envío si hay errores
         } else {
-            alert("Se registro el emprendimiento");
+            alert("El emprendimiento esta en espera de ser aprobado");
         }
     });
 });

@@ -473,6 +473,43 @@ body {
     box-shadow: 0px 0px 8px -2px black;
 }
 
+.business_owner {
+    background-color: #80C342;
+    width: fit-content;
+    height: fit-content;
+    padding: 12px;
+    text-align: center;
+    align-content: center;
+    border-radius: 40px;
+    font-size: 100%;
+    font-weight: bold;
+    position: fixed;
+    z-index: 1;
+    bottom: 20px;
+    right: 8px;
+    box-shadow: 0px 0px 8px 1px black;
+    transition: .5s;
+}
+
+.business_owner a {
+    color: black;
+    transition: .5s;
+}
+
+.business_owner:hover {
+    a {
+        color: white;
+    }
+
+}
+
+.business_owner:hover {
+    cursor: pointer;
+    transform: scale(1.1) translateX(-3px);
+    background-color: #8bb101;
+    box-shadow: 0px 0px 8px -2px black;
+}
+
 /*.second {
     display: flex;
     gap: 2rem;

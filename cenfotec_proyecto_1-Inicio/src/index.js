@@ -426,7 +426,7 @@ app.post('/addoffer',
     }
 );
 
-// Admin: aprobar / rechazar Emprendimientos
+// Admin: aprobar / rechazar Emprendimientos y Ofertas
 app.post('/emprendimientos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
   try {
     const emp = await Emprendimiento.findByIdAndUpdate(
@@ -458,6 +458,25 @@ app.post('/emprendimientos/:id/rechazar', requireAuth, requireRole('admin'), asy
     }
 });
 
+app.post('/ofertas/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    await oferta.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null });
+    res.json({ message: 'Oferta aprobada' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al aprobar oferta' });
+  }
+});
+
+app.post('/ofertas/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    await oferta.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' });
+    res.json({ message: 'Oferta rechazada' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al rechazar oferta' });
+  }
+});
+
+
 /*   MAPA   */
 app.get('/mapa', (req, res) => {
     res.render('Mapa/mapa.html');
@@ -473,15 +492,15 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
             eventosList,
             reportesList,
             emprendimientosList,
-            usuariosList
-            // ofertasList Quitar el comment cuando exista ofertas
+            usuariosList,
+            ofertasList
         ] = await Promise.all([
             anuncio.find().sort({ _id: -1 }).lean(),
             evento.find().sort({ _id: -1 }).lean(),
             Reporte.find().sort({ fecha: -1 }).lean(),
             Emprendimiento.find().sort({ _id: -1 }).lean(),
-            register.find().sort({ _id: -1 }).lean()
-            // Oferta.find().sort({ _id: -1 }).lean() Quitar el comment cuando exista ofertas
+            register.find().sort({ _id: -1 }).lean(),
+            oferta.find().sort({ _id: -1 }).lean()
         ]);
 
         res.render('Admin/admin', {
@@ -491,12 +510,69 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
             quejas: reportesList.filter(r => r.tipo === 'queja'),
             emprendimientos: emprendimientosList,
             usuarios: usuariosList,
-            ofertas: [] // placeholder Quitar cuando exista ofertas
+            ofertas: ofertasList
         });
     } catch (e) {
         console.error(e);
         res.status(500).send('Error cargando admin');
     }
+});
+
+// Opcion para eliminar data desde admin
+
+// ANUNCIOS - eliminar
+app.delete('/anuncios/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await anuncio.deleteOne({ _id: req.params.id });
+    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+    res.json({ message: 'Anuncio eliminado' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al eliminar anuncio' });
+  }
+});
+
+// EVENTOS - eliminar
+app.delete('/eventos/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await evento.deleteOne({ _id: req.params.id });
+    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+    res.json({ message: 'Evento eliminado' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al eliminar evento' });
+  }
+});
+
+// REPORTES/QUEJAS - eliminar (misma colección)
+app.delete('/reportes/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await Reporte.deleteOne({ _id: req.params.id });
+    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+    res.json({ message: 'Reporte/Queja eliminado' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al eliminar reporte/queja' });
+  }
+});
+
+// EMPRENDIMIENTOS - eliminar
+app.delete('/emprendimientos/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await Emprendimiento.deleteOne({ _id: req.params.id });
+    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+    res.json({ message: 'Emprendimiento eliminado' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al eliminar emprendimiento' });
+  }
+});
+
+// OFERTAS - eliminar
+app.delete('/ofertas/:id', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await oferta.deleteOne({ _id: req.params.id });
+    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+    res.json({ message: 'Oferta eliminada' });
+  } catch (e) {
+    console.error(e); res.status(500).json({ error: 'Error al eliminar oferta' });
+  }
 });
 
 //   Levantar el servidor 

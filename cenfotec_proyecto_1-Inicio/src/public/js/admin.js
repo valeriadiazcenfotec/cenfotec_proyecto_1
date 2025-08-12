@@ -1,48 +1,49 @@
-
 function qs(sel, el=document) { return el.querySelector(sel); }
 function qsa(sel, el=document) { return [...el.querySelectorAll(sel)]; }
 
-
 async function actualizarEstado({ id, tipo, accion, motivo }) {
-  const accionMap = { approve: 'aprobar', reject: 'rechazar' };
+  const accionMap = { approve: 'aprobar', reject: 'rechazar', delete: 'eliminar' };
   const accionEs = accionMap[accion] || accion;
 
-  const url = `/${tipo}s/${id}/${accionEs}`;
-  const opts = { method: 'POST', headers: { 'Content-Type': 'application/json' } };
+  let url = `/${tipo}s/${id}/${accionEs}`;
+  let opts = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' };
 
   if (accionEs === 'rechazar') {
     opts.body = JSON.stringify({ reason: motivo || '' });
-  } else {
-    opts.body = '{}';
+  }
+  if (accionEs === 'eliminar') {
+    url = `/${tipo}s/${id}`;
+    opts = { method: 'DELETE' };
   }
 
   const r = await fetch(url, opts);
   if (!r.ok) throw new Error((await r.text()) || 'No se pudo actualizar');
-  return r.json();
+  return r.json().catch(() => ({}));
 }
 
-/* ===========================================================
-   enlazar acciones a un contenedor
-=========================================================== */
 function enlazarAcciones(container, { id, tipo, onSuccess }) {
-  qsa('.aprobar, .rechazar', container).forEach(btn => {
+  qsa('.aprobar, .rechazar, .eliminar', container).forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       const isReject = btn.classList.contains('rechazar');
+      const isDelete = btn.classList.contains('eliminar');
       let motivo = null;
 
-      // Pedir motivo SOLO si es rechazar
       if (isReject) {
         motivo = prompt('Ingrese el motivo del rechazo:');
         if (motivo === null) return;
         if (!motivo.trim()) { alert('Debe ingresar un motivo.'); return; }
+      }
+      if (isDelete) {
+        const ok = confirm('¿Seguro que desea eliminar este elemento? Esta acción no se puede deshacer.');
+        if (!ok) return;
       }
 
       try {
         await actualizarEstado({
           id,
           tipo,
-          accion: isReject ? 'reject' : 'approve',
+          accion: isDelete ? 'delete' : (isReject ? 'reject' : 'approve'),
           motivo
         });
         if (typeof onSuccess === 'function') onSuccess();
@@ -53,31 +54,84 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
   });
 }
 
-/* ===========================================================
-   crear todo desde la tarjeta
-=========================================================== */
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = qs('#overlay');
   const modal = qs('#modal-detalles');
 
-  // Abrir al hacer clic en "Ver Detalles"
+  // Botón de "tres puntos" para mostrar aprobar/rechazar en cada card
+  qsa('.card').forEach(card => {
+    if (!card.querySelector('.toggle-actions')) {
+      const t = document.createElement('button');
+      t.className = 'toggle-actions';
+      t.setAttribute('aria-label', 'Mostrar acciones');
+      t.innerHTML = "<i class='bx bx-dots-horizontal-rounded'></i>";
+      card.prepend(t);
+
+      t.addEventListener('click', (e) => {
+        e.stopPropagation();
+        card.classList.toggle('show-actions');
+      });
+    }
+
+    enlazarAcciones(card, {
+      id: card.dataset.id,
+      tipo: card.dataset.type,
+      onSuccess: () => card.remove()
+    });
+  });
+
+  // Abrir modal con "Ver detalles"
   qsa('[data-modal-target]').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.card');
       if (!card) return;
 
-      qs('#md-titulo').textContent = card.dataset.titulo || '';
-      qs('#md-descripcion').textContent = card.dataset.descripcion || '';
+      const mdTitulo = qs('#md-titulo');
+      const mdDesc   = qs('#md-descripcion');
+      const mdLugar  = qs('#md-lugar');
+      const mdFecha  = qs('#md-fecha');
+      const mdProp   = qs('#md-propietario');
+
+      mdTitulo.textContent = card.dataset.titulo || '';
+      mdDesc.textContent   = card.dataset.descripcion || '';
+      mdLugar.textContent  = card.dataset.lugar || '';
+      mdFecha.textContent  = card.dataset.fecha || '';
+      mdProp.textContent   = card.dataset.propietario || '';
 
       const img = qs('#modal-image');
-      img.src = card.dataset.imagen || '/img/placeholder.jpg';
-      img.style.display = 'none';
       const showBtn = qs('#show-image');
-      if (showBtn) showBtn.textContent = 'Ver imagen';
+      img.src = card.dataset.imagen || '';
+      img.style.display = 'none';
+      showBtn.textContent = 'Ver imagen';
+      showBtn.style.display = img.src ? 'inline-block' : 'none';
 
+      const wrap = qs('#md-galeria-wrap');
+      const gal = qs('#md-galeria');
+      gal.innerHTML = '';
+      wrap.style.display = 'none';
+      if (card.dataset.type === 'emprendimiento') {
+        try {
+          const arr = JSON.parse(card.dataset.galeria || '[]');
+          if (arr.length) {
+            arr.forEach(fn => {
+              const el = document.createElement('img');
+              el.src = `/img/${fn}`;
+              el.alt = 'Producto';
+              el.style.maxWidth = '140px';
+              el.style.height = 'auto';
+              el.style.borderRadius = '8px';
+              el.style.border = '1px solid #eee';
+              gal.appendChild(el);
+            });
+            wrap.style.display = 'block';
+          }
+        } catch {}
+      }
+
+      // Clonar acciones visibles desde la card hacia el modal
       const modalActions = qs('.modal-actions', modal);
       modalActions.innerHTML = '';
-      qsa('.aprobar, .rechazar', card).forEach(b => modalActions.appendChild(b.cloneNode(true)));
+      qsa('.aprobar, .rechazar, .eliminar', card).forEach(b => modalActions.appendChild(b.cloneNode(true)));
 
       enlazarAcciones(modal, {
         id: card.dataset.id,
@@ -89,6 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Toggle imagen en modal
   const toggleImageBtn = qs('#show-image');
   const modalImage = qs('#modal-image');
   if (toggleImageBtn && modalImage) {
@@ -106,50 +161,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal(){ modal.classList.remove('active'); overlay.classList.remove('active'); }
 });
 
-/* ===========================================================
-   icono tres puntos y toggle de acciones en tarjetas
-=========================================================== */
-document.addEventListener('DOMContentLoaded', () => {
-  qsa('.card').forEach(card => {
-    if (!card.querySelector('.toggle-actions')) {
-      const t = document.createElement('button');
-      t.className = 'toggle-actions';
-      t.setAttribute('aria-label', 'Mostrar acciones');
-      t.innerHTML = "<i class='bx bx-dots-horizontal-rounded'></i>";
-      card.prepend(t);
-
-      t.addEventListener('click', (e) => {
-        e.stopPropagation();
-        card.classList.toggle('show-actions');
-      });
-    }
-
-    // Enlazar "Aprobar/Rechazar" directamente en la tarjeta
-    enlazarAcciones(card, {
-      id: card.dataset.id,
-      tipo: card.dataset.type,
-      onSuccess: () => card.remove()
-    });
-  });
-
-  // Cerrar los toggles al hacer click fuera de cualquier tarjeta
-  document.addEventListener('click', (e) => {
-    if (!e.target.closest('.card')) {
-      qsa('.card.show-actions').forEach(c => c.classList.remove('show-actions'));
-    }
-  });
-});
-
-/* ===========================================================
-   responsive: cerrar sidebar al navegar
-=========================================================== */
+// Responsive: cerrar sidebar
 document.addEventListener("DOMContentLoaded", function () {
   const sidebarToggle = document.getElementById("sidebar-toggle");
   const sidebarLinks = document.querySelectorAll(".sidebar a");
-
-  sidebarLinks.forEach(link => {
-    link.addEventListener("click", () => {
-      sidebarToggle.checked = false;
-    });
-  });
+  sidebarLinks.forEach(link => link.addEventListener("click", () => { sidebarToggle.checked = false; }));
 });

@@ -25,18 +25,20 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
   qsa('.aprobar, .rechazar, .eliminar', container).forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
-      const isReject = btn.classList.contains('rechazar');
       const isDelete = btn.classList.contains('eliminar');
+      const isReject = !isDelete && btn.classList.contains('rechazar');
+      const isApprove = btn.classList.contains('aprobar');
       let motivo = null;
+
+      if (isDelete) {
+        const ok = confirm('¿Seguro que desea eliminar esto?');
+        if (!ok) return;
+      }
 
       if (isReject) {
         motivo = prompt('Ingrese el motivo del rechazo:');
         if (motivo === null) return;
         if (!motivo.trim()) { alert('Debe ingresar un motivo.'); return; }
-      }
-      if (isDelete) {
-        const ok = confirm('¿Seguro que desea eliminar este elemento? Esta acción no se puede deshacer.');
-        if (!ok) return;
       }
 
       try {
@@ -54,11 +56,11 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
   });
 }
 
+
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = qs('#overlay');
   const modal = qs('#modal-detalles');
 
-  // Botón de "tres puntos" para mostrar aprobar/rechazar en cada card
   qsa('.card').forEach(card => {
     if (!card.querySelector('.toggle-actions')) {
       const t = document.createElement('button');
@@ -143,7 +145,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Toggle imagen en modal
   const toggleImageBtn = qs('#show-image');
   const modalImage = qs('#modal-image');
   if (toggleImageBtn && modalImage) {

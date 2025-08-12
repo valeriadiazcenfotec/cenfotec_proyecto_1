@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/css/admin.css" />
 </head>
 <body>
-  <!-- Hamburguesa responsive -->
+
   <input type="checkbox" id="sidebar-toggle">
   <label for="sidebar-toggle" class="hamburger"><i class='bx bx-menu'></i></label>
 
@@ -36,7 +36,7 @@
     <!-- Contenido -->
     <main class="admin-content">
       <!-- ===== helpers EJS ===== -->
-      <% 
+      <%
         const safeArr = a => Array.isArray(a) ? a : [];
         const A   = safeArr(anuncios);
         const E   = safeArr(eventos);
@@ -136,7 +136,7 @@
               <p><%- i.description || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>
@@ -184,7 +184,7 @@
               <p><%- i.description || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>
@@ -228,7 +228,7 @@
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>
@@ -272,7 +272,7 @@
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>
@@ -318,31 +318,13 @@
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <!-- Eliminar oculto; visible al abrir 3 puntos -->
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>
         </div>
 
-        <h3 class="subsection">Rechazados</h3>
-        <div class="card-grid">
-          <% EMP.filter(x=> x.status === 'rechazado').forEach(i => { %>
-            <div class="card"
-              data-id="<%= i._id %>" data-type="emprendimiento"
-              data-titulo="<%- i.nombreN || i.nombre || 'Emprendimiento' %>"
-              data-descripcion="<%- i.descripcion || '' %>"
-              data-imagen="<%- i.imagenNegocio ? ('/img/' + i.imagenNegocio) : '' %>"
-              data-galeria='<%- JSON.stringify(i.imagenesProductos || []) %>'
-              data-propietario-nombre="<%- userName(i.userId) %>">
-              <h4><%- i.nombreN || i.nombre || 'Emprendimiento' %></h4>
-              <p><%- i.descripcion || '' %></p>
-              <div class="button-group">
-                <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <!-- Rechazado: sin eliminar (según tu requerimiento) -->
-              </div>
-            </div>
-          <% }) %>
-        </div>
       </section>
 
       <!-- ===== Ofertas ===== -->
@@ -382,7 +364,7 @@
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
                 <button class="detalles"  data-modal-target="modal-detalles">Ver Detalles</button>
-                <button class="eliminar">Eliminar</button>
+                <button class="rechazar eliminar">Eliminar</button>
               </div>
             </div>
           <% }) %>

@@ -8,6 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="/css/menu.css">
+    <script defer src="/js/Ofertas.js"></script>
     <title>Ofertas</title>
 </head>
 
@@ -79,37 +80,28 @@
     </div>
 
     <!-- Contenido dinámico de ofertas -->
-    <div class="sales_content">
-        <div class="sales_card">
-            <% ofertas.forEach(oferta=> { %>
-                <div class="item">
-                    <h3 class="offer-tittle">
-                        <%= oferta.titulo %>
-                    </h3>
-                    <img src="/img/<%= oferta.imagenOferta %>" alt="<%= oferta.titulo %>" class="offer-image">
-                    <p class="offer-description">
-                        <%= oferta.descripcion %>
-                    </p>
-                </div>
-                <% }) %>
-        </div>
+    <main>
+        <section class="sales_content" id="lista-ofertas">
+            <p class="sec-vacia">Cargando...</p>
+        </section>
+    </main>
 
-        <!-- Footer -->
-        <footer class="footer-principal">
-            <div class="footer-contenido">
-                <div class="footer-info">
-                    <p><strong>Comunidad Unida</strong></p>
-                    <p>Flores, Heredia</p>
-                    <p>Tel: +506 8888-8888</p>
-                </div>
-                <div class="footer-creditos">
-                    <p>Diseñado por <strong>W4U</strong></p>
-                    <a href="../Landing/landing_page.html" target="_blank">
-                        <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
-                    </a>
-                </div>
+    <!-- Footer -->
+    <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <p><strong>Comunidad Unida</strong></p>
+                <p>Flores, Heredia</p>
+                <p>Tel: +506 8888-8888</p>
             </div>
-        </footer>
+            <div class="footer-creditos">
+                <p>Diseñado por <strong>W4U</strong></p>
+                <a href="../Landing/landing_page.html" target="_blank">
+                    <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+                </a>
+            </div>
+        </div>
+    </footer>
     </div>
 
     <!-- Scripts -->

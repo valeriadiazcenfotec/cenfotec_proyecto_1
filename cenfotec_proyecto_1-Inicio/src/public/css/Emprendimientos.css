@@ -313,7 +313,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.6);
     color: rgba(255, 255, 255, 0.466);
     border: none;
     padding-left: 8px;

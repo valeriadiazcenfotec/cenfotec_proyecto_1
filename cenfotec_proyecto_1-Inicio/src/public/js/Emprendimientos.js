@@ -1,10 +1,10 @@
 (() => {
-  const $  = (s, el=document) => el.querySelector(s);
-  const $$ = (s, el=document) => [...el.querySelectorAll(s)];
+  const $ = (s, el = document) => el.querySelector(s);
+  const $$ = (s, el = document) => [...el.querySelectorAll(s)];
   const cont = $('#lista-emprendimientos');
 
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
   }[m]));
 
   async function getJSON(url) {
@@ -20,7 +20,7 @@
       .join('');
 
     return `
-      <a class="business_card" href="/emprendimientos/${emp._id}">
+      <div class="business_card">
         <div class="column">
           <h2 class="business_title">${esc(emp?.nombreN || '')}</h2>
           <p class="business_description">${esc(emp?.descripcion || '')}</p>
@@ -34,7 +34,7 @@
           <button class="anterior"><i class='bx bx-arrow-left-stroke'></i></button>
           <button class="siguiente"><i class='bx bx-arrow-right'></i></button>
         </div>
-      </a>
+      </div>
     `;
   }
 
@@ -62,7 +62,7 @@
     activarCarruseles();
   }
 
-  async function cargar(categoria='all') {
+  async function cargar(categoria = 'all') {
     cont.innerHTML = '<p>Cargando...</p>';
     const qs = categoria === 'all' ? '' : `?categoria=${encodeURIComponent(categoria)}`;
     try {
@@ -79,7 +79,7 @@
       e.preventDefault();
       const cat = a.getAttribute('data-cat') || 'all';
       cargar(cat);
-      history.replaceState(null, '', cat==='all' ? '/emprendimientos' : `/emprendimientos?categoria=${encodeURIComponent(cat)}`);
+      history.replaceState(null, '', cat === 'all' ? '/emprendimientos' : `/emprendimientos?categoria=${encodeURIComponent(cat)}`);
     });
   });
 

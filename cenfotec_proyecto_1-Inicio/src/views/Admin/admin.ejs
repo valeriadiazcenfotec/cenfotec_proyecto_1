@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +13,7 @@
   <!-- Estilos -->
   <link rel="stylesheet" href="/css/admin.css" />
 </head>
+
 <body>
   <!-- Hamburguesa responsive -->
   <input type="checkbox" id="sidebar-toggle">
@@ -38,58 +40,122 @@
       <!-- ===== Resumen ===== -->
       <section id="resumen">
         <h1>Resumen administrativo</h1>
-        <%
-          const safeArr = a => Array.isArray(a) ? a : [];
-          const A   = safeArr(anuncios);
-          const E   = safeArr(eventos);
-          const R   = safeArr(reportes);
-          const Q   = safeArr(quejas);
+        <% const safeArr=a=> Array.isArray(a) ? a : [];
+          const A = safeArr(anuncios);
+          const E = safeArr(eventos);
+          const R = safeArr(reportes);
+          const Q = safeArr(quejas);
           const EMP = safeArr(emprendimientos);
-          const O   = safeArr(ofertas);
-          const U   = safeArr(usuarios);
+          const O = safeArr(ofertas);
+          const U = safeArr(usuarios);
 
           const aPend = A.filter(x => x.status === 'pendiente').length;
-          const aApr  = A.filter(x => x.status === 'aprobado').length;
+          const aApr = A.filter(x => x.status === 'aprobado').length;
 
           const ePend = E.filter(x => x.status === 'pendiente').length;
-          const eApr  = E.filter(x => x.status === 'aprobado').length;
+          const eApr = E.filter(x => x.status === 'aprobado').length;
 
           const repPend = R.filter(x => x.tipo === 'reporte' && x.estado === 'pendiente').length;
-          const repApr  = R.filter(x => x.tipo === 'reporte' && x.estado === 'aprobado').length;
+          const repApr = R.filter(x => x.tipo === 'reporte' && x.estado === 'aprobado').length;
 
-          const qjPend  = Q.filter(x => x.estado === 'pendiente').length;
-          const qjApr   = Q.filter(x => x.estado === 'aprobado').length;
+          const qjPend = Q.filter(x => x.estado === 'pendiente').length;
+          const qjApr = Q.filter(x => x.estado === 'aprobado').length;
 
           // Si un emprendimiento no trae status, lo consideramos pendiente
           const empPend = EMP.filter(x => (x.status || 'pendiente') === 'pendiente').length;
-          const empApr  = EMP.filter(x => x.status === 'aprobado').length;
+          const empApr = EMP.filter(x => x.status === 'aprobado').length;
 
-          const ofPend  = O.filter(x => (x.status || 'pendiente') === 'pendiente').length;
-          const ofApr   = O.filter(x => x.status === 'aprobado').length;
+          const ofPend = O.filter(x => (x.status || 'pendiente') === 'pendiente').length;
+          const ofApr = O.filter(x => x.status === 'aprobado').length;
 
           const usersCount = U.length;
-        %>
-        <div class="summary-container">
-          <div class="summary-card"><p class="summary-title">Usuarios</p><p class="summary-value"><%= usersCount %></p></div>
+          %>
+          <div class="summary-container">
+            <div class="summary-card">
+              <p class="summary-title">Usuarios</p>
+              <p class="summary-value">
+                <%= usersCount %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Anuncios aprobados</p><p class="summary-value"><%= aApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Anuncios por revisar</p><p class="summary-value"><%= aPend %></p></div>
+            <div class="summary-card">
+              <p class="summary-title">Anuncios aprobados</p>
+              <p class="summary-value">
+                <%= aApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Anuncios por revisar</p>
+              <p class="summary-value">
+                <%= aPend %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Eventos aprobados</p><p class="summary-value"><%= eApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Eventos por revisar</p><p class="summary-value"><%= ePend %></p></div>
+            <div class="summary-card">
+              <p class="summary-title">Eventos aprobados</p>
+              <p class="summary-value">
+                <%= eApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Eventos por revisar</p>
+              <p class="summary-value">
+                <%= ePend %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Reportes aprobados</p><p class="summary-value"><%= repApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Reportes por revisar</p><p class="summary-value"><%= repPend %></p></div>
+            <div class="summary-card">
+              <p class="summary-title">Reportes aprobados</p>
+              <p class="summary-value">
+                <%= repApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Reportes por revisar</p>
+              <p class="summary-value">
+                <%= repPend %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Quejas aprobadas</p><p class="summary-value"><%= qjApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Quejas por revisar</p><p class="summary-value"><%= qjPend %></p></div>
+            <div class="summary-card">
+              <p class="summary-title">Quejas aprobadas</p>
+              <p class="summary-value">
+                <%= qjApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Quejas por revisar</p>
+              <p class="summary-value">
+                <%= qjPend %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Empr. publicados</p><p class="summary-value"><%= empApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Empr. por revisar</p><p class="summary-value"><%= empPend %></p></div>
+            <div class="summary-card">
+              <p class="summary-title">Empr. publicados</p>
+              <p class="summary-value">
+                <%= empApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Empr. por revisar</p>
+              <p class="summary-value">
+                <%= empPend %>
+              </p>
+            </div>
 
-          <div class="summary-card"><p class="summary-title">Ofertas publicadas</p><p class="summary-value"><%= ofApr %></p></div>
-          <div class="summary-card"><p class="summary-title">Ofertas por revisar</p><p class="summary-value"><%= ofPend %></p></div>
-        </div>
+            <div class="summary-card">
+              <p class="summary-title">Ofertas publicadas</p>
+              <p class="summary-value">
+                <%= ofApr %>
+              </p>
+            </div>
+            <div class="summary-card">
+              <p class="summary-title">Ofertas por revisar</p>
+              <p class="summary-value">
+                <%= ofPend %>
+              </p>
+            </div>
+          </div>
       </section>
 
       <!-- ===== Anuncios ===== -->
@@ -98,26 +164,29 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% A.filter(a => a.status === 'pendiente').forEach(i => { %>
+          <% A.filter(a=> a.status === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="anuncio">
               <h4><%- i.name %></h4>
-              <p><%- (i.description || '').slice(0, 120) %><%= (i.description && i.description.length > 120) ? '…' : '' %></p>
+              <p><%- (i.description || '' ).slice(0, 120) %>
+                  <%= (i.description && i.description.length> 120) ? '…' : '' %></p>
               <div class="button-group">
-                <form method="post" action="/anuncios/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/anuncios/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/anuncios/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button>
+                </form>
+                <form method="post" action="/anuncios/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% A.filter(a => a.status === 'aprobado').forEach(i => { %>
+          <% A.filter(a=> a.status === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.name %></h4>
               <p><%- i.description || '' %></p>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -127,26 +196,28 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% E.filter(e => e.status === 'pendiente').forEach(i => { %>
+          <% E.filter(e=> e.status === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="evento">
               <h4><%- i.name %></h4>
               <p>Lugar: <%- i.place || '—' %></p>
               <div class="button-group">
-                <form method="post" action="/eventos/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/eventos/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/eventos/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button>
+                </form>
+                <form method="post" action="/eventos/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% E.filter(e => e.status === 'aprobado').forEach(i => { %>
+          <% E.filter(e=> e.status === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.name %></h4>
               <p><%- i.description || '' %></p>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -156,26 +227,29 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% R.filter(r => r.tipo === 'reporte' && r.estado === 'pendiente').forEach(i => { %>
+          <% R.filter(r=> r.tipo === 'reporte' && r.estado === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="reporte">
               <h4><%- i.titulo %></h4>
-              <p><%- (i.descripcion || '').slice(0,120) %><%= (i.descripcion && i.descripcion.length>120)?'…':'' %></p>
+              <p><%- (i.descripcion || '' ).slice(0,120) %>
+                  <%= (i.descripcion && i.descripcion.length>120)?'…':'' %></p>
               <div class="button-group">
-                <form method="post" action="/reportes/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/reportes/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/reportes/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button>
+                </form>
+                <form method="post" action="/reportes/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% R.filter(r => r.tipo === 'reporte' && r.estado === 'aprobado').forEach(i => { %>
+          <% R.filter(r=> r.tipo === 'reporte' && r.estado === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.titulo %></h4>
               <p><%- i.descripcion || '' %></p>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -185,26 +259,29 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% Q.filter(r => r.estado === 'pendiente').forEach(i => { %>
+          <% Q.filter(r=> r.estado === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="queja">
               <h4><%- i.titulo %></h4>
-              <p><%- (i.descripcion || '').slice(0,120) %><%= (i.descripcion && i.descripcion.length>120)?'…':'' %></p>
+              <p><%- (i.descripcion || '' ).slice(0,120) %>
+                  <%= (i.descripcion && i.descripcion.length>120)?'…':'' %></p>
               <div class="button-group">
-                <form method="post" action="/reportes/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/reportes/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/reportes/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button>
+                </form>
+                <form method="post" action="/reportes/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicadas</h3>
         <div class="card-grid">
-          <% Q.filter(r => r.estado === 'aprobado').forEach(i => { %>
+          <% Q.filter(r=> r.estado === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.titulo %></h4>
               <p><%- i.descripcion || '' %></p>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -214,29 +291,32 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% EMP.filter(x => (x.status || 'pendiente') === 'pendiente').forEach(i => { %>
+          <% EMP.filter(x=> (x.status || 'pendiente') === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="emprendimiento">
               <h4><%- i.nombreN || i.nombre || 'Emprendimiento' %></h4>
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
-                <form method="post" action="/emprendimientos/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/emprendimientos/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/emprendimientos/<%= i._id %>/aprobar"><button
+                    class="aprobar">Aprobar</button></form>
+                <form method="post" action="/emprendimientos/<%= i._id %>/rechazar"><button
+                    class="rechazar">Rechazar</button></form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% EMP.filter(x => x.status === 'aprobado').forEach(i => { %>
+          <% EMP.filter(x=> x.status === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.nombreN || i.nombre || 'Emprendimiento' %></h4>
               <p><%- i.descripcion || '' %></p>
               <div class="button-group">
-                <form method="post" action="/emprendimientos/<%= i._id %>/rechazar"><button class="rechazar">Eliminar</button></form>
+                <form method="post" action="/emprendimientos/<%= i._id %>/rechazar"><button
+                    class="rechazar">Eliminar</button></form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -246,29 +326,32 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% O.filter(x => (x.status || 'pendiente') === 'pendiente').forEach(i => { %>
+          <% O.filter(x=> (x.status || 'pendiente') === 'pendiente').forEach(i => { %>
             <div class="card" data-id="<%= i._id %>" data-type="oferta">
               <h4><%- i.titulo || 'Oferta' %></h4>
               <p><%- i.negocio || i.emprendimiento || '' %></p>
               <div class="button-group">
-                <form method="post" action="/ofertas/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button></form>
-                <form method="post" action="/ofertas/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button></form>
+                <form method="post" action="/ofertas/<%= i._id %>/aprobar"><button class="aprobar">Aprobar</button>
+                </form>
+                <form method="post" action="/ofertas/<%= i._id %>/rechazar"><button class="rechazar">Rechazar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
 
         <h3 class="subsection">Publicadas</h3>
         <div class="card-grid">
-          <% O.filter(x => x.status === 'aprobado').forEach(i => { %>
+          <% O.filter(x=> x.status === 'aprobado').forEach(i => { %>
             <div class="card">
               <h4><%- i.titulo || 'Oferta' %></h4>
               <p><%- i.negocio || i.emprendimiento || '' %></p>
               <div class="button-group">
-                <form method="post" action="/ofertas/<%= i._id %>/rechazar"><button class="rechazar">Eliminar</button></form>
+                <form method="post" action="/ofertas/<%= i._id %>/rechazar"><button class="rechazar">Eliminar</button>
+                </form>
               </div>
             </div>
-          <% }) %>
+            <% }) %>
         </div>
       </section>
 
@@ -287,7 +370,7 @@
               </tr>
             </thead>
             <tbody>
-              <% U.forEach(u => { %>
+              <% U.forEach(u=> { %>
                 <tr>
                   <td><%- u.name %></td>
                   <td><%- u.user %></td>
@@ -295,7 +378,7 @@
                   <td><%- u.email %></td>
                   <td><%- u.role %></td>
                 </tr>
-              <% }) %>
+                <% }) %>
             </tbody>
           </table>
         </div>
@@ -311,7 +394,8 @@
           <p><strong>Adjunto:</strong></p>
           <div class="button-group modal-actions"></div>
           <button class="detalles" id="show-image" style="margin-top:1rem;">Ver imagen</button>
-          <img id="modal-image" alt="Archivo adjunto" style="max-width:100%; height:auto; display:none; margin-top:10px;">
+          <img id="modal-image" alt="Archivo adjunto"
+            style="max-width:100%; height:auto; display:none; margin-top:10px;">
         </div>
       </div>
       <div id="overlay"></div>
@@ -338,4 +422,5 @@
   <!-- Scripts -->
   <script defer src="/js/admin.js"></script>
 </body>
+
 </html>

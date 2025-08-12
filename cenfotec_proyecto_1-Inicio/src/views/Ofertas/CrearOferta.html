@@ -10,15 +10,6 @@
     <link rel="stylesheet" href="css/VistaGenerica.css">
     <title>Emprendimientos</title>
 
-    <!--<div class="head_content">
-
-        <img src="imagenes login/W4U LOGO.jpeg" alt="Logo W4U" class="logo" />
-        <div class="community_name">Nombre comunidad</div>
-
-        <input type="text" placeholder="Buscar" class="search_input">
-
-    </div>-->
-
 </head>
 
 <body>
@@ -103,25 +94,22 @@
 
 
     <div class="main-content">
-
-        <div type="button" class="backButton"><a href="/emprendimientos">Volver</a></div>
-
-        <form class="nuevoEmprendimiento" id="nuevoEmprendimiento" action="/addbusiness" method="POST"
+        <form class="nuevoEmprendimiento" id="nuevoEmprendimiento" action="/addoffer" method="POST"
             enctype="multipart/form-data">
-            <h1>Rellena los datos de tu emprendimiento</h1>
+            <h1>Rellena los datos de tu oferta</h1>
 
             <div>
-                <label for="nombre">Nombre del emprendimiento</label>
-                <input type="text" id="nombre" name="nombre" placeholder="Escribe el nombre..." required>
+                <label for="nombre">Titulo de la oferta</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe el titulo..." required>
             </div>
 
             <div>
-                <label for="descripcion">Descripción del emprendimiento</label>
-                <textarea id="descripcion" name="descripcion" placeholder="Describe tu negocio..." required></textarea>
+                <label for="descripcion">Descripción de la oferta</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Describe tu oferta..." required></textarea>
             </div>
 
             <div>
-                <label for="categoria">Categoría del negocio</label>
+                <label for="categoria">Categoría de la oferta</label>
                 <select id="categoria" name="categoria" required>
                     <option value="">Selecciona una categoría</option>
                     <option value="alimentos">Alimentos</option>
@@ -132,13 +120,8 @@
             </div>
 
             <div>
-                <label for="imagenNegocio">Imagen del negocio</label>
+                <label for="imagenNegocio">Imagen de la oferta</label>
                 <input type="file" id="imagenNegocio" name="imagenNegocio" accept="image/*" required>
-            </div>
-
-            <div>
-                <label for="imagenesProductos">Imágenes de los productos</label>
-                <input type="file" id="imagenesProductos" name="imagenesProductos[]" accept="image/*" multiple required>
             </div>
 
             <button type="submit">Enviar formulario</button>
@@ -163,64 +146,12 @@
         </div>
     </footer>
 
-
-
-    <script>
-        // Obtener todos los carruseles en la página
-        const carruseles = document.querySelectorAll('.carrusel');
-        carruseles.forEach((carrusel) => {
-            const imagenes = carrusel.querySelector('.imagenes');
-            const total = carrusel.querySelectorAll('.imagenes img').length;
-            const anterior = carrusel.querySelector('.anterior');
-            const siguiente = carrusel.querySelector('.siguiente');
-            let indice = 0;
-            // Función para actualizar el carrusel
-            function actualizarCarrusel() {
-                imagenes.style.transform = `translateX(-${indice * 400}px)`;
-            }
-            // Botón siguiente
-            siguiente.addEventListener('click', () => {
-                indice = (indice + 1) % total;
-                actualizarCarrusel();
-            });
-            // Botón anterior
-            anterior.addEventListener('click', () => {
-                indice = (indice - 1 + total) % total;
-                actualizarCarrusel();
-            });
-            // Opcional: avance automático cada 5 segundos
-            /*setInterval(() => {
-                indice = (indice + 1) % total;
-                actualizarCarrusel();
-            }, 5000);*/
-        });
-
-
-        document.querySelectorAll('.visualize').forEach(button => {
-            button.addEventListener('click', function () {
-                const emprendimiento = this.closest('.business_card');
-
-                // Obtiene el contenido de los elementos con clases genéricas
-                const titulo = emprendimiento.querySelector('.business_title').textContent;
-                const descripcion = emprendimiento.querySelector('.business_description').textContent;
-                const imagenSrc = emprendimiento.querySelector('.imagen').src;
-                const imagenAlt = emprendimiento.querySelector('.imagen').alt;
-
-                // Redirige a la página genérica con los datos en la URL
-                window.location.href = `VistaEmprendimientos.html?titulo=${titulo}&descripcion=${descripcion}&imagenSrc=${imagenSrc}&imagenAlt=${imagenAlt}`;
-            });
-        });
-
-    </script>
-
-
-
 </body>
 
 
 
-<script src="../menu/menu.js"></script>
-<script src="js/VistaGenerica.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/crearoferta.js"></script>
 <script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
 
 </html>

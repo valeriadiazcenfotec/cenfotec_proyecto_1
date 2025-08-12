@@ -310,6 +310,15 @@ app.post('/reportes/:id/rechazar', requireAuth, requireRole('admin'), async (req
     catch { res.status(500).json({ error: 'Error al rechazar reporte' }); }
 });
 
+app.post('/quejas/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+    try { await Reporte.findByIdAndUpdate(req.params.id, { estado: 'aprobado', rejectionReason: null }); res.json({ message: 'Reporte aprobado' }); }
+    catch { res.status(500).json({ error: 'Error al aprobar reporte' }); }
+});
+app.post('/quejas/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+    try { await Reporte.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Reporte rechazado' }); }
+    catch { res.status(500).json({ error: 'Error al rechazar reporte' }); }
+});
+
 /*   EMPRENDIMIENTOS   */
 app.get('/emprendimientos', async (req, res) => {
     const categoria = req.query.categoria || 'all';

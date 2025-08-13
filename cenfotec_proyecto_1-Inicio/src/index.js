@@ -254,9 +254,6 @@ app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req,
     try { await evento.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
     catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
 });
-<<<<<<< HEAD
-
-
 app.get('/eventos_mios', requireAuth, async (req, res) => {
     try {
         const misEventos = await evento.find({ userId: req.session.user.id })
@@ -267,8 +264,6 @@ app.get('/eventos_mios', requireAuth, async (req, res) => {
         res.status(500).json({ error: 'Error al obtener tus anuncios' });
     }
 });
-=======
->>>>>>> 80bc97eeb5414671465871feda1d406abcb75cf8
 
 /*   REPORTES   */
 const storageReportes = multer.diskStorage({

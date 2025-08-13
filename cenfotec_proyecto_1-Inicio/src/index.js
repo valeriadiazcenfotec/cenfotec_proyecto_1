@@ -174,26 +174,26 @@ app.get('/Anuncios', (req, res) => res.redirect(301, '/anuncios'));
 // Crear nueva petición de anuncio
 app.post('/peticion_anuncio', requireAuth, async (req, res) => {
     const { name, description, image } = req.body;
-    
+
     // Validación básica
     if (!name || !description) {
         return res.status(400).json({ error: 'Nombre y descripción son obligatorios' });
     }
-    
+
     try {
-        const nuevoAnuncio = new anuncio({ 
-            name: name.trim(), 
-            description: description.trim(), 
+        const nuevoAnuncio = new anuncio({
+            name: name.trim(),
+            description: description.trim(),
             image: image || null,
             userId: req.session.user.id,
             estado: 'pendiente',
             fecha: new Date()
         });
-        
+
         await nuevoAnuncio.save();
-        res.status(200).json({ 
+        res.status(200).json({
             message: 'Anuncio guardado exitosamente',
-            id: nuevoAnuncio._id 
+            id: nuevoAnuncio._id
         });
     } catch (error) {
         console.error('Error guardando anuncio:', error);
@@ -203,121 +203,121 @@ app.post('/peticion_anuncio', requireAuth, async (req, res) => {
 
 // Obtener todos los anuncios (solo para admin)
 app.get('/anuncios_todos', requireAuth, requireRole('admin'), async (req, res) => {
-    try { 
+    try {
         const anuncios = await anuncio.find()
             .populate('userId', 'name user')
             .sort({ fecha: -1 });
         res.json(anuncios);
     } catch (error) {
         console.error('Error obteniendo anuncios:', error);
-        res.status(500).json({ error: 'Error al obtener los anuncios' }); 
+        res.status(500).json({ error: 'Error al obtener los anuncios' });
     }
 });
 
 // Obtener anuncios públicos (aprobados)
 app.get('/anuncios_publicos', async (req, res) => {
-    try { 
+    try {
         const anunciosAprobados = await anuncio.find({ estado: 'aprobado' })
             .select('-userId -rejectionReason') // No exponer datos sensibles
             .sort({ fecha: -1 });
         res.json(anunciosAprobados);
     } catch (error) {
         console.error('Error obteniendo anuncios públicos:', error);
-        res.status(500).json({ error: 'Error al obtener los anuncios' }); 
+        res.status(500).json({ error: 'Error al obtener los anuncios' });
     }
 });
 
 // Obtener mis anuncios (del usuario logueado)
 app.get('/anuncios_mios', requireAuth, async (req, res) => {
-    try { 
+    try {
         const misAnuncios = await anuncio.find({ userId: req.session.user.id })
             .sort({ fecha: -1 });
         res.json(misAnuncios);
     } catch (error) {
         console.error('Error obteniendo anuncios del usuario:', error);
-        res.status(500).json({ error: 'Error al obtener tus anuncios' }); 
+        res.status(500).json({ error: 'Error al obtener tus anuncios' });
     }
 });
 
 // Cancelar petición de anuncio (solo el autor puede cancelar sus propios anuncios pendientes)
 app.delete('/peticion_anuncio_cancelar', requireAuth, async (req, res) => {
     const { _id } = req.body;
-    
+
     if (!_id) {
         return res.status(400).json({ error: 'ID del anuncio es requerido' });
     }
-    
-    try { 
+
+    try {
         // Buscar el anuncio y verificar que pertenece al usuario
-        const anuncioAEliminar = await anuncio.findOne({ 
-            _id, 
-            userId: req.session.user.id 
+        const anuncioAEliminar = await anuncio.findOne({
+            _id,
+            userId: req.session.user.id
         });
-        
+
         if (!anuncioAEliminar) {
             return res.status(404).json({ error: 'Anuncio no encontrado o no tienes permisos' });
         }
-        
+
         // Solo permitir cancelar anuncios pendientes
         if (anuncioAEliminar.estado !== 'pendiente') {
-            return res.status(400).json({ 
-                error: 'Solo se pueden cancelar anuncios pendientes' 
+            return res.status(400).json({
+                error: 'Solo se pueden cancelar anuncios pendientes'
             });
         }
-        
+
         await anuncio.deleteOne({ _id });
-        res.json({ message: 'Anuncio eliminado correctamente' }); 
+        res.json({ message: 'Anuncio eliminado correctamente' });
     } catch (error) {
         console.error('Error eliminando anuncio:', error);
-        res.status(500).json({ error: 'Error al eliminar anuncio' }); 
+        res.status(500).json({ error: 'Error al eliminar anuncio' });
     }
 });
 
 // Aprobar anuncio (solo admin)
 app.post('/anuncios/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
-    try { 
+    try {
         const resultado = await anuncio.findByIdAndUpdate(
-            req.params.id, 
-            { 
-                estado: 'aprobado', 
-                rejectionReason: null 
+            req.params.id,
+            {
+                estado: 'aprobado',
+                rejectionReason: null
             },
             { new: true }
         );
-        
+
         if (!resultado) {
             return res.status(404).json({ error: 'Anuncio no encontrado' });
         }
-        
-        res.json({ message: 'Anuncio aprobado exitosamente', anuncio: resultado }); 
+
+        res.json({ message: 'Anuncio aprobado exitosamente', anuncio: resultado });
     } catch (error) {
         console.error('Error aprobando anuncio:', error);
-        res.status(500).json({ error: 'Error al aprobar anuncio' }); 
+        res.status(500).json({ error: 'Error al aprobar anuncio' });
     }
 });
 
 // Rechazar anuncio (solo admin)
 app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
     const { reason } = req.body;
-    
-    try { 
+
+    try {
         const resultado = await anuncio.findByIdAndUpdate(
-            req.params.id, 
-            { 
-                estado: 'rechazado', 
-                rejectionReason: reason || 'Sin motivo especificado' 
+            req.params.id,
+            {
+                estado: 'rechazado',
+                rejectionReason: reason || 'Sin motivo especificado'
             },
             { new: true }
         );
-        
+
         if (!resultado) {
             return res.status(404).json({ error: 'Anuncio no encontrado' });
         }
-        
-        res.json({ message: 'Anuncio rechazado', anuncio: resultado }); 
+
+        res.json({ message: 'Anuncio rechazado', anuncio: resultado });
     } catch (error) {
         console.error('Error rechazando anuncio:', error);
-        res.status(500).json({ error: 'Error al rechazar anuncio' }); 
+        res.status(500).json({ error: 'Error al rechazar anuncio' });
     }
 });
 
@@ -332,17 +332,17 @@ app.get('/anuncios/stats', requireAuth, requireRole('admin'), async (req, res) =
                 }
             }
         ]);
-        
+
         const resultado = {
             pendientes: 0,
             aprobados: 0,
             rechazados: 0
         };
-        
+
         stats.forEach(stat => {
             resultado[stat._id + 's'] = stat.count;
         });
-        
+
         res.json(resultado);
     } catch (error) {
         console.error('Error obteniendo estadísticas:', error);
@@ -497,7 +497,7 @@ const storageEmpr = multer.diskStorage({
 const uploadEmpr = multer({ storage: storageEmpr });
 
 app.post('/addbusiness',
-    requireAuth, requireRole('emprendedor', 'admin'),
+    requireAuth,
     uploadEmpr.fields([
         { name: 'imagenNegocio', maxCount: 1 },
         { name: 'imagenesProductos[]', maxCount: 10 }
@@ -628,67 +628,67 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
 
 // ANUNCIOS
 app.delete('/anuncios/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await anuncio.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Anuncio eliminado' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar anuncio' });
-  }
+    try {
+        const r = await anuncio.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Anuncio eliminado' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar anuncio' });
+    }
 });
 
 // EVENTOS
 app.delete('/eventos/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await evento.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Evento eliminado' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar evento' });
-  }
+    try {
+        const r = await evento.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Evento eliminado' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar evento' });
+    }
 });
 
 // REPORTES 
 app.delete('/reportes/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await Reporte.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Reporte eliminado' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar reporte' });
-  }
+    try {
+        const r = await Reporte.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Reporte eliminado' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar reporte' });
+    }
 });
 
 app.delete('/quejas/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await Reporte.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Queja eliminada' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar queja' });
-  }
+    try {
+        const r = await Reporte.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Queja eliminada' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar queja' });
+    }
 });
 
 // EMPRENDIMIENTOS
 app.delete('/emprendimientos/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await Emprendimiento.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Emprendimiento eliminado' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar emprendimiento' });
-  }
+    try {
+        const r = await Emprendimiento.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Emprendimiento eliminado' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar emprendimiento' });
+    }
 });
 
 // OFERTAS
 app.delete('/ofertas/:id', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await oferta.deleteOne({ _id: req.params.id });
-    if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-    res.json({ message: 'Oferta eliminada' });
-  } catch (e) {
-    console.error(e); res.status(500).json({ error: 'Error al eliminar oferta' });
-  }
+    try {
+        const r = await oferta.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Oferta eliminada' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar oferta' });
+    }
 });
 
 //   Levantar el servidor 

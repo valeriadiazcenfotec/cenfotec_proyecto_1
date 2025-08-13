@@ -84,9 +84,7 @@ function renderMisAnuncios(container, items) {
             <p class="montserrat-medium descripcion parrafo">${esc(item.description)}</p>
             <button class="estado montserrat-semibold ${getEstadoClass(item.estado)}">${estadoTexto}</button>
             ${item.estado === 'pendiente' ? `
-                <button class="boton_especifico_peticiones" data-id="${item._id}">
-                    <p class="montserrat-medium">Cancelar</p>
-                </button>
+               
             ` : ''}
             ${item.estado === 'rechazado' && item.rejectionReason ? `
                 <div class="rechazo-razon">
@@ -99,7 +97,7 @@ function renderMisAnuncios(container, items) {
     });
 }
 
-// ---- Cargar anuncios totales desde backend ----
+// ---- Cargar anuncios totales desde backend (solo aprobados) ----
 async function cargarAnunciosTotales() {
     if (!contenedorAnunciosTotales) return;
     try {
@@ -108,7 +106,9 @@ async function cargarAnunciosTotales() {
             throw new Error('Error cargando anuncios totales');
         }
         const anuncios = await res.json();
-        renderAnunciosTotales(contenedorAnunciosTotales, anuncios);
+        // Filtrar solo anuncios aprobados
+        const anunciosAprobados = anuncios.filter(anuncio => anuncio.estado === 'aprobado');
+        renderAnunciosTotales(contenedorAnunciosTotales, anunciosAprobados);
     } catch (e) {
         console.warn('Error cargando /anuncios_todos:', e);
         contenedorAnunciosTotales.innerHTML = `<p style="text-align:center; color: #ff6b6b;">Error cargando anuncios.</p>`;

@@ -11,6 +11,7 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
   if (accionEs === 'rechazar') {
     opts.body = JSON.stringify({ reason: motivo || '' });
   }
+
   if (accionEs === 'eliminar') {
     url = `/${tipo}s/${id}`;
     opts = { method: 'DELETE' };
@@ -21,24 +22,24 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
   return r.json().catch(() => ({}));
 }
 
+
 function enlazarAcciones(container, { id, tipo, onSuccess }) {
   qsa('.aprobar, .rechazar, .eliminar', container).forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       const isDelete = btn.classList.contains('eliminar');
       const isReject = !isDelete && btn.classList.contains('rechazar');
-      const isApprove = btn.classList.contains('aprobar');
       let motivo = null;
-
-      if (isDelete) {
-        const ok = confirm('¿Seguro que desea eliminar esto?');
-        if (!ok) return;
-      }
 
       if (isReject) {
         motivo = prompt('Ingrese el motivo del rechazo:');
         if (motivo === null) return;
         if (!motivo.trim()) { alert('Debe ingresar un motivo.'); return; }
+      }
+
+      if (isDelete) {
+        const ok = confirm('¿Seguro que desea eliminar este elemento?');
+        if (!ok) return;
       }
 
       try {
@@ -61,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const overlay = qs('#overlay');
   const modal = qs('#modal-detalles');
 
+  // Botón de "tres puntos" para mostrar acciones en cada card
   qsa('.card').forEach(card => {
     if (!card.querySelector('.toggle-actions')) {
       const t = document.createElement('button');
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // Enlazar acciones directas en la tarjeta
     enlazarAcciones(card, {
       id: card.dataset.id,
       tipo: card.dataset.type,
@@ -88,52 +91,55 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = btn.closest('.card');
       if (!card) return;
 
-      const mdTitulo = qs('#md-titulo');
-      const mdDesc   = qs('#md-descripcion');
-      const mdLugar  = qs('#md-lugar');
-      const mdFecha  = qs('#md-fecha');
-      const mdProp   = qs('#md-propietario');
+      // Campos comunes del modal
+      qs('#md-titulo').textContent       = card.dataset.titulo || '';
+      qs('#md-descripcion').textContent  = card.dataset.descripcion || '';
+      const mdLugar = qs('#md-lugar');   if (mdLugar)  mdLugar.textContent = card.dataset.lugar || '';
+      const mdFecha = qs('#md-fecha');   if (mdFecha)  mdFecha.textContent = card.dataset.fecha || '';
+      const mdProp  = qs('#md-propietario'); if (mdProp) mdProp.textContent = card.dataset.propietarioNombre || card.dataset.propietario || '';
 
-      mdTitulo.textContent = card.dataset.titulo || '';
-      mdDesc.textContent   = card.dataset.descripcion || '';
-      mdLugar.textContent  = card.dataset.lugar || '';
-      mdFecha.textContent  = card.dataset.fecha || '';
-      mdProp.textContent   = card.dataset.propietario || '';
-
+      // Imagen principal
       const img = qs('#modal-image');
       const showBtn = qs('#show-image');
-      img.src = card.dataset.imagen || '';
-      img.style.display = 'none';
-      showBtn.textContent = 'Ver imagen';
-      showBtn.style.display = img.src ? 'inline-block' : 'none';
-
-      const wrap = qs('#md-galeria-wrap');
-      const gal = qs('#md-galeria');
-      gal.innerHTML = '';
-      wrap.style.display = 'none';
-      if (card.dataset.type === 'emprendimiento') {
-        try {
-          const arr = JSON.parse(card.dataset.galeria || '[]');
-          if (arr.length) {
-            arr.forEach(fn => {
-              const el = document.createElement('img');
-              el.src = `/img/${fn}`;
-              el.alt = 'Producto';
-              el.style.maxWidth = '140px';
-              el.style.height = 'auto';
-              el.style.borderRadius = '8px';
-              el.style.border = '1px solid #eee';
-              gal.appendChild(el);
-            });
-            wrap.style.display = 'block';
-          }
-        } catch {}
+      if (img && showBtn) {
+        img.src = card.dataset.imagen || '';
+        img.style.display = 'none';
+        showBtn.textContent = 'Ver imagen';
+        showBtn.style.display = img.src ? 'inline-block' : 'none';
       }
 
-      // Clonar acciones visibles desde la card hacia el modal
+      // Galería (para emprendimientos/ofertas)
+      const wrap = qs('#md-galeria-wrap');
+      const gal = qs('#md-galeria');
+      if (wrap && gal) {
+        gal.innerHTML = '';
+        wrap.style.display = 'none';
+        if (card.dataset.galeria) {
+          try {
+            const arr = JSON.parse(card.dataset.galeria || '[]');
+            if (arr.length) {
+              arr.forEach(fn => {
+                const el = document.createElement('img');
+                el.src = `/img/${fn}`;
+                el.alt = 'Producto';
+                el.style.maxWidth = '140px';
+                el.style.height = 'auto';
+                el.style.borderRadius = '8px';
+                el.style.border = '1px solid #eee';
+                gal.appendChild(el);
+              });
+              wrap.style.display = 'block';
+            }
+          } catch {}
+        }
+      }
+
+      // Acciones en el modal: clonar aprobar/rechazar y, si existe, eliminar
       const modalActions = qs('.modal-actions', modal);
       modalActions.innerHTML = '';
-      qsa('.aprobar, .rechazar, .eliminar', card).forEach(b => modalActions.appendChild(b.cloneNode(true)));
+      qsa('.aprobar, .rechazar, .eliminar', card).forEach(b => {
+        modalActions.appendChild(b.cloneNode(true));
+      });
 
       enlazarAcciones(modal, {
         id: card.dataset.id,
@@ -145,6 +151,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Toggle imagen en modal
   const toggleImageBtn = qs('#show-image');
   const modalImage = qs('#modal-image');
   if (toggleImageBtn && modalImage) {
@@ -162,9 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function closeModal(){ modal.classList.remove('active'); overlay.classList.remove('active'); }
 });
 
-// Responsive: cerrar sidebar
+
 document.addEventListener("DOMContentLoaded", function () {
   const sidebarToggle = document.getElementById("sidebar-toggle");
   const sidebarLinks = document.querySelectorAll(".sidebar a");
-  sidebarLinks.forEach(link => link.addEventListener("click", () => { sidebarToggle.checked = false; }));
+  sidebarLinks.forEach(link => {
+    link.addEventListener("click", () => { sidebarToggle.checked = false; });
+  });
 });

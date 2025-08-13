@@ -11,6 +11,24 @@ const peticionAnuncioScheme = mongoose.Schema({
     },
     image:{
         type:String,
+    },
+    estado: {
+        type: String,
+        enum: ['pendiente', 'aprobado', 'rechazado'],
+        default: 'pendiente'
+    },
+    rejectionReason: {
+        type: String,
+        default: null
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Registro',
+        required: true
+    },
+    fecha: {
+        type: Date,
+        default: Date.now
     }
 
 },{versionKey:false})   

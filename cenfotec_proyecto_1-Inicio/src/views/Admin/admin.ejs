@@ -105,7 +105,7 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% A.filter(a=> a.status === 'pendiente').forEach(i => { %>
+          <% A.filter(a=> a.estado === 'pendiente').forEach(i => { %>
             <div class="card"
               data-id="<%= i._id %>" data-type="anuncio"
               data-titulo="<%- i.name %>"
@@ -125,7 +125,7 @@
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% A.filter(a=> a.status === 'aprobado').forEach(i => { %>
+          <% A.filter(a=> a.estado === 'aprobado').forEach(i => { %>
             <div class="card"
               data-id="<%= i._id %>" data-type="anuncio"
               data-titulo="<%- i.name %>"
@@ -149,7 +149,7 @@
 
         <h3 class="subsection">Por revisar</h3>
         <div class="card-grid">
-          <% E.filter(e=> e.status === 'pendiente').forEach(i => { %>
+          <% E.filter(e=> e.estado === 'pendiente').forEach(i => { %>
             <div class="card"
               data-id="<%= i._id %>" data-type="evento"
               data-titulo="<%- i.name %>"
@@ -171,7 +171,7 @@
 
         <h3 class="subsection">Publicados</h3>
         <div class="card-grid">
-          <% E.filter(e=> e.status === 'aprobado').forEach(i => { %>
+          <% E.filter(e=> e.estado === 'aprobado').forEach(i => { %>
             <div class="card"
               data-id="<%= i._id %>" data-type="evento"
               data-titulo="<%- i.name %>"

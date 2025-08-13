@@ -374,6 +374,23 @@ button.rechazar:hover { background-color: #c9302c; }
   #sidebar-toggle:checked + .hamburger { display: none; }
   .hamburger { display: block; }
 
+  /* Usuarios: solo mostrar Nombre (col 1) y Usuario (col 2) */
+  #usuarios .user-table th:nth-child(n+3),
+  #usuarios .user-table td:nth-child(n+3) {
+    display: none;
+  }
+
+  #usuarios .table-container table {
+    table-layout: fixed;   /* columnas 1 y 2 ocupan todo el ancho disponible */
+    width: 100%;
+  }
+  #usuarios .user-table th,
+  #usuarios .user-table td {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    word-wrap: break-word;
+  }
+
   .sidebar {
     position: fixed;
     top: 0;

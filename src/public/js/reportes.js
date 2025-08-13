@@ -56,11 +56,9 @@
   function cardHTML(it) {
     const fecha = it?.fecha ? new Date(it.fecha).toLocaleDateString() : '';
     const img   = it?.imagen ? `<img src="/img/reportes/${it.imagen}" alt="Archivo adjunto" class="imagen-reporte">` : '';
-    const estado = it?.estado ? `<span class="estado ${it.estado}">${capitalizar(it.estado)}</span>` : '';
     return `
       <div class="tarjeta">
         <h4>${esc(it?.titulo)}</h4>
-        ${estado}
         <p>${esc(it?.descripcion || '')}</p>
         ${img}
         ${fecha ? `<div class="fecha">${fecha}</div>` : ''}
@@ -68,26 +66,34 @@
     `;
   }
 
-  function renderMisReportes(tbody, items) {
-    if (!tbody) return;
-    tbody.innerHTML = '';
-    if (!items?.length) {
-      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No tienes reportes aún.</td></tr>`;
-      return;
-    }
-    items.forEach((it, i) => {
-      const tr = document.createElement('tr');
-      const fecha = it?.fecha ? new Date(it.fecha).toLocaleDateString() : '';
-      tr.innerHTML = `
-        <td>${it._id?.slice(-6) || String(i + 1).padStart(3, '0')}</td>
-        <td>${capitalizar(it.tipo)}</td>
-        <td>${esc(it.titulo)}</td>
-        <td>${fecha}</td>
-        <td><span class="estado ${it.estado}">${capitalizar(it.estado)}</span></td>
-      `;
-      tbody.appendChild(tr);
-    });
+function renderMisReportes(tbody, items) {
+  if (!tbody) return;
+  tbody.innerHTML = '';
+  if (!items?.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No tienes reportes aún.</td></tr>`;
+    return;
   }
+
+  items.forEach((it) => {
+    const tr = document.createElement('tr');
+    const fecha = it?.fecha ? new Date(it.fecha).toLocaleDateString() : '';
+
+    // Motivo de rechazo si existe
+    const motivoRechazo = (it.estado === 'rechazado')
+      ? (it.rejectionReason || it.motivoRechazo || it.motivo || '').toString().trim()
+      : '';
+
+    tr.innerHTML = `
+      <td>${capitalizar(it.tipo)}</td>
+      <td>${esc(it.titulo)}</td>
+      <td>${fecha}</td>
+      <td><span class="estado ${it.estado}">${capitalizar(it.estado)}</span></td>
+      <td>${motivoRechazo ? esc(motivoRechazo) : '—'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
 
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const capitalizar = (s) => (s || '').charAt(0).toUpperCase() + (s || '').slice(1);
@@ -177,7 +183,6 @@
     });
   });
 
-  // ======= init =======
   document.addEventListener('DOMContentLoaded', async () => {
     await cargarPublicos();
     await cargarMios();

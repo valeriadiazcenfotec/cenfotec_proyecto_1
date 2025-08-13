@@ -246,7 +246,7 @@ textarea {
 
 .estado.pendiente { background-color: #FFC72C; }
 .estado.rechazado { background-color: #D9534F; }
-.estado.publicado { background-color: #80C342; }
+.estado.aprobado { background-color: #80C342; }
 
 /* IMAGEN EN REPORTES */
 .imagen-reporte {

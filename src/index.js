@@ -175,14 +175,51 @@ app.get('/anuncios', (req, res) => {
 });
 app.get('/Anuncios', (req, res) => res.redirect(301, '/anuncios'));
 
-app.post('/peticion_anuncio', async (req, res) => {
+// Crear nueva petición de anuncio
+app.post('/peticion_anuncio', requireAuth, async (req, res) => {
+  try {
     const { name, description, image } = req.body;
-    try {
-        await new anuncio({ name, description, image }).save();
-        res.status(200).json({ message: 'Anuncio guardado' });
-    } catch {
-        res.status(500).json({ error: 'Error al guardar anuncio' });
+
+    // Validación básica
+    if (!name || !description) {
+      return res.status(400).json({ error: 'Nombre y descripción son obligatorios' });
     }
+
+    // Validar userId de sesión
+    const userId = req.session?.user?.id;
+    const isValidId = userId && require('mongoose').Types.ObjectId.isValid(userId);
+    if (!isValidId) {
+      console.error('peticion_anuncio: userId inválido o ausente en sesión:', userId);
+      return res.status(401).json({ error: 'Sesión inválida. Vuelve a iniciar sesión.' });
+    }
+
+    const nuevoAnuncio = new anuncio({
+      name: name.trim(),
+      description: description.trim(),
+      image: image || null,
+      userId,
+      estado: 'pendiente',
+      fecha: new Date()
+    });
+
+    await nuevoAnuncio.save();
+
+    res.status(200).json({
+      message: 'Anuncio guardado exitosamente',
+      id: nuevoAnuncio._id
+    });
+  } catch (error) {
+    console.error('Error guardando anuncio:', error);
+
+    const isValidation = error?.name === 'ValidationError';
+    const status = isValidation ? 400 : 500;
+
+    res.status(status).json({
+      error: 'Error al guardar anuncio',
+      message: error?.message || null,
+      details: error?.errors || null
+    });
+  }
 });
 
 app.get('/anuncios_todos', async (req, res) => {
@@ -201,11 +238,11 @@ app.delete('/peticion_anuncio_cancelar', async (req, res) => {
 });
 
 app.post('/anuncios/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
-    try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null }); res.json({ message: 'Anuncio aprobado' }); }
+    try { await anuncio.findByIdAndUpdate(req.params.id, { estado: 'aprobado', rejectionReason: null }); res.json({ message: 'Anuncio aprobado' }); }
     catch { res.status(500).json({ error: 'Error al aprobar anuncio' }); }
 });
 app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
-    try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Anuncio rechazado' }); }
+    try { await anuncio.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Anuncio rechazado' }); }
     catch { res.status(500).json({ error: 'Error al rechazar anuncio' }); }
 });
 

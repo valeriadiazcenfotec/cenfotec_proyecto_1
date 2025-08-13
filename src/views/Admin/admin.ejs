@@ -52,8 +52,8 @@
           return f ? f.name : '';
         };
 
-        const aPend  = A.filter(x => x.status === 'pendiente').length;
-        const aApr   = A.filter(x => x.status === 'aprobado').length;
+        const aPend  = A.filter(x => x.estado === 'pendiente').length;
+        const aApr   = A.filter(x => x.estado === 'aprobado').length;
 
         const ePend  = E.filter(x => x.status === 'pendiente').length;
         const eApr   = E.filter(x => x.status === 'aprobado').length;

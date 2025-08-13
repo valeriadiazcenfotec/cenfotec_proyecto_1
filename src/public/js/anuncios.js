@@ -225,72 +225,75 @@ function toBase64(file) {
 
 // ---- Enviar nuevo anuncio ----
 if (form) {
-    form.addEventListener('submit', async e => {
-        e.preventDefault();
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
 
-        const file = $('#file')?.files?.[0];
-        const name = $('#nombre')?.value.trim();
-        const description = $('#anuncio_en_curso')?.value.trim();
+    const file = $('#file')?.files?.[0] || null;
+    const name = $('#nombre')?.value?.trim() || '';
+    const description = $('#anuncio_en_curso')?.value?.trim() || '';
 
-        if (!name || !description) {
-            alert('Nombre y descripción son obligatorios');
-            return;
+    if (!name || !description) {
+      alert('Nombre y descripción son obligatorios');
+      return;
+    }
+    // Validar sesion
+    const isLoggedIn = await verificarSesion();
+    if (!isLoggedIn) {
+      alert('Debes iniciar sesión para crear un anuncio');
+      window.location.href = '/login';
+      return;
+    }
+
+    try {
+      let imageBase64 = null;
+      if (file) {
+        const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+          alert('Solo se permiten imágenes (JPG, PNG, WEBP)');
+          return;
         }
+        imageBase64 = await toBase64(file);
+      }
 
-        // Verificar que el usuario esté autenticado
-        const isLoggedIn = await verificarSesion();
-        if (!isLoggedIn) {
-            alert('Debes iniciar sesión para crear un anuncio');
-            window.location.href = '/login';
-            return;
+      const res = await fetch('/peticion_anuncio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ name, description, image: imageBase64 }),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        const ct = res.headers.get('content-type') || '';
+        const payload = ct.includes('application/json') ? await res.json().catch(()=>null) : null;
+        const text = payload?.error || payload?.message || (await res.text().catch(()=>'')) || 'Error enviando anuncio';
+
+        console.error('Fallo /peticion_anuncio', { status: res.status, text });
+
+        if (res.status === 401) {
+          alert('Debes iniciar sesión para crear un anuncio');
+          window.location.href = '/login';
+          return;
         }
+        alert(`No se pudo enviar el anuncio (HTTP ${res.status}). ${text}`);
+        return;
+      }
 
-        try {
-            let imageBase64 = null;
-            if (file) {
-                // Validar tipo de archivo
-                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-                if (!validTypes.includes(file.type)) {
-                    alert('Solo se permiten imágenes (JPG, PNG, WEBP)');
-                    return;
-                }
-                
-                imageBase64 = await toBase64(file);
-            }
+      const data = await res.json();
+      console.log('Anuncio enviado:', data);
+      alert('¡Anuncio enviado exitosamente! Estará visible una vez que sea aprobado por un administrador.');
 
-            const res = await fetch('/peticion_anuncio', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, description, image: imageBase64 }),
-                credentials: 'include',
-            });
+      form.reset();
+      cerrarFormulario();
 
-            if (!res.ok) {
-                if (res.status === 401) {
-                    alert('Debes iniciar sesión para crear un anuncio');
-                    window.location.href = '/login';
-                    return;
-                }
-                throw new Error('Error enviando anuncio');
-            }
-            
-            const data = await res.json();
-            console.log('Anuncio enviado:', data);
-            alert('¡Anuncio enviado exitosamente! Estará visible una vez que sea aprobado por un administrador.');
-
-            // Limpiar formulario
-            form.reset();
-            cerrarFormulario();
-
-            // Recargar anuncios después de enviar
-            await cargarMios();
-            await cargarAnunciosTotales();
-        } catch (error) {
-            console.error('Error enviando anuncio:', error);
-            alert('No se pudo enviar el anuncio. Intente de nuevo.');
-        }
-    });
+      await cargarMios();
+      await cargarAnunciosTotales();
+    } catch (error) {
+      console.error('Error enviando anuncio:', error);
+      alert('No se pudo enviar el anuncio. Revisa la consola y vuelve a intentar.');
+    }
+  });
 }
+
 
 // ---- Cancelar/eliminar anuncio ----
 document.addEventListener('click', async e => {

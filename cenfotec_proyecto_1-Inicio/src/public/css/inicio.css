@@ -16,15 +16,16 @@ main {
     flex: 1;
 }
 
-/* Greeting (keeps your original h2 look) */
 #inicio-greeting {
     display: block;
     margin-bottom: 0;
     padding-left: 20px;
 }
 
-/* -------- Username + Salir (top-right) -------- */
-/* Make nav a positioning context without altering its layout from menu.css */
+.fa-gear {
+  color: white;
+}
+
 .nav { position: relative; }
 
 .nav__user {
@@ -66,17 +67,16 @@ main {
   border-color: transparent;
 }
 
-/* Mobile: keep it visible on right side of the bar */
+
 @media (max-width: 1118px) {
   .nav__user {
     top: .8rem;
     transform: none;
     right: 1rem;
-    z-index: 101; /* above the slide-down panel */
+    z-index: 101;
   }
 }
 
-/* (Optional safety) ensure dropdowns sit above anything */
 .dropdown__menu,
 .dropdown__submenu { z-index: 200; }
 

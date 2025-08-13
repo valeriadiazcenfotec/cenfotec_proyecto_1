@@ -3,6 +3,7 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 
 const contenedorAnuncios = $('#peticiones_todas');
+const contenedorAnunciosTotales = $('.anuncios_totales');
 const form = $('#form');
 const inputBusqueda = $('#busca');
 const modalDetalle = $('#carta_muestra');
@@ -34,6 +35,30 @@ function getEstadoClass(estado) {
         case 'pendiente':
         default: return 'estado-pendiente';
     }
+}
+
+// ---- Renderizar lista de anuncios totales ----
+function renderAnunciosTotales(container, items) {
+    if (!container) return;
+    container.innerHTML = '';
+    if (!items?.length) {
+        container.innerHTML = `<p style="text-align:center; color: #666;">No hay anuncios disponibles.</p>`;
+        return;
+    }
+    items.forEach(item => {
+        const div = document.createElement('div');
+        div.classList.add('anuncio');
+        div.dataset.id = item._id;
+        
+        div.innerHTML = `
+            <div class="categoria"><p class="montserrat-medium">General</p></div>
+            <h2 class="montserrat-semibold nombre">${esc(item.name)}</h2>
+            <p class="montserrat-medium descripcion parrafo">${esc(item.description)}</p>
+            <button class="estado montserrat-semibold estado-aprobado">Aprobado</button>
+            <div class="fecha"><p class="montserrat-medium">${formatearFecha(item.fecha)}</p></div>
+        `;
+        container.appendChild(div);
+    });
 }
 
 // ---- Renderizar lista de mis anuncios ----
@@ -74,6 +99,22 @@ function renderMisAnuncios(container, items) {
     });
 }
 
+// ---- Cargar anuncios totales desde backend ----
+async function cargarAnunciosTotales() {
+    if (!contenedorAnunciosTotales) return;
+    try {
+        const res = await fetch('/anuncios_todos');
+        if (!res.ok) {
+            throw new Error('Error cargando anuncios totales');
+        }
+        const anuncios = await res.json();
+        renderAnunciosTotales(contenedorAnunciosTotales, anuncios);
+    } catch (e) {
+        console.warn('Error cargando /anuncios_todos:', e);
+        contenedorAnunciosTotales.innerHTML = `<p style="text-align:center; color: #ff6b6b;">Error cargando anuncios.</p>`;
+    }
+}
+
 // ---- Cargar mis anuncios desde backend ----
 async function cargarMios() {
     if (!contenedorAnuncios) return;
@@ -97,6 +138,14 @@ async function cargarMios() {
 
 // ---- Mostrar modal detalle al hacer clic en anuncio (excluye botón cancelar) ----
 function activarClicksAnuncios() {
+    // Para anuncios totales
+    contenedorAnunciosTotales?.addEventListener('click', e => {
+        const anuncioEl = e.target.closest('.anuncio');
+        if (!anuncioEl) return;
+
+        mostrarModalDetalle(anuncioEl);
+    });
+
     // Para mis anuncios en peticiones
     contenedorAnuncios?.addEventListener('click', e => {
         const anuncioEl = e.target.closest('.anuncio');
@@ -136,8 +185,15 @@ function activarBusqueda() {
     inputBusqueda.addEventListener('keyup', e => {
         const texto = e.target.value.toLowerCase();
         
+        // Buscar en anuncios totales
+        $('.anuncios_totales .anuncio').forEach(anuncio => {
+            const nombre = anuncio.querySelector('.nombre').textContent.toLowerCase();
+            const descripcion = anuncio.querySelector('.descripcion').textContent.toLowerCase();
+            anuncio.style.display = (nombre.includes(texto) || descripcion.includes(texto)) ? 'block' : 'none';
+        });
+        
         // Buscar en mis anuncios
-        $$('#peticiones_todas .anuncio').forEach(anuncio => {
+        $('#peticiones_todas .anuncio').forEach(anuncio => {
             const nombre = anuncio.querySelector('.nombre').textContent.toLowerCase();
             const descripcion = anuncio.querySelector('.descripcion').textContent.toLowerCase();
             anuncio.style.display = (nombre.includes(texto) || descripcion.includes(texto)) ? 'block' : 'none';
@@ -228,6 +284,7 @@ if (form) {
 
             // Recargar anuncios después de enviar
             await cargarMios();
+            await cargarAnunciosTotales();
         } catch (error) {
             console.error('Error enviando anuncio:', error);
             alert('No se pudo enviar el anuncio. Intente de nuevo.');
@@ -299,6 +356,9 @@ window.peticionCerrada = () => {
 
 // ---- Inicialización ----
 document.addEventListener('DOMContentLoaded', async () => {
+    // Cargar anuncios totales primero (no requiere autenticación)
+    await cargarAnunciosTotales();
+    
     // Cargar mis anuncios si el usuario está autenticado
     const isLoggedIn = await verificarSesion();
     if (isLoggedIn) {

@@ -544,6 +544,20 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
     }
 });
 
+app.post('/usuarios/:id/promover', requireAuth, requireRole('admin'), async (req, res) => {
+  try {
+    const r = await register.updateOne(
+      { _id: req.params.id },
+      { $set: { role: 'admin' } }
+    );
+    if (r.matchedCount === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
+    res.json({ message: 'Usuario promovido a admin' });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: 'Error al promover usuario' });
+  }
+});
+
 // Opcion para eliminar data desde admin
 
 // ANUNCIOS - eliminar

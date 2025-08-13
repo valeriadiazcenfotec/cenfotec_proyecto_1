@@ -16,7 +16,6 @@
   function cardHTML(off) {
     const portada = off?.imagenOferta ? `/img/${off.imagenOferta}` : '/img/placeholder.png';
     return `
-      <div class="sales_content">
         <div class="sales_card">
                 <div class="item">
                     <h3 class="offer-tittle">${esc(off?.titulo || '')}</h3>

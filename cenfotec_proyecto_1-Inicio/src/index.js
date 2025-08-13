@@ -166,189 +166,46 @@ app.get('/logout', (req, res) => {
     });
 });
 
-/*   ANUNCIOS   */app.get('/anuncios', (req, res) => {
+/*   ANUNCIOS   */
+app.get('/anuncios', (req, res) => {
     res.render('Anuncios/anuncios.html');
 });
 app.get('/Anuncios', (req, res) => res.redirect(301, '/anuncios'));
 
-// Crear nueva petición de anuncio
-app.post('/peticion_anuncio', requireAuth, async (req, res) => {
+app.post('/peticion_anuncio', async (req, res) => {
     const { name, description, image } = req.body;
-
-    // Validación básica
-    if (!name || !description) {
-        return res.status(400).json({ error: 'Nombre y descripción son obligatorios' });
-    }
-
     try {
-        const nuevoAnuncio = new anuncio({
-            name: name.trim(),
-            description: description.trim(),
-            image: image || null,
-            userId: req.session.user.id,
-            estado: 'pendiente',
-            fecha: new Date()
-        });
-
-        await nuevoAnuncio.save();
-        res.status(200).json({
-            message: 'Anuncio guardado exitosamente',
-            id: nuevoAnuncio._id
-        });
-    } catch (error) {
-        console.error('Error guardando anuncio:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        await new anuncio({ name, description, image }).save();
+        res.status(200).json({ message: 'Anuncio guardado' });
+    } catch {
+        res.status(500).json({ error: 'Error al guardar anuncio' });
     }
 });
 
-// Obtener todos los anuncios (solo para admin)
-app.get('/anuncios_todos', requireAuth, requireRole('admin'), async (req, res) => {
-    try {
-        const anuncios = await anuncio.find()
-            .populate('userId', 'name user')
-            .sort({ fecha: -1 });
-        res.json(anuncios);
-    } catch (error) {
-        console.error('Error obteniendo anuncios:', error);
-        res.status(500).json({ error: 'Error al obtener los anuncios' });
-    }
+app.get('/anuncios_todos', async (req, res) => {
+    try { res.json(await anuncio.find()); }
+    catch { res.status(500).json({ error: 'Error al obtener los anuncios' }); }
 });
 
-// Obtener anuncios públicos (aprobados)
 app.get('/anuncios_publicos', async (req, res) => {
-    try {
-        const anunciosAprobados = await anuncio.find({ estado: 'aprobado' })
-            .select('-userId -rejectionReason') // No exponer datos sensibles
-            .sort({ fecha: -1 });
-        res.json(anunciosAprobados);
-    } catch (error) {
-        console.error('Error obteniendo anuncios públicos:', error);
-        res.status(500).json({ error: 'Error al obtener los anuncios' });
-    }
+    try { res.json(await anuncio.find({ status: 'aprobado' })); }
+    catch { res.status(500).json({ error: 'Error al obtener los anuncios' }); }
 });
 
-// Obtener mis anuncios (del usuario logueado)
-app.get('/anuncios_mios', requireAuth, async (req, res) => {
-    try {
-        const misAnuncios = await anuncio.find({ userId: req.session.user.id })
-            .sort({ fecha: -1 });
-        res.json(misAnuncios);
-    } catch (error) {
-        console.error('Error obteniendo anuncios del usuario:', error);
-        res.status(500).json({ error: 'Error al obtener tus anuncios' });
-    }
+app.delete('/peticion_anuncio_cancelar', async (req, res) => {
+    try { await anuncio.deleteOne({ _id: req.body._id }); res.json({ message: 'Anuncio eliminado correctamente' }); }
+    catch { res.status(500).json({ error: 'Error al eliminar anuncio' }); }
 });
 
-// Cancelar petición de anuncio (solo el autor puede cancelar sus propios anuncios pendientes)
-app.delete('/peticion_anuncio_cancelar', requireAuth, async (req, res) => {
-    const { _id } = req.body;
-
-    if (!_id) {
-        return res.status(400).json({ error: 'ID del anuncio es requerido' });
-    }
-
-    try {
-        // Buscar el anuncio y verificar que pertenece al usuario
-        const anuncioAEliminar = await anuncio.findOne({
-            _id,
-            userId: req.session.user.id
-        });
-
-        if (!anuncioAEliminar) {
-            return res.status(404).json({ error: 'Anuncio no encontrado o no tienes permisos' });
-        }
-
-        // Solo permitir cancelar anuncios pendientes
-        if (anuncioAEliminar.estado !== 'pendiente') {
-            return res.status(400).json({
-                error: 'Solo se pueden cancelar anuncios pendientes'
-            });
-        }
-
-        await anuncio.deleteOne({ _id });
-        res.json({ message: 'Anuncio eliminado correctamente' });
-    } catch (error) {
-        console.error('Error eliminando anuncio:', error);
-        res.status(500).json({ error: 'Error al eliminar anuncio' });
-    }
-});
-
-// Aprobar anuncio (solo admin)
 app.post('/anuncios/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
-    try {
-        const resultado = await anuncio.findByIdAndUpdate(
-            req.params.id,
-            {
-                estado: 'aprobado',
-                rejectionReason: null
-            },
-            { new: true }
-        );
-
-        if (!resultado) {
-            return res.status(404).json({ error: 'Anuncio no encontrado' });
-        }
-
-        res.json({ message: 'Anuncio aprobado exitosamente', anuncio: resultado });
-    } catch (error) {
-        console.error('Error aprobando anuncio:', error);
-        res.status(500).json({ error: 'Error al aprobar anuncio' });
-    }
+    try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null }); res.json({ message: 'Anuncio aprobado' }); }
+    catch { res.status(500).json({ error: 'Error al aprobar anuncio' }); }
 });
-
-// Rechazar anuncio (solo admin)
 app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
-    const { reason } = req.body;
-
-    try {
-        const resultado = await anuncio.findByIdAndUpdate(
-            req.params.id,
-            {
-                estado: 'rechazado',
-                rejectionReason: reason || 'Sin motivo especificado'
-            },
-            { new: true }
-        );
-
-        if (!resultado) {
-            return res.status(404).json({ error: 'Anuncio no encontrado' });
-        }
-
-        res.json({ message: 'Anuncio rechazado', anuncio: resultado });
-    } catch (error) {
-        console.error('Error rechazando anuncio:', error);
-        res.status(500).json({ error: 'Error al rechazar anuncio' });
-    }
+    try { await anuncio.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Anuncio rechazado' }); }
+    catch { res.status(500).json({ error: 'Error al rechazar anuncio' }); }
 });
 
-// Obtener estadísticas de anuncios (para admin)
-app.get('/anuncios/stats', requireAuth, requireRole('admin'), async (req, res) => {
-    try {
-        const stats = await anuncio.aggregate([
-            {
-                $group: {
-                    _id: '$estado',
-                    count: { $sum: 1 }
-                }
-            }
-        ]);
-
-        const resultado = {
-            pendientes: 0,
-            aprobados: 0,
-            rechazados: 0
-        };
-
-        stats.forEach(stat => {
-            resultado[stat._id + 's'] = stat.count;
-        });
-
-        res.json(resultado);
-    } catch (error) {
-        console.error('Error obteniendo estadísticas:', error);
-        res.status(500).json({ error: 'Error al obtener estadísticas' });
-    }
-});
 /*   Transporte   */
 app.get('/transporte', (req, res) => {
     res.render('Transporte/transporte.html');
@@ -393,10 +250,6 @@ app.post('/eventos/:id/aprobar', requireAuth, requireRole('admin'), async (req, 
 app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
     try { await evento.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
     catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
-});
-app.get('/eventos_mios', requireAuth, async (req, res) => {
-    try { res.json(await evento.find({ userId: req.session.user.id }).sort({ fecha: -1 })); }
-    catch { res.status(500).json({ error: 'Error al obtener tus eventos' }); }
 });
 
 /*   REPORTES   */
@@ -467,25 +320,31 @@ app.post('/quejas/:id/rechazar', requireAuth, requireRole('admin'), async (req, 
 });
 
 /*   EMPRENDIMIENTOS   */
-app.get('/emprendimientos', async (req, res) => {
-    const categoria = req.query.categoria || 'all';
+app.get('/emprendimientos', (req, res) => {
     const role = req.session?.user?.role;
-    let emprendimientos;
-    if (categoria === 'all') {
-        emprendimientos = await Emprendimiento.find();
-    } else {
-        emprendimientos = await Emprendimiento.find({
-            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
-        });
-    }
-    (role !== 'emprendedor') ? res.render('Emprendimientos/emprendimientos', { emprendimientos, categoria }) : res.render('Emprendimientos/emprendedor', { emprendimientos, categoria })
-
+    const categoria = (req.query.categoria || 'all').trim();
+    (role !== 'emprendedor' && role !== 'admin') ? res.render('Emprendimientos/emprendimientos', { Emprendimiento, categoria }) : res.render('Emprendimientos/emprendedor', { Emprendimiento, categoria })
 });
 app.get('/Emprendimientos', (req, res) => res.redirect(301, '/emprendimientos'));
 
-app.get("/nuevo%20emprendimiento", requireAuth, (req, res) => {
-    res.render("Emprendimientos/VistaGenerica.html")
-})
+app.get('/emprendimientos_publicos', async (req, res) => {
+    try {
+        const categoria = (req.query.categoria || 'all').trim();
+        const base = { status: 'aprobado' };
+        const query = (categoria === 'all')
+            ? base
+            : { ...base, categoria: { $regex: `^${categoria}$`, $options: 'i' } };
+        const docs = await Emprendimiento.find(query).sort({ _id: -1 }).lean();
+        res.json(docs);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Error al obtener los emprendimientos públicos' });
+    }
+});
+
+app.get('/nuevo%20emprendimiento', requireAuth, (req, res) => {
+    res.render('Emprendimientos/VistaGenerica.html');
+});
 
 const storageEmpr = multer.diskStorage({
     destination: (req, file, cb) => cb(null, dirImg),
@@ -496,8 +355,7 @@ const storageEmpr = multer.diskStorage({
 });
 const uploadEmpr = multer({ storage: storageEmpr });
 
-app.post('/addbusiness',
-    requireAuth,
+app.post('/addbusiness', requireAuth,
     uploadEmpr.fields([
         { name: 'imagenNegocio', maxCount: 1 },
         { name: 'imagenesProductos[]', maxCount: 10 }
@@ -510,7 +368,11 @@ app.post('/addbusiness',
                 descripcion: req.body.descripcion,
                 categoria: req.body.categoria,
                 imagenNegocio: files?.imagenNegocio ? files.imagenNegocio[0].filename : '',
-                imagenesProductos: files?.['imagenesProductos[]'] ? files['imagenesProductos[]'].map(f => f.filename) : []
+                imagenesProductos: files?.['imagenesProductos[]']
+                    ? files['imagenesProductos[]'].map(f => f.filename)
+                    : [],
+                userId: req.session.user.id, // dueño
+                status: 'pendiente'          // queda pendiente hasta aprobación
             }).save();
             res.redirect('/nuevo%20emprendimiento');
         } catch (e) {
@@ -522,27 +384,35 @@ app.post('/addbusiness',
 
 /*  OFERTAS */
 
-app.get("/ofertas", async (req, res) => {
-    const categoria = req.query.categoria || 'all';
+app.get('/ofertas', (req, res) => {
     const role = req.session?.user?.role;
-    let ofertas;
-    if (categoria === 'all') {
-        ofertas = await oferta.find();
-    } else {
-        ofertas = await oferta.find({
-            categoria: { $regex: `^${categoria.trim()}$`, $options: 'i' }
-        });
-    }
-    (role !== 'emprendedor') ? res.render('Ofertas/Ofertas', { ofertas, categoria }) : res.render('Ofertas/OfertasEmprendedor', { ofertas, categoria })
+    const categoria = (req.query.categoria || 'all').trim();
+    (role !== 'emprendedor' && role !== 'admin') ? res.render('Ofertas/Ofertas', { oferta, categoria }) : res.render('Ofertas/OfertasEmprendedor', { oferta, categoria })
 });
 
-app.get('/nuevaoferta', async (req, res) => {
+app.get('/Ofertas', (req, res) => res.redirect(301, '/ofertas'));
+
+app.get('/nuevaOferta', async (req, res) => {
 
     res.render('Ofertas/CrearOferta.html')
 })
 
-app.post('/addoffer',
-    requireAuth, requireRole('emprendedor', 'admin'),
+app.get('/ofertas_publicas', async (req, res) => {
+    try {
+        const categoria = (req.query.categoria || 'all').trim();
+        const base = { status: 'aprobado' };
+        const query = (categoria === 'all')
+            ? base
+            : { ...base, categoria: { $regex: `^${categoria}$`, $options: 'i' } };
+        const docs = await oferta.find(query).sort({ _id: -1 }).lean();
+        res.json(docs);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Error al obtener las ofertas publicas' });
+    }
+});
+
+app.post('/addoffer', requireAuth, requireRole('emprendedor', 'admin'),
     uploadEmpr.fields([
         { name: 'imagenNegocio', maxCount: 1 }
     ]),
@@ -554,6 +424,8 @@ app.post('/addoffer',
                 descripcion: req.body.descripcion,
                 categoria: req.body.categoria,
                 imagenOferta: files?.imagenNegocio ? files.imagenNegocio[0].filename : '',
+                userId: req.session.user.id, // dueño
+                status: 'pendiente'
             }).save();
             res.redirect('/nuevaoferta');
         } catch (e) {
@@ -563,10 +435,22 @@ app.post('/addoffer',
     }
 );
 
-// Admin: aprobar / rechazar Emprendimientos
+// Admin: aprobar / rechazar Emprendimientos y Ofertas
 app.post('/emprendimientos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
     try {
-        await Emprendimiento.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null });
+        const emp = await Emprendimiento.findByIdAndUpdate(
+            req.params.id,
+            { status: 'aprobado', rejectionReason: null },
+            { new: true }
+        ).lean();
+
+        if (!emp) return res.status(404).json({ error: 'No encontrado' });
+
+        // Promueve al dueño a emprendedor
+        if (emp.userId) {
+            await register.findByIdAndUpdate(emp.userId, { role: 'emprendedor' });
+        }
+
         res.json({ message: 'Emprendimiento aprobado' });
     } catch (e) {
         console.error(e);
@@ -580,6 +464,39 @@ app.post('/emprendimientos/:id/rechazar', requireAuth, requireRole('admin'), asy
     } catch (e) {
         console.error(e);
         res.status(500).json({ error: 'Error al rechazar emprendimiento' });
+    }
+});
+
+/* OFERTAS */
+
+app.post('/ofertas/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
+    try {
+        const o = await oferta.findByIdAndUpdate(
+            req.params.id,
+            { status: 'aprobado', rejectionReason: null },
+            { new: true }
+        ).lean();
+
+        if (!o) return res.status(404).json({ error: 'No encontrado' });
+
+        // Promueve al dueño a emprendedor
+        if (o.userId) {
+            await register.findByIdAndUpdate(o.userId, { role: 'emprendedor' });
+        }
+
+        res.json({ message: 'Oferta aprobada' });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Error al aprobar oferta' });
+    }
+});
+app.post('/ofertas/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
+    try {
+        await oferta.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' });
+        res.json({ message: 'Oferta rechazada' });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Error al rechazar oferta' });
     }
 });
 
@@ -598,15 +515,15 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
             eventosList,
             reportesList,
             emprendimientosList,
-            usuariosList
-            // ofertasList Quitar el comment cuando exista ofertas
+            usuariosList,
+            ofertasList
         ] = await Promise.all([
             anuncio.find().sort({ _id: -1 }).lean(),
             evento.find().sort({ _id: -1 }).lean(),
             Reporte.find().sort({ fecha: -1 }).lean(),
             Emprendimiento.find().sort({ _id: -1 }).lean(),
-            register.find().sort({ _id: -1 }).lean()
-            // Oferta.find().sort({ _id: -1 }).lean() Quitar el comment cuando exista ofertas
+            register.find().sort({ _id: -1 }).lean(),
+            oferta.find().sort({ _id: -1 }).lean()
         ]);
 
         res.render('Admin/admin', {
@@ -616,7 +533,7 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
             quejas: reportesList.filter(r => r.tipo === 'queja'),
             emprendimientos: emprendimientosList,
             usuarios: usuariosList,
-            ofertas: [] // placeholder Quitar cuando exista ofertas
+            ofertas: ofertasList // placeholder Quitar cuando exista ofertas
         });
     } catch (e) {
         console.error(e);
@@ -624,9 +541,9 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
     }
 });
 
-// Eliminar desde Admin
+// Opcion para eliminar data desde admin
 
-// ANUNCIOS
+// ANUNCIOS - eliminar
 app.delete('/anuncios/:id', requireAuth, requireRole('admin'), async (req, res) => {
     try {
         const r = await anuncio.deleteOne({ _id: req.params.id });
@@ -637,7 +554,7 @@ app.delete('/anuncios/:id', requireAuth, requireRole('admin'), async (req, res) 
     }
 });
 
-// EVENTOS
+// EVENTOS - eliminar
 app.delete('/eventos/:id', requireAuth, requireRole('admin'), async (req, res) => {
     try {
         const r = await evento.deleteOne({ _id: req.params.id });
@@ -648,28 +565,18 @@ app.delete('/eventos/:id', requireAuth, requireRole('admin'), async (req, res) =
     }
 });
 
-// REPORTES 
+// REPORTES/QUEJAS - eliminar (misma colección)
 app.delete('/reportes/:id', requireAuth, requireRole('admin'), async (req, res) => {
     try {
         const r = await Reporte.deleteOne({ _id: req.params.id });
         if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-        res.json({ message: 'Reporte eliminado' });
+        res.json({ message: 'Reporte/Queja eliminado' });
     } catch (e) {
-        console.error(e); res.status(500).json({ error: 'Error al eliminar reporte' });
+        console.error(e); res.status(500).json({ error: 'Error al eliminar reporte/queja' });
     }
 });
 
-app.delete('/quejas/:id', requireAuth, requireRole('admin'), async (req, res) => {
-    try {
-        const r = await Reporte.deleteOne({ _id: req.params.id });
-        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-        res.json({ message: 'Queja eliminada' });
-    } catch (e) {
-        console.error(e); res.status(500).json({ error: 'Error al eliminar queja' });
-    }
-});
-
-// EMPRENDIMIENTOS
+// EMPRENDIMIENTOS - eliminar
 app.delete('/emprendimientos/:id', requireAuth, requireRole('admin'), async (req, res) => {
     try {
         const r = await Emprendimiento.deleteOne({ _id: req.params.id });
@@ -680,7 +587,7 @@ app.delete('/emprendimientos/:id', requireAuth, requireRole('admin'), async (req
     }
 });
 
-// OFERTAS
+// OFERTAS - eliminar
 app.delete('/ofertas/:id', requireAuth, requireRole('admin'), async (req, res) => {
     try {
         const r = await oferta.deleteOne({ _id: req.params.id });

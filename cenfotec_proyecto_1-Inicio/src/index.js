@@ -397,9 +397,17 @@ app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req,
     try { await evento.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
     catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
 });
+
+
 app.get('/eventos_mios', requireAuth, async (req, res) => {
-    try { res.json(await evento.find({ userId: req.session.user.id }).sort({ fecha: -1 })); }
-    catch { res.status(500).json({ error: 'Error al obtener tus eventos' }); }
+    try {
+        const misEventos = await evento.find({ userId: req.session.user.id })
+            .sort({ fecha: -1 });
+        res.json(misEventos);
+    } catch (error) {
+        console.error('Error obteniendo eventos del usuario:', error);
+        res.status(500).json({ error: 'Error al obtener tus anuncios' });
+    }
 });
 
 /*   REPORTES   */

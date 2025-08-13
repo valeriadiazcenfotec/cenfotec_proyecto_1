@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/VistaGenerica.css">
+    <title>Emprendimientos</title>
+
+    <!--<div class="head_content">
+
+        <img src="imagenes login/W4U LOGO.jpeg" alt="Logo W4U" class="logo" />
+        <div class="community_name">Nombre comunidad</div>
+
+        <input type="text" placeholder="Buscar" class="search_input">
+
+    </div>-->
+
+</head>
+
+<body>
+    <header class="header montserrat-semibold">
+        <nav class="nav container">
+            <div class="nav__data">
+                <a href="#" class="nav__logo">
+                    Comunidad Flores de Heredia
+                </a>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="fa-solid fa-bars nav__burger"></i>
+                    <i class="fa-solid fa-xmark  nav__close"></i>
+                </div>
+            </div>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="/Inicio" class="nav__link">Inicio</a></li>
+
+                    <li class="dropdown__item">
+                        <div class="nav__link">
+                            Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+
+                        <ul class="dropdown__menu">
+                            <li>
+                                <a href="/anuncios" class="dropdown__link">
+                                    <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/transporte" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/reportes" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/mapa" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i>Mapa
+
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li><a href="/eventos" class="nav__link">Eventos</a></li>
+
+                    <li class="dropdown__item">
+                        <div class="nav__link">
+                            Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+
+                        <ul class="dropdown__menu">
+                            <li>
+                                <a href="/ofertas" class="dropdown__link">
+                                    <i class="ri-user-line"></i> Ofertas y descuentos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/emprendimientos" class="dropdown__link">
+                                    <i class="ri-lock-line"></i> Negocios
+                                </a>
+                            </li>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="main-content">
+
+        <div type="button" class="backButton"><a href="/emprendimientos">Volver</a></div>
+
+        <form class="nuevoEmprendimiento" id="nuevoEmprendimiento" action="/addbusiness" method="POST"
+            enctype="multipart/form-data">
+            <h1>Rellena los datos de tu emprendimiento</h1>
+
+            <div>
+                <label for="nombre">Nombre del emprendimiento</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe el nombre..." required>
+            </div>
+
+            <div>
+                <label for="descripcion">Descripción del emprendimiento</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Describe tu negocio..." required></textarea>
+            </div>
+
+            <div>
+                <label for="categoria">Categoría del negocio</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="alimentos">Alimentos</option>
+                    <option value="ropa">Ropa</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="servicios">Servicios</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="imagenNegocio">Imagen del negocio</label>
+                <input type="file" id="imagenNegocio" name="imagenNegocio" accept="image/*" required>
+            </div>
+
+            <div>
+                <label for="imagenesProductos">Imágenes de los productos</label>
+                <input type="file" id="imagenesProductos" name="imagenesProductos[]" accept="image/*" multiple required>
+            </div>
+
+            <button type="submit">Enviar formulario</button>
+        </form>
+    </div>
+
+
+
+    <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <p><strong>Comunidad Unida</strong></p>
+                <p>Flores, Heredia</p>
+                <p>Tel: +506 8888-8888</p>
+            </div>
+            <div class="footer-creditos">
+                <p>Diseñado por <strong>W4U</strong></p>
+                <a href="../Landing/landing_page.html" target="_blank">
+                    <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+                </a>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <script>
+        // Obtener todos los carruseles en la página
+        const carruseles = document.querySelectorAll('.carrusel');
+        carruseles.forEach((carrusel) => {
+            const imagenes = carrusel.querySelector('.imagenes');
+            const total = carrusel.querySelectorAll('.imagenes img').length;
+            const anterior = carrusel.querySelector('.anterior');
+            const siguiente = carrusel.querySelector('.siguiente');
+            let indice = 0;
+            // Función para actualizar el carrusel
+            function actualizarCarrusel() {
+                imagenes.style.transform = `translateX(-${indice * 400}px)`;
+            }
+            // Botón siguiente
+            siguiente.addEventListener('click', () => {
+                indice = (indice + 1) % total;
+                actualizarCarrusel();
+            });
+            // Botón anterior
+            anterior.addEventListener('click', () => {
+                indice = (indice - 1 + total) % total;
+                actualizarCarrusel();
+            });
+            // Opcional: avance automático cada 5 segundos
+            /*setInterval(() => {
+                indice = (indice + 1) % total;
+                actualizarCarrusel();
+            }, 5000);*/
+        });
+
+
+        document.querySelectorAll('.visualize').forEach(button => {
+            button.addEventListener('click', function () {
+                const emprendimiento = this.closest('.business_card');
+
+                // Obtiene el contenido de los elementos con clases genéricas
+                const titulo = emprendimiento.querySelector('.business_title').textContent;
+                const descripcion = emprendimiento.querySelector('.business_description').textContent;
+                const imagenSrc = emprendimiento.querySelector('.imagen').src;
+                const imagenAlt = emprendimiento.querySelector('.imagen').alt;
+
+                // Redirige a la página genérica con los datos en la URL
+                window.location.href = `VistaEmprendimientos.html?titulo=${titulo}&descripcion=${descripcion}&imagenSrc=${imagenSrc}&imagenAlt=${imagenAlt}`;
+            });
+        });
+
+    </script>
+
+
+
+</body>
+
+
+
+<script src="../menu/menu.js"></script>
+<script src="js/VistaGenerica.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
+
+</html>

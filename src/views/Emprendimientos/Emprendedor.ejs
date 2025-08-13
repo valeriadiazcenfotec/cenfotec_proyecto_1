@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Emprendimientos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/css/Emprendimientos.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Scripts -->
+    <script defer src="/js/menu.js"></script>
+    <script defer src="/js/emprendimientos.js"></script>
+    <script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" />
+</head>
+
+<body>
+    <!-- Menú -->
+    <header class="header montserrat-semibold">
+        <nav class="nav container">
+            <div class="nav__data">
+                <a href="/" class="nav__logo">Comunidad Flores de Heredia</a>
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="fa-solid fa-bars nav__burger"></i>
+                    <i class="fa-solid fa-xmark nav__close"></i>
+                </div>
+            </div>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="/inicio" class="nav__link">Inicio</a></li>
+                    <li class="dropdown__item">
+                        <div class="nav__link">Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i></div>
+                        <ul class="dropdown__menu">
+                            <li><a href="/anuncios" class="dropdown__link"><i class="ri-pie-chart-line"></i> Anuncios
+                                    comunitarios</a></li>
+                            <li><a href="/transporte" class="dropdown__link"><i class="ri-arrow-up-down-line"></i>
+                                    Transporte público</a></li>
+                            <li><a href="/reportes" class="dropdown__link"><i class="ri-arrow-up-down-line"></i>
+                                    Reportes y quejas</a></li>
+                            <li><a href="/mapa" class="dropdown__link"><i class="ri-arrow-up-down-line"></i> Mapa</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><a href="/eventos" class="nav__link">Eventos</a></li>
+                    <li class="dropdown__item">
+                        <div class="nav__link">Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+                        <ul class="dropdown__menu">
+                            <li><a href="/ofertas" class="dropdown__link"><i class="ri-user-line"></i> Ofertas y
+                                    descuentos</a></li>
+                            <li><a href="/emprendimientos" class="dropdown__link"><i class="ri-lock-line"></i>
+                                    Negocios</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Filtros -->
+    <div class="filter">
+        <div class="mini-nav">
+            <input type="checkbox" id="check" />
+            <label for="check" class="checkbtnicon"><i class='bx bx-menu-filter'></i></label>
+            <label for="check" class="checkbtntext">
+                <h3 class="filter_text">Filtrar</h3>
+            </label>
+
+            <div class="filtro-menu">
+                <a href="/emprendimientos" class="f-cat" data-cat="all">Todos</a>
+                <a href="/emprendimientos?categoria=alimentos" class="f-cat" data-cat="alimentos">Alimentos</a>
+                <a href="/emprendimientos?categoria=ropa" class="f-cat" data-cat="ropa">Ropa</a>
+                <a href="/emprendimientos?categoria=tecnologia" class="f-cat" data-cat="tecnologia">Tecnología</a>
+                <a href="/emprendimientos?categoria=servicios" class="f-cat" data-cat="servicios">Servicios</a>
+            </div>
+        </div>
+
+        <div class="sales">
+            <a class="link-to-offers" href="/ofertas">
+                <button class="view-sales">
+                    <h3 class="number">Ofertas</h3>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Contenido (se llena con JS desde /emprendimientos_publicos) -->
+    <main>
+        <div type="button" class="add_button"><a href="nuevo%20emprendimiento">+</a></div>
+        <section class="business_content" id="lista-emprendimientos">
+            <p class="sec-vacia">Cargando...</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <p><strong>Comunidad Unida</strong></p>
+                <p>Flores, Heredia</p>
+                <p>Tel: +506 8888-8888</p>
+            </div>
+            <div class="footer-creditos">
+                <p>Diseñado por <strong>W4U</strong></p>
+                <a href="/landing" target="_blank">
+                    <img src="/img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

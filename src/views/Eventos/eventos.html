@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eventos</title>
+<link rel="stylesheet" href="css/eventos.css">
+<link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="css/calendario.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+</head>
+<body>
+<header class="header montserrat-semibold">
+        <nav class="nav container">
+        <div class="nav__data">
+            <a href="#" class="nav__logo">
+                 Comunidad Flores de Heredia 
+            </a>
+            
+            <div class="nav__toggle" id="nav-toggle">
+                <i class="fa-solid fa-bars nav__burger"></i>
+                <i class="fa-solid fa-xmark  nav__close"></i>
+            </div>
+        </div>
+
+        <div class="nav__menu" id="nav-menu">
+            <ul class="nav__list">
+                <li><a href="/Inicio" class="nav__link">Inicio</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="/Anuncios" class="dropdown__link">
+                            <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="/Transporte" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/Reportes" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Mapa" class="dropdown__link">
+                            <i class="ri-arrow-up-down-line"></i>Mapa
+
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+
+                <li><a href="/Eventos" class="nav__link">Eventos</a></li>
+
+                <li class="dropdown__item">
+                    <div class="nav__link">
+                    Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                    </div>
+
+                    <ul class="dropdown__menu">
+                    <li>
+                        <a href="/Ofertas" class="dropdown__link">
+                            <i class="ri-user-line"></i> Ofertas y descuentos
+                        </a>                          
+                    </li>
+
+                    <li>
+                        <a href="/Emprendimientos" class="dropdown__link">
+                            <i class="ri-lock-line"></i> Negocios
+                        </a>
+                    </li>
+                </li>
+
+            </ul>
+        </div>
+        </nav>
+    </header>
+<div class="seccion1">
+    <div class="evento_seccion1">
+        <h1 class="montserrat-bold" id="titulo">Eventos</h1>
+        <p class="montserrat-medium comunidad_mensaje">Se parte de las actividades que mueven tu comunidad</p>
+        <br>
+        <button class="iniciar" onclick="peticionAbierta()"><h3 class="montserrat-semibold">Iniciar</h3></button>
+    </div>
+</div>
+<div class="seccion2">
+    <div id="calendar"></div>
+</div>
+<div class="eventos">
+    <div class="cartas">
+        <div class="carta">
+            <img src="img/evento.jpg"  onclick="abrirFormulario()"  class="img_carta" alt="">
+            <i class="fa-regular fa-heart fa-2x corazon sin_like" ></i>
+            <i class="fa-solid fa-heart fa-2x corazon con_like"></i>
+            <br>
+            <div class="carta2"  onclick="abrirFormulario()"  >
+            <h3 class="montserrat-bold nombre">Evento familiar</h3>
+            <p class="montserrat-medium parrafo">Traigan a sus familias a disfrutar de la celebración de su día</p>
+            <div class="fecha_lugar">
+                <button class="escribir"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold">Parque Central</p></button>
+                <p class="montserrat-medium fecha">10/07/2025</p>
+            </div>
+            </div>
+        </div>
+        <div class="carta">
+            <img src="img/priscilla-du-preez-W3SEyZODn8U-unsplash.jpg"  onclick="abrirFormulario()"  class="img_carta" alt="">
+            <i class="fa-regular fa-heart fa-2x corazon sin_like"></i>
+            <i class="fa-solid fa-heart fa-2x corazon con_like"></i>
+            <br>
+            <div class="carta2"  onclick="abrirFormulario()"  >
+            <h3 class="montserrat-bold nombre">Feria</h3>
+            <p class="montserrat-medium parrafo">Feria para recaudar fondos para las escuelas del distrito</p>
+            <div class="fecha_lugar">
+                <button class="escribir"><i class="fa-solid fa-location-dot fa-2x"></i><p class="montserrat-semibold lugar1">Parque Central</p></button>
+                <p class="montserrat-medium fecha">12/08/2025</p>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>   
+<div class="peticiones seccion3">
+        <h1 class="montserrat-bold ">Peticiones de eventos a publicar</h1>
+        <p class="montserrat-medium color_blanco">Aquí encontrarás el status de los anuncios que quieras publicar</p>
+        <div class="peticiones_todas" id="peticiones_todas"></div>
+    </div>
+<div class="carta_desplegada">
+    <div id="carta_muestra">
+        <button onclick="cerrarFormulario()" id="descartar"><i class="fa-solid fa-xmark fa-2x" style="color: #FFF;"></i></button>
+        <img src="" class="img_carta_desplegada" alt="">
+        <br>
+        <h2  class="montserrat-semibold peticion"></h2>
+        <p  class="montserrat-medium peticion2"></p>
+        
+    </div>
+</div>
+<div class="agregar">
+    <form class="forms" id="form">
+        <div class="form">
+            <h2  class="montserrat-semibold subtitulo">Petición</h2>
+            <p  class="montserrat-medium subtitulo">Escribe lo que desees anunciar y un administrador se encargará de revisar tu petición (en la sección de peticiones encontrarás el estado de las peticiones creadas)</p>
+            <button onclick="peticionCerrada()" id="descartar2"><i class="fa-solid fa-xmark fa-4x" style="color: #FDD700;"></i></button>
+            <br>
+            <div class="seccion1_form">
+            <input type="text" id="nombre" class="montserrat-medium" name="name" placeholder="Nombre del anuncio">
+            <input type="text" id="lugar" class="montserrat-medium" name="place"  placeholder="Lugar">
+            <input type="datetime-local" class="montserrat-medium" name="date"  id="date" placeholder="Fecha">
+        </div>
+        <br>
+        </div>
+        <div class="botones_peticiones">
+        <textarea name="anuncio_en_curso" name="description" class="montserrat-medium" id="anuncio_en_curso">Descripción</textarea>
+        <div class="botones_juntos">
+                <button type="submit" id="form_listo"><i class="fa-solid fa-arrow-up-from-bracket fa-2x" style="color: #FFF;"></i><p class="montserrat-medium enviar">Enviar peticion</p></button> 
+                <label for="file" class="label_imagen"><i class="fa-regular fa-images fa-2x" style="color: #FFF;"></i><p class="montserrat-medium">Añadir una imagen</p></label> <input type="file" name="image" id="file">
+            </div>
+        </div>
+        
+    </form>
+</div>
+</body>
+        <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-info">
+            <p><strong>Comunidad Unida</strong></p>
+            <p>Flores, Heredia</p>
+            <p>Tel: +506 8888-8888</p>
+            </div>
+            <div class="footer-creditos">
+            <p>Diseñado por <strong>W4U</strong></p>
+            <a href="../Landing/landing_page.html" target="_blank">
+                <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+            </a>
+            </div>
+        </div>
+        </footer>
+
+</html>
+
+<script src="js/eventos.js"></script>
+<script src="js/calendario.js"></script>
+<script src='fullcalendar/lang/es.js'></script>
+<script src="js/menu.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>   
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.global.min.js"></script>

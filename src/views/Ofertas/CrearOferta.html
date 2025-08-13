@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/VistaGenerica.css">
+    <title>Emprendimientos</title>
+
+</head>
+
+<body>
+    <header class="header montserrat-semibold">
+        <nav class="nav container">
+            <div class="nav__data">
+                <a href="#" class="nav__logo">
+                    Comunidad Flores de Heredia
+                </a>
+
+                <div class="nav__toggle" id="nav-toggle">
+                    <i class="fa-solid fa-bars nav__burger"></i>
+                    <i class="fa-solid fa-xmark  nav__close"></i>
+                </div>
+            </div>
+
+            <div class="nav__menu" id="nav-menu">
+                <ul class="nav__list">
+                    <li><a href="/Inicio" class="nav__link">Inicio</a></li>
+
+                    <li class="dropdown__item">
+                        <div class="nav__link">
+                            Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+
+                        <ul class="dropdown__menu">
+                            <li>
+                                <a href="/anuncios" class="dropdown__link">
+                                    <i class="ri-pie-chart-line"></i> Anuncios comunitarios
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/transporte" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i> Transporte público
+
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/reportes" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i> Reportes quejas
+
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/mapa" class="dropdown__link">
+                                    <i class="ri-arrow-up-down-line"></i>Mapa
+
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li><a href="/eventos" class="nav__link">Eventos</a></li>
+
+                    <li class="dropdown__item">
+                        <div class="nav__link">
+                            Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+                        </div>
+
+                        <ul class="dropdown__menu">
+                            <li>
+                                <a href="/ofertas" class="dropdown__link">
+                                    <i class="ri-user-line"></i> Ofertas y descuentos
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="/emprendimientos" class="dropdown__link">
+                                    <i class="ri-lock-line"></i> Negocios
+                                </a>
+                            </li>
+                    </li>
+
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="main-content">
+        <form class="nuevoEmprendimiento" id="nuevoEmprendimiento" action="/addoffer" method="POST"
+            enctype="multipart/form-data">
+            <h1>Rellena los datos de tu oferta</h1>
+
+            <div>
+                <label for="nombre">Titulo de la oferta</label>
+                <input type="text" id="nombre" name="nombre" placeholder="Escribe el titulo..." required>
+            </div>
+
+            <div>
+                <label for="descripcion">Descripción de la oferta</label>
+                <textarea id="descripcion" name="descripcion" placeholder="Describe tu oferta..." required></textarea>
+            </div>
+
+            <div>
+                <label for="categoria">Categoría de la oferta</label>
+                <select id="categoria" name="categoria" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="alimentos">Alimentos</option>
+                    <option value="ropa">Ropa</option>
+                    <option value="tecnologia">Tecnología</option>
+                    <option value="servicios">Servicios</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="imagenNegocio">Imagen de la oferta</label>
+                <input type="file" id="imagenNegocio" name="imagenNegocio" accept="image/*" required>
+            </div>
+
+            <button type="submit">Enviar formulario</button>
+        </form>
+    </div>
+
+
+
+    <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-info">
+                <p><strong>Comunidad Unida</strong></p>
+                <p>Flores, Heredia</p>
+                <p>Tel: +506 8888-8888</p>
+            </div>
+            <div class="footer-creditos">
+                <p>Diseñado por <strong>W4U</strong></p>
+                <a href="../Landing/landing_page.html" target="_blank">
+                    <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+
+
+<script src="js/menu.js"></script>
+<script src="js/crearoferta.js"></script>
+<script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
+
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Inicio - Comunidad Unida</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="stylesheet" href="css/inicio.css">
+</head>
+
+<body>
+  <!-- Header / Menú -->
+  <header class="header montserrat-semibold">
+    <nav class="nav container">
+      <!-- Logo + burger -->
+      <div class="nav__data">
+        <a href="/inicio" class="nav__logo">Comunidad Flores de Heredia</a>
+        <div class="nav__toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars nav__burger"></i>
+          <i class="fa-solid fa-xmark nav__close"></i>
+        </div>
+      </div>
+
+      <!-- Menú -->
+      <div class="nav__menu" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="/Inicio" class="nav__link">Inicio</a></li>
+
+          <li class="dropdown__item">
+            <div class="nav__link">
+              Comunidad <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+            <ul class="dropdown__menu">
+              <li><a href="/Anuncios" class="dropdown__link">Anuncios comunitarios</a></li>
+              <li><a href="/Transporte" class="dropdown__link">Transporte público</a></li>
+              <li><a href="/Reportes" class="dropdown__link">Reportes quejas</a></li>
+              <li><a href="/Mapa" class="dropdown__link">Mapa</a></li>
+            </ul>
+          </li>
+
+          <li><a href="/Eventos" class="nav__link">Eventos</a></li>
+
+          <li class="dropdown__item">
+            <div class="nav__link">
+              Emprendimientos <i class="ri-arrow-down-s-line dropdown__arrow"></i>
+            </div>
+            <ul class="dropdown__menu">
+              <li><a href="/Ofertas" class="dropdown__link">Ofertas y descuentos</a></li>
+              <li><a href="/Emprendimientos" class="dropdown__link">Negocios</a></li>
+            </ul>
+          </li>
+
+        </ul>
+      </div>
+
+      <div id="nav-user" class="nav__user"></div>
+    </nav>
+  </header>
+
+  <!-- Contenido -->
+  <main>
+    <h2 id="inicio-greeting">Bienvenidos</h2>
+    <p>Explora los recursos de tu comunidad.</p>
+
+    <section class="galeria-inicio">
+      <a href="/Login" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Ingreso.png" alt="Ingreso">
+          <span class="galeria-texto">Iniciar Sesión</span>
+        </div>
+      </a>
+      <a href="/Anuncios" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Anuncios.png" alt="Anuncios">
+          <span class="galeria-texto">Anuncios</span>
+        </div>
+      </a>
+      <a href="/Ofertas" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Descuentos.png" alt="Descuentos">
+          <span class="galeria-texto">Ofertas</span>
+        </div>
+      </a>
+      <a href="/Emprendimientos" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Emprendimientos.png" alt="Emprendimientos">
+          <span class="galeria-texto">Emprendimientos</span>
+        </div>
+      </a>
+      <a href="/Eventos" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Eventos.png" alt="Eventos">
+          <span class="galeria-texto">Eventos</span>
+        </div>
+      </a>
+      <a href="/Mapa" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Mapa.png" alt="Mapa">
+          <span class="galeria-texto">Mapa</span>
+        </div>
+      </a>
+      <a href="/Reportes" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Reportes.png" alt="Reportes">
+          <span class="galeria-texto">Reportes</span>
+        </div>
+      </a>
+      <a href="/Transporte" class="galeria-item-link">
+        <div class="galeria-item">
+          <img src="img/Imagenes inicio/Transporte.png" alt="Transporte">
+          <span class="galeria-texto">Transporte</span>
+        </div>
+      </a>
+    </section>
+
+    <section class="valores-seccion">
+      <h3 class="valores-titulo">Nuestros Valores</h3>
+      <div class="valores-contenedor">
+        <div class="valor-tarjeta"><h4>Solidaridad</h4><p>Nos apoyamos mutuamente para crecer como comunidad.</p></div>
+        <div class="valor-tarjeta"><h4>Inclusión</h4><p>Celebramos la diversidad y fomentamos la participación de todos.</p></div>
+        <div class="valor-tarjeta"><h4>Transparencia</h4><p>Actuamos con honestidad y claridad en todo lo que hacemos.</p></div>
+        <div class="valor-tarjeta"><h4>Innovación</h4><p>Buscamos soluciones creativas para mejorar nuestra comunidad.</p></div>
+        <div class="valor-tarjeta"><h4>Respeto</h4><p>Valoramos a cada persona y sus ideas con empatía y dignidad.</p></div>
+        <div class="valor-tarjeta"><h4>Compromiso</h4><p>Trabajamos con dedicación para lograr un cambio positivo.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-principal">
+    <div class="footer-contenido">
+      <div class="footer-info">
+        <p><strong>Comunidad Unida</strong></p>
+        <p>Flores, Heredia</p>
+        <p>Tel: +506 8888-8888</p>
+      </div>
+      <div class="footer-creditos">
+        <p>Diseñado por <strong>W4U</strong></p>
+        <a href="../Landing/landing_page.html" target="_blank">
+          <img src="../img/logo-w4u.png" alt="Logo W4U" class="logo-creador" />
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/menu.js"></script>
+  <script src="https://kit.fontawesome.com/2b7365d647.js" crossorigin="anonymous"></script>
+  <script src="js/inicio.js" defer></script>
+</body>
+</html>

@@ -85,7 +85,6 @@ function renderMisAnuncios(container, items) {
             <button class="estado montserrat-semibold ${getEstadoClass(item.estado)}">${estadoTexto}</button>
             ${item.estado === 'pendiente' ? `
                 <button class="boton_especifico_peticiones" data-id="${item._id}">
-                    <p class="montserrat-medium">Cancelar</p>
                 </button>
             ` : ''}
             ${item.estado === 'rechazado' && item.rejectionReason ? `

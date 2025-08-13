@@ -380,7 +380,7 @@ app.get('/eventos_todos', async (req, res) => {
 });
 
 app.get('/eventos_publicos', async (req, res) => {
-    try { res.json(await evento.find({ status: 'aprobado' })); }
+    try { res.json(await evento.find({ estado: 'aprobado' })); }
     catch { res.status(500).json({ error: 'Error al obtener los eventos' }); }
 });
 
@@ -390,11 +390,11 @@ app.delete('/peticion_evento_cancelar', async (req, res) => {
 });
 
 app.post('/eventos/:id/aprobar', requireAuth, requireRole('admin'), async (req, res) => {
-    try { await evento.findByIdAndUpdate(req.params.id, { status: 'aprobado', rejectionReason: null }); res.json({ message: 'Evento aprobado' }); }
+    try { await evento.findByIdAndUpdate(req.params.id, { estado: 'aprobado', rejectionReason: null }); res.json({ message: 'Evento aprobado' }); }
     catch { res.status(500).json({ error: 'Error al aprobar evento' }); }
 });
 app.post('/eventos/:id/rechazar', requireAuth, requireRole('admin'), async (req, res) => {
-    try { await evento.findByIdAndUpdate(req.params.id, { status: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
+    try { await evento.findByIdAndUpdate(req.params.id, { estado: 'rechazado', rejectionReason: req.body.reason || '' }); res.json({ message: 'Evento rechazado' }); }
     catch { res.status(500).json({ error: 'Error al rechazar evento' }); }
 });
 app.get('/eventos_mios', requireAuth, async (req, res) => {

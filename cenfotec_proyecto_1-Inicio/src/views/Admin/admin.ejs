@@ -383,16 +383,24 @@
                 <th>Teléfono</th>
                 <th>Correo</th>
                 <th>Rol</th>
+                <th>Acciones</th> <!-- Nueva columna -->
               </tr>
             </thead>
             <tbody>
               <% U.forEach(u=> { %>
-                <tr>
+                <tr data-id="<%= u._id %>" data-type="usuario">
                   <td><%- u.name %></td>
                   <td><%- u.user %></td>
                   <td><%- u.cellphone %></td>
                   <td><%- u.email %></td>
                   <td><%- u.role %></td>
+                  <td>
+                    <% if (u.role !== 'admin') { %>
+                      <button class="aprobar">Promover a Admin</button>
+                    <% } else { %>
+                      <span>Ya es Admin</span>
+                    <% } %>
+                  </td>
                 </tr>
               <% }) %>
             </tbody>

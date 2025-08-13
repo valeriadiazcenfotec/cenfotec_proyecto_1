@@ -1,11 +1,26 @@
-function qs(sel, el=document) { return el.querySelector(sel); }
-function qsa(sel, el=document) { return [...el.querySelectorAll(sel)]; }
+function qs(sel, el = document)  { return el.querySelector(sel); }
+function qsa(sel, el = document) { return [...el.querySelectorAll(sel)]; }
+
 
 async function actualizarEstado({ id, tipo, accion, motivo }) {
-  const accionMap = { approve: 'aprobar', reject: 'rechazar', delete: 'eliminar' };
-  const accionEs = accionMap[accion] || accion;
 
-  let url = `/${tipo}s/${id}/${accionEs}`;
+  const tipoPathMap = {
+    anuncio: 'anuncios',
+    evento: 'eventos',
+    reporte: 'reportes',
+    queja: 'quejas',
+    emprendimiento: 'emprendimientos',
+    oferta: 'ofertas',
+    usuario: 'usuarios',
+  };
+
+  const key = (tipo || '').toLowerCase().replace(/s$/, '');
+  const tipoPath = tipoPathMap[key] || `${key}s`;
+
+  let accionEs = ({ approve: 'aprobar', reject: 'rechazar', delete: 'eliminar' }[accion] || accion);
+  if (key === 'usuario' && accion === 'approve') accionEs = 'promover';
+
+  let url  = `/${tipoPath}/${id}/${accionEs}`;
   let opts = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' };
 
   if (accionEs === 'rechazar') {
@@ -13,7 +28,7 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
   }
 
   if (accionEs === 'eliminar') {
-    url = `/${tipo}s/${id}`;
+    url  = `/${tipoPath}/${id}`;
     opts = { method: 'DELETE' };
   }
 
@@ -25,10 +40,15 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
 
 function enlazarAcciones(container, { id, tipo, onSuccess }) {
   qsa('.aprobar, .rechazar, .eliminar', container).forEach(btn => {
+    if (btn.__bound) return;
+    btn.__bound = true;
+
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
-      const isDelete = btn.classList.contains('eliminar');
-      const isReject = !isDelete && btn.classList.contains('rechazar');
+
+      const isDelete  = btn.classList.contains('eliminar');
+      const isReject  = !isDelete && btn.classList.contains('rechazar');
+      const isApprove = !isDelete && !isReject && btn.classList.contains('aprobar');
       let motivo = null;
 
       if (isReject) {
@@ -49,9 +69,10 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
           accion: isDelete ? 'delete' : (isReject ? 'reject' : 'approve'),
           motivo
         });
+
         if (typeof onSuccess === 'function') onSuccess();
       } catch (err) {
-        alert(`Error: ${err.message}`);
+        alert(`Error: ${err.message || err}`);
       }
     });
   });
@@ -60,10 +81,11 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const overlay = qs('#overlay');
-  const modal = qs('#modal-detalles');
+  const modal   = qs('#modal-detalles');
 
-  // Botón de "tres puntos" para mostrar acciones en cada card
+  /* ---------- Tarjetas (todas las secciones) ---------- */
   qsa('.card').forEach(card => {
+    // Botón de "tres puntos"
     if (!card.querySelector('.toggle-actions')) {
       const t = document.createElement('button');
       t.className = 'toggle-actions';
@@ -77,26 +99,49 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    // Enlazar acciones directas en la tarjeta
     enlazarAcciones(card, {
-      id: card.dataset.id,
+      id:   card.dataset.id,
       tipo: card.dataset.type,
       onSuccess: () => card.remove()
     });
   });
 
-  // Abrir modal con "Ver detalles"
+  qsa('#usuarios tbody tr').forEach(row => {
+    const id   = row.dataset.id;
+    const tipo = row.dataset.type || 'usuario';
+    if (!id) return;
+
+    enlazarAcciones(row, {
+      id,
+      tipo,
+      onSuccess: () => {
+        const roleCell = row.querySelector('td:nth-child(5)');
+        if (roleCell) roleCell.textContent = 'admin';
+        const btn = row.querySelector('.aprobar');
+        if (btn) {
+          btn.textContent = 'Ya es Admin';
+          btn.disabled = true;
+          btn.classList.remove('aprobar');
+        }
+      }
+    });
+  });
+
+  /* ---------- Modal: abrir con "Ver detalles" ---------- */
   qsa('[data-modal-target]').forEach(btn => {
     btn.addEventListener('click', () => {
       const card = btn.closest('.card');
       if (!card) return;
 
-      // Campos comunes del modal
-      qs('#md-titulo').textContent       = card.dataset.titulo || '';
-      qs('#md-descripcion').textContent  = card.dataset.descripcion || '';
-      const mdLugar = qs('#md-lugar');   if (mdLugar)  mdLugar.textContent = card.dataset.lugar || '';
-      const mdFecha = qs('#md-fecha');   if (mdFecha)  mdFecha.textContent = card.dataset.fecha || '';
-      const mdProp  = qs('#md-propietario'); if (mdProp) mdProp.textContent = card.dataset.propietarioNombre || card.dataset.propietario || '';
+      // Título / descripción
+      qs('#md-titulo').textContent      = card.dataset.titulo || '';
+      qs('#md-descripcion').textContent = card.dataset.descripcion || '';
+
+      // Campos opcionales (según tipo)
+      const mdLugar = qs('#md-lugar');  if (mdLugar)  mdLugar.textContent = card.dataset.lugar || '';
+      const mdFecha = qs('#md-fecha');  if (mdFecha)  mdFecha.textContent = card.dataset.fecha || '';
+      const mdProp  = qs('#md-propietario'); if (mdProp) mdProp.textContent =
+        card.dataset.propietarioNombre || card.dataset.propietario || '';
 
       // Imagen principal
       const img = qs('#modal-image');
@@ -108,9 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
         showBtn.style.display = img.src ? 'inline-block' : 'none';
       }
 
-      // Galería (para emprendimientos/ofertas)
       const wrap = qs('#md-galeria-wrap');
-      const gal = qs('#md-galeria');
+      const gal  = qs('#md-galeria');
       if (wrap && gal) {
         gal.innerHTML = '';
         wrap.style.display = 'none';
@@ -134,15 +178,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
 
-      // Acciones en el modal: clonar aprobar/rechazar y, si existe, eliminar
       const modalActions = qs('.modal-actions', modal);
       modalActions.innerHTML = '';
       qsa('.aprobar, .rechazar, .eliminar', card).forEach(b => {
-        modalActions.appendChild(b.cloneNode(true));
+        const clone = b.cloneNode(true);
+        modalActions.appendChild(clone);
       });
 
       enlazarAcciones(modal, {
-        id: card.dataset.id,
+        id:   card.dataset.id,
         tipo: card.dataset.type,
         onSuccess: () => { card.remove(); closeModal(); }
       });
@@ -151,9 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Toggle imagen en modal
+  /* ---------- Toggle imagen en modal ---------- */
   const toggleImageBtn = qs('#show-image');
-  const modalImage = qs('#modal-image');
+  const modalImage     = qs('#modal-image');
   if (toggleImageBtn && modalImage) {
     toggleImageBtn.addEventListener('click', () => {
       const vis = modalImage.style.display === 'block';
@@ -162,18 +206,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* ---------- Cerrar modal ---------- */
   qsa('[data-close-button]').forEach(b => b.addEventListener('click', closeModal));
-  overlay.addEventListener('click', closeModal);
+  if (overlay) overlay.addEventListener('click', closeModal);
 
   function openModal(){ modal.classList.add('active'); overlay.classList.add('active'); }
   function closeModal(){ modal.classList.remove('active'); overlay.classList.remove('active'); }
-});
 
-
-document.addEventListener("DOMContentLoaded", function () {
-  const sidebarToggle = document.getElementById("sidebar-toggle");
-  const sidebarLinks = document.querySelectorAll(".sidebar a");
-  sidebarLinks.forEach(link => {
-    link.addEventListener("click", () => { sidebarToggle.checked = false; });
+  const sidebarToggle = qs('#sidebar-toggle');
+  qsa('.sidebar a').forEach(link => {
+    link.addEventListener('click', () => { if (sidebarToggle) sidebarToggle.checked = false; });
   });
 });

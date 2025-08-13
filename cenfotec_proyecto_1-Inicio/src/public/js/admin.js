@@ -2,10 +2,13 @@ function qs(sel, el=document) { return el.querySelector(sel); }
 function qsa(sel, el=document) { return [...el.querySelectorAll(sel)]; }
 
 async function actualizarEstado({ id, tipo, accion, motivo }) {
-  const accionMap = { approve: 'aprobar', reject: 'rechazar', delete: 'eliminar' };
-  const accionEs = accionMap[accion] || accion;
+  const accionEs = (tipo === 'usuario' && accion === 'approve')
+    ? 'promover'
+    : ({ approve: 'aprobar', reject: 'rechazar', delete: 'eliminar' }[accion] || accion);
 
-  let url = `/${tipo}s/${id}/${accionEs}`;
+  let tipoPath = (tipo || '').toLowerCase().replace(/s$/, '') + 's';
+
+  let url  = `/${tipoPath}/${id}/${accionEs}`;
   let opts = { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' };
 
   if (accionEs === 'rechazar') {
@@ -13,7 +16,7 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
   }
 
   if (accionEs === 'eliminar') {
-    url = `/${tipo}s/${id}`;
+    url  = `/${tipoPath}/${id}`;
     opts = { method: 'DELETE' };
   }
 
@@ -23,12 +26,15 @@ async function actualizarEstado({ id, tipo, accion, motivo }) {
 }
 
 
+
 function enlazarAcciones(container, { id, tipo, onSuccess }) {
   qsa('.aprobar, .rechazar, .eliminar', container).forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
+
       const isDelete = btn.classList.contains('eliminar');
       const isReject = !isDelete && btn.classList.contains('rechazar');
+      const isApprove = !isDelete && !isReject && btn.classList.contains('aprobar');
       let motivo = null;
 
       if (isReject) {
@@ -43,12 +49,24 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
       }
 
       try {
+        if (tipo === 'usuario' && isApprove) {
+          const r = await fetch(`/usuarios/${id}/promover`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          if (!r.ok) throw new Error((await r.text()) || 'No se pudo promover usuario');
+
+          if (typeof onSuccess === 'function') onSuccess();
+          return;
+        }
+
         await actualizarEstado({
           id,
           tipo,
           accion: isDelete ? 'delete' : (isReject ? 'reject' : 'approve'),
           motivo
         });
+
         if (typeof onSuccess === 'function') onSuccess();
       } catch (err) {
         alert(`Error: ${err.message}`);
@@ -56,6 +74,7 @@ function enlazarAcciones(container, { id, tipo, onSuccess }) {
     });
   });
 }
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

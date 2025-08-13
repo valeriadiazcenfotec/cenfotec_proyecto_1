@@ -573,9 +573,19 @@ app.delete('/reportes/:id', requireAuth, requireRole('admin'), async (req, res) 
     try {
         const r = await Reporte.deleteOne({ _id: req.params.id });
         if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
-        res.json({ message: 'Reporte/Queja eliminado' });
+        res.json({ message: 'Reporte eliminado' });
     } catch (e) {
-        console.error(e); res.status(500).json({ error: 'Error al eliminar reporte/queja' });
+        console.error(e); res.status(500).json({ error: 'Error al eliminar reporte' });
+    }
+});
+
+app.delete('/quejas/:id', requireAuth, requireRole('admin'), async (req, res) => {
+    try {
+        const r = await Reporte.deleteOne({ _id: req.params.id });
+        if (r.deletedCount === 0) return res.status(404).json({ error: 'No encontrado' });
+        res.json({ message: 'Queja eliminada' });
+    } catch (e) {
+        console.error(e); res.status(500).json({ error: 'Error al eliminar queja' });
     }
 });
 

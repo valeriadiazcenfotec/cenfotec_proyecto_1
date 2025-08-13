@@ -102,6 +102,9 @@ app.get('/Inicio', (req, res) => res.redirect(301, '/inicio'));
 app.get('/login', (req, res) => {
     res.render('Login/login.html');
 });
+app.get('/landing', (req, res) => {
+    res.render('Landing/landing_page.html');
+});
 app.get('/Login', (req, res) => res.redirect(301, '/login'));
 
 app.post('/login', async (req, res) => {

@@ -170,56 +170,56 @@ app.get('/logout', (req, res) => {
 });
 
 /*   ANUNCIOS   */
-app.get('/anuncios', (req, res) => {
+app.get('/anuncios', requireAuth, (req, res) => {
     res.render('Anuncios/anuncios.html');
 });
 app.get('/Anuncios', (req, res) => res.redirect(301, '/anuncios'));
 
 // Crear nueva petición de anuncio
 app.post('/peticion_anuncio', requireAuth, async (req, res) => {
-  try {
-    const { name, description, image } = req.body;
+    try {
+        const { name, description, image } = req.body;
 
-    // Validación básica
-    if (!name || !description) {
-      return res.status(400).json({ error: 'Nombre y descripción son obligatorios' });
+        // Validación básica
+        if (!name || !description) {
+            return res.status(400).json({ error: 'Nombre y descripción son obligatorios' });
+        }
+
+        // Validar userId de sesión
+        const userId = req.session?.user?.id;
+        const isValidId = userId && require('mongoose').Types.ObjectId.isValid(userId);
+        if (!isValidId) {
+            console.error('peticion_anuncio: userId inválido o ausente en sesión:', userId);
+            return res.status(401).json({ error: 'Sesión inválida. Vuelve a iniciar sesión.' });
+        }
+
+        const nuevoAnuncio = new anuncio({
+            name: name.trim(),
+            description: description.trim(),
+            image: image || null,
+            userId,
+            estado: 'pendiente',
+            fecha: new Date()
+        });
+
+        await nuevoAnuncio.save();
+
+        res.status(200).json({
+            message: 'Anuncio guardado exitosamente',
+            id: nuevoAnuncio._id
+        });
+    } catch (error) {
+        console.error('Error guardando anuncio:', error);
+
+        const isValidation = error?.name === 'ValidationError';
+        const status = isValidation ? 400 : 500;
+
+        res.status(status).json({
+            error: 'Error al guardar anuncio',
+            message: error?.message || null,
+            details: error?.errors || null
+        });
     }
-
-    // Validar userId de sesión
-    const userId = req.session?.user?.id;
-    const isValidId = userId && require('mongoose').Types.ObjectId.isValid(userId);
-    if (!isValidId) {
-      console.error('peticion_anuncio: userId inválido o ausente en sesión:', userId);
-      return res.status(401).json({ error: 'Sesión inválida. Vuelve a iniciar sesión.' });
-    }
-
-    const nuevoAnuncio = new anuncio({
-      name: name.trim(),
-      description: description.trim(),
-      image: image || null,
-      userId,
-      estado: 'pendiente',
-      fecha: new Date()
-    });
-
-    await nuevoAnuncio.save();
-
-    res.status(200).json({
-      message: 'Anuncio guardado exitosamente',
-      id: nuevoAnuncio._id
-    });
-  } catch (error) {
-    console.error('Error guardando anuncio:', error);
-
-    const isValidation = error?.name === 'ValidationError';
-    const status = isValidation ? 400 : 500;
-
-    res.status(status).json({
-      error: 'Error al guardar anuncio',
-      message: error?.message || null,
-      details: error?.errors || null
-    });
-  }
 });
 
 app.get('/anuncios_todos', async (req, res) => {
@@ -247,18 +247,18 @@ app.post('/anuncios/:id/rechazar', requireAuth, requireRole('admin'), async (req
 });
 
 /*   Transporte   */
-app.get('/transporte', (req, res) => {
+app.get('/transporte', requireAuth, (req, res) => {
     res.render('Transporte/transporte.html');
 });
 app.get('/Transporte', (req, res) => res.redirect(301, '/transporte'));
 
 /*   EVENTOS   */
-app.get('/eventos', (req, res) => {
+app.get('/eventos', requireAuth, (req, res) => {
     res.render('Eventos/eventos.html');
 });
 app.get('/Eventos', (req, res) => res.redirect(301, '/eventos'));
 
-app.post('/peticion_evento', async (req, res) => {
+app.post('/peticion_evento', requireAuth, async (req, res) => {
     const { name, place, date, description, image } = req.body;
     try {
         await new evento({ name, place, date, description, image }).save();
@@ -313,7 +313,7 @@ const storageReportes = multer.diskStorage({
 });
 const uploadReportes = multer({ storage: storageReportes });
 
-app.get('/reportes', (req, res) => {
+app.get('/reportes', requireAuth, (req, res) => {
     res.render('Reportes/reportes.html');
 });
 app.get('/Reportes', (req, res) => res.redirect(301, '/reportes'));
@@ -370,7 +370,7 @@ app.post('/quejas/:id/rechazar', requireAuth, requireRole('admin'), async (req, 
 });
 
 /*   EMPRENDIMIENTOS   */
-app.get('/emprendimientos', (req, res) => {
+app.get('/emprendimientos', requireAuth, (req, res) => {
     const role = req.session?.user?.role;
     const categoria = (req.query.categoria || 'all').trim();
     (role !== 'emprendedor' && role !== 'admin') ? res.render('Emprendimientos/emprendimientos', { Emprendimiento, categoria }) : res.render('Emprendimientos/emprendedor', { Emprendimiento, categoria })
@@ -434,7 +434,7 @@ app.post('/addbusiness', requireAuth,
 
 /*  OFERTAS */
 
-app.get('/ofertas', (req, res) => {
+app.get('/ofertas', requireAuth, (req, res) => {
     const role = req.session?.user?.role;
     const categoria = (req.query.categoria || 'all').trim();
     (role !== 'emprendedor' && role !== 'admin') ? res.render('Ofertas/Ofertas', { oferta, categoria }) : res.render('Ofertas/OfertasEmprendedor', { oferta, categoria })
@@ -442,7 +442,7 @@ app.get('/ofertas', (req, res) => {
 
 app.get('/Ofertas', (req, res) => res.redirect(301, '/ofertas'));
 
-app.get('/nuevaOferta', async (req, res) => {
+app.get('/nuevaOferta', requireAuth, async (req, res) => {
 
     res.render('Ofertas/CrearOferta.html')
 })
@@ -551,7 +551,7 @@ app.post('/ofertas/:id/rechazar', requireAuth, requireRole('admin'), async (req,
 });
 
 /*   MAPA   */
-app.get('/mapa', (req, res) => {
+app.get('/mapa', requireAuth, (req, res) => {
     res.render('Mapa/mapa.html');
 });
 
@@ -592,17 +592,17 @@ app.get('/admin', requireAuth, requireRole('admin'), async (req, res) => {
 });
 
 app.post('/usuarios/:id/promover', requireAuth, requireRole('admin'), async (req, res) => {
-  try {
-    const r = await register.updateOne(
-      { _id: req.params.id },
-      { $set: { role: 'admin' } }
-    );
-    if (r.matchedCount === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
-    res.json({ message: 'Usuario promovido a admin' });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Error al promover usuario' });
-  }
+    try {
+        const r = await register.updateOne(
+            { _id: req.params.id },
+            { $set: { role: 'admin' } }
+        );
+        if (r.matchedCount === 0) return res.status(404).json({ error: 'Usuario no encontrado' });
+        res.json({ message: 'Usuario promovido a admin' });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: 'Error al promover usuario' });
+    }
 });
 
 // Opcion para eliminar data desde admin
